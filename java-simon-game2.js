@@ -31,7 +31,7 @@ function animatePress(currentColor) {
   }, 200);
 }
 
-$(document).on("keypress", function() {
+$(document).on("click", function() {
   if (!started) {
   nextSequence();
   $('h1').text("level "+level);

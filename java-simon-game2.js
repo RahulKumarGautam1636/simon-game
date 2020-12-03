@@ -31,7 +31,7 @@ function animatePress(currentColor) {
   }, 200);
 }
 
-$(document).on("click", function() {
+$(".start").on("click", function() {
   if (!started) {
   nextSequence();
   $('h1').text("level "+level);
@@ -75,7 +75,7 @@ function nextSequence() {
 
 
 function wrong() {
-  $('h1').text("Game 🤪ver! you pressed wrong button. Press any key to play again..")
+  $('h1').text("Game 🤪ver! you pressed wrong button. click start to play again..")
   $("body").addClass("gameOver");
   var songs = new Audio("sounds/wrong.mp3");
   songs.play();

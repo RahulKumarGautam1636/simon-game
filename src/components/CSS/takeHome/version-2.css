@@ -1,0 +1,66 @@
+:root {
+    --clr-9: #35a2c8;
+    --border-clr: 1px solid var(--clr-9);
+}
+
+.header-middle, 
+.footer-static-middle,
+.header-sticky.sticky {
+    background: rgb(247 253 255);
+}
+.header-sticky.sticky {
+    background: var(--clr-9);
+}
+.mobile-header-search.sticky {
+    background: rgb(247 253 255);
+}
+
+/* .header-bottom {
+    padding: 0.5em 0 0.4em;
+    box-shadow: none;
+} */
+.product-card-1 .card-content {
+    background: #effbff;
+}
+#home-banner img {
+    background: #c5e4ff;
+    height: clamp(10.5em, 28vw, 19.8em);
+}
+
+.hb-menu > nav > ul {
+    column-gap: 2.2em;
+}
+.hb-menu-2 nav > ul > li > a {
+    font-size: 0.95em;
+    padding: 12px 0;
+}
+.hb-menu-2 nav > ul > li > a > span {
+    display: none;
+}
+
+
+.header-main-logo img {
+    transform: scale(1.3) translateX(0.7em);
+}
+.organic-label {
+    font-size: 2em;
+    left: 2px;
+    position: absolute;
+    top: 2px;
+}
+.organic-label img {
+    max-height: 2.6em;
+}
+
+@media only screen and (min-width: 768px) {
+    .header-main-logo {
+        padding-right: 11em;
+    }
+    .header-main-logo img {
+        transform: scale(2) translateX(1.5em);
+    }
+}
+
+/* @media only screen and (max-width: 768px) {
+
+} */

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,500&family=Nunito:wght@300;400;500;600&family=Lato:wght@300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Rubik:300,300i,400,400i,500,500i,700,700i,900,900i');
+
+:root {
+	/* --clr-9: #2b739d;
+	--clr-1: #1f8dc9; */
+	--clr-9: #73c57e;
+	--clr-9: #60bf59;
+	--clr-1: #0b9e00;
+	--clr-1: #1f8dc9;
+	--border-clr: 1px solid var(--clr-9);                /* previously - 1px solid #e1e1e1 */
+}
+body {
+	background: #fbfbfb;
+}
+
+.sliderContainer {
+	background: linear-gradient(182deg, #ecfff0, #caf3ff00);
+}
+
+.bottomNav {
+	background: var(--clr-9);
+}
+.bottomNav ul a,
+.bottomNav ul span {
+	/* color: #0b9f00 !important; */
+	color: #fff !important;
+}
+#home-banner img {
+    height: clamp(9.5em, 28vw, 19.8em);
+}
+.product-slider .slick-slide > div {
+    padding: 1.2em 0.4em 0.6em;
+}
+
+/* -------------------- offers slider start ----------------------------------------------------------------------------- */
+.offer-card {
+	padding: 0 .5em;
+}
+.content-box h5 {
+    color: #00845d;
+}
+.brands img {
+    max-width: 90%;
+    max-height: 5.3em;
+}
+/* -------------------- offers slider ends ----------------------------------------------------------------------------- */
+.mobile-product-card .controlled-btn {
+    background: #edfffa;
+    border: 1px solid #6ae4c0;
+}
+.hb-menu > nav > ul {
+    justify-content: center;
+	column-gap: 1.9em;
+}
+
+.hb-menu-2 nav > ul > li > a {
+    line-height: 1;
+	font-size: 0.9em;
+	text-shadow: 1px 1px #7c7c7c;
+}
+.hb-menu nav > ul > li:hover > a, 
+.hb-menu nav > ul > li:hover > a::after {
+	color: white;
+    text-shadow: 2px 4px 2px #7c7c7c;
+}
+.hb-menu nav > ul > li:hover > a > span {
+    box-shadow: rgb(133 133 133) 1px 4px 3px !important;
+}
+/* .header-middle,  */
+.footer-static-middle {
+	background: rgb(238, 255, 240);
+}
+.header-bottom {
+    padding: 2px 0 3px;
+}
+.mobile-header-search.sticky {
+    background: rgb(238, 255, 240);
+    border-bottom: 1px solid rgb(219 219 219);
+    padding: 8px 7px 3px;
+}
+
+@media only screen and (max-width: 991px) {
+	.hb-menu-2 nav > ul > li > a {
+		line-height: 2.5;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.header-bottom {
+		background: var(--clr-9);
+		margin-bottom: 0;
+		padding: 0;
+	}
+
+	.alice-carousel__stage-item {
+		padding: 0.3rem 0 0.8rem 0 !important;
+	}
+	.offer-card {
+		padding: 0;
+	}
+}

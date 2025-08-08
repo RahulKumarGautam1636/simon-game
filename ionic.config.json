@@ -1,0 +1,7 @@
+{
+    "name": "Fauji Dhaba",
+    "integrations": {
+      "capacitor": {}
+    },
+    "type": "react"
+}

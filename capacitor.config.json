@@ -1,0 +1,8 @@
+{
+    "appId": "io.ionic.bookingApp",
+    "appName": "Fauji Dhaba",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "cordova": {}
+  }

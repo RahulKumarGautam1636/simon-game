@@ -1,0 +1,23 @@
+:root {
+    --clr-9: #4a70cf;
+    --clr-1: #13a3b2;
+}
+.mobile-header-search.sticky {
+    background: rgb(248 250 255);
+    border-bottom: 1px solid rgb(219 219 219);
+    padding: 8px 7px 3px;
+}
+.footer-static-middle {
+    background: rgb(248 250 255);
+}
+.hb-menu-2 nav>ul>li>a>span {
+    display: none;
+}
+.header-main-logo img {
+    transform: scale(1.7);
+}
+@media only screen and (max-width: 768px) {
+    .header-main-logo img {
+        transform: scale(1.3) translateX(0.6em);
+    }
+}

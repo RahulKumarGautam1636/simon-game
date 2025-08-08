@@ -1,0 +1,102 @@
+/* Modidy BSN website styles colors */
+
+/* :root {
+    --bg-main: #005eb8;
+    --bg-main-dark: #004d97;
+    --border-clr-1: #054481; 
+    --txt-3: #dcdcdc;
+
+    --clr-1: var(--bg-main);
+    --bg-3: var(--bg-main-dark);
+    --clr-26: var(--bg-main);
+} */
+
+/* above colors are used to replace bsn original colors from different elements, 
+   define these variables in css file of company for which color modification is needed */
+
+.top-bar-area {
+    background: var(--bg-main) !important;
+    border-bottom: 1px solid var(--border-clr-1) !important;
+}
+.top-bar-area .top-left p, 
+.top-bar-area .top-left p .material-symbols-outlined {
+    color: white !important;
+}
+.social-links li a i {
+    color: white !important;
+}
+.header-area {
+    background: var(--bg-main) !important;
+}
+.bhs-logo {
+    border: none;
+    color: var(--bg-main) !important;
+    background: white;
+}
+.header-area .header-right ul li .icon-holder span {
+    color: white !important;
+}
+.header-area .header-right ul li .text-holder h4 {
+    color: white !important;
+}
+.header-area .header-right ul li .text-holder span {
+    color: var(--txt-3) !important;
+}
+.mainmenu-area {
+    border-top: 1px solid var(--border-clr-1) !important;
+    border-bottom: 1px solid var(--border-clr-1) !important;
+    background: var(--bg-main) !important;
+}
+.main-menu {
+    background: var(--bg-main);
+}
+.main-menu .navigation > li:hover > a, .main-menu .navigation > li.current > a {
+    color: var(--txt-3) !important;
+}
+.main-menu .navigation li a {
+    color: white !important;
+}
+.main-menu .navigation > li > a:before {
+    background: white !important;
+}
+.menu-toggler {
+    color: white;
+}
+
+.doctor-page-area ul li.active a, .doctor-page-area ul li.active a:focus, .doctor-page-area ul li.active a:hover {
+    background-color: var(--bg-main);
+    border: 1px solid var(--bg-main);
+}
+.main-menu .navigation > li > .menu-wrapper > ul, .custom-dropdown-content {
+    background: var(--bg-main-dark);
+}
+.mob-cta-list .icon-holder i,
+.mob-cta-list .icon-holder span {
+    color: white !important;
+}
+
+.footer-area {
+    background: var(--bg-main-dark);
+}
+.single-footer-widget .footer-contact-info li .text-holder h5 {
+    color: #ffffff;
+}
+.single-footer-widget .usefull-links li a {
+    color: #e7e7e7;
+}
+.single-footer-widget .our-info p {
+    color: #ffffff;
+}
+.single-footer-widget form.appointment-form input[type="text"], .single-footer-widget form.appointment-form input[type="email"], .single-footer-widget form.appointment-form textarea {
+    background: #ffffff;
+}
+.fact-counter-area, .slogan-area {
+    background: var(--bg-main);
+}
+.welcome-area .inner-content {
+    background: var(--bg-main);
+}
+.facilities-content-box .icon-holder span, .special-features-area .icon-box span,
+.welcome-area .text-holder .single-item .icon-box span {
+    color: var(--bg-main);
+}  

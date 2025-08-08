@@ -1,0 +1,12 @@
+/* Modidy colors used in BSN website's modifier.css file */
+
+:root {
+    --bg-main: #005eb8;
+    --bg-main-dark: #004d97;
+    --border-clr-1: #054481; 
+    --txt-3: #dcdcdc;
+
+    --clr-1: var(--bg-main);
+    --bg-3: var(--bg-main-dark);
+    --clr-26: var(--bg-main);
+}

@@ -1,0 +1,70 @@
+:root {
+	/* --bg-1: #2b739d;
+	--bg-2: #1f8dc9; */
+	--bg-1: #73c57e;
+	--bg-1: #60bf59;
+	--bg-2: #0b9e00;
+	--bg-2: #1f8dc9;
+	--border-clr: 1px solid var(--bg-1);                /* previously - 1px solid #e1e1e1 */
+}
+body {
+	background: #fbfbfb;
+}
+
+.sliderContainer {
+	background: linear-gradient(182deg, #ecfff0, #caf3ff00);
+}
+
+.bottomNav ul a {
+	color: #0b9f00 !important;
+}
+#home-banner img {
+    height: clamp(9.5em, 28vw, 19.8em);
+}
+.product-slider .slick-slide > div {
+    padding: 1.2em 0.7em 0.6em;
+}
+
+/* -------------------- offers slider start ----------------------------------------------------------------------------- */
+.offer-card {
+	padding: 0 .5em;
+}
+.content-box h5 {
+    color: #00845d;
+}
+.brands img {
+    max-width: 90%;
+    max-height: 5.3em;
+}
+/* -------------------- offers slider ends ----------------------------------------------------------------------------- */
+.mobile-product-card .controlled-btn {
+    background: #edfffa;
+    border: 1px solid #6ae4c0;
+}
+.hb-menu nav > ul > li {
+    padding-right: 2.5em;
+}
+
+.hb-menu-2 nav > ul > li > a {
+    line-height: 1;
+	font-size: 0.9em;
+}
+@media only screen and (max-width: 991px) {
+	.hb-menu-2 nav > ul > li > a {
+		line-height: 2.5;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.header-bottom {
+		background: var(--bg-1);
+		margin-bottom: 0;
+	}
+
+	.alice-carousel__stage-item {
+		padding: 0.3rem 0 0.8rem 0 !important;
+	}
+	.offer-card {
+		padding: 0;
+	}
+}

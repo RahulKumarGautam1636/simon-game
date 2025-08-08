@@ -1,0 +1,349 @@
+:root {
+    --clr-7: white;
+    --clr-12: black;
+}
+
+
+
+.cat-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.4em;
+    margin-bottom: 0;
+    overflow: auto;
+    white-space: nowrap;
+}
+.cat-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+.cat-list li i {
+    background: var(--i);
+    font-size: 1.5em;
+    padding: 0.3em 0.36em;
+    border-radius: 1.9em;
+    color: var(--clr-7);
+}
+.cat-list li h4 {
+    font-size: 1em;
+    margin-bottom: 0;
+}
+.cat-list li span {
+    font-size: 0.83em;
+    color: gray;
+}
+.bg-box {
+    height: fit-content;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3em;
+    padding: 1.3em 0 2.2em;
+}
+.main-heading {
+    font-size: 2.8em;
+    font-weight: 600;
+    color: #23338b;
+    margin-bottom: 0.5em;
+}
+.offer-list {
+    gap: 1em;
+    justify-content: flex-start;
+}
+ul.offer-list p {
+    color: #000000;
+    font-weight: 500;
+}
+ul.offer-list span {
+    color: var(--clr-7);
+}
+.offer-list li > i {
+    background: var(--clr-7);
+    color: var(--i);
+    font-size: 2.1em;
+    padding: 0.15em 0.26em 0.11em;
+}
+.offer-list li h4 {
+    color: var(--clr-12);
+}
+.hero-carousel .slick-slide {
+    padding: 0;
+}
+.sec-left img {
+    max-width: 100%;
+    height: clamp(5em, 40vw, 19em);
+}
+.cat-list::-webkit-scrollbar,
+.main-category .cat-content::-webkit-scrollbar {
+	height: 0;
+}
+.feat-categories {
+    padding: 1em 3vw;
+}
+.cat-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.8em 0 1em;
+}
+.cat-heading span,
+.cat-heading a.view-all {
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    color: #1855ff;
+}
+.main-category {
+    background: #f1f1f1;
+}
+/* .main-category .cat-content {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+} */
+.main-category-item {
+    display: flex;
+    padding: 1em;
+    background: var(--clr-7);
+    width: -moz-fit-content;
+    width: fit-content;
+    gap: 1em;
+    align-items: center;
+    border: 1px solid #dbdbdb;
+    white-space: nowrap;
+    border-radius: 5px;
+}
+.main-category-item .cat-img {
+    height: clamp(3em, 8vw, 5em);
+    max-width: 7em;
+    display: flex;
+    align-items: center;
+}
+.main-category-item img {
+    max-width: 100%;
+    max-height: 100%;
+    transition: 0.3s;
+}
+.main-category-item:hover img {
+    transform: scale(1.3);
+}
+.main-category-item h4 {
+    margin-bottom: 0.4em;
+}
+.main-category-item p {
+    margin-bottom: 0;
+}
+  
+.featCat-sub-list .featCat-list-item {
+    position: relative;
+    padding: 0.8em 0.8em 0.4em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: -moz-fit-content;
+    width: fit-content;
+    gap: 0.2em;
+    min-width: 7rem;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    border-radius: 0.7em;
+}
+.featCat-sub-list .featCat-list-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #f3f3f391;
+    z-index: -1;
+}
+.featCat-list-item:hover::before {
+    background: var(--clr);
+    opacity: 0.2;
+}
+.featCat-list-item i {
+    font-size: 3.5em;
+    color: var(--clr);
+}
+.featCat-list-item p {
+    margin-bottom: 0;
+}
+.featCat-sub-list .slick-arrow i {
+    opacity: 1;
+    top: 38%;
+}
+.featCat-sub-list .slick-prev i {
+    left: -0.5em;
+}
+.featCat-sub-list .slick-next i {
+    right: -0.5em;
+}
+
+/* product card start */
+.product-card {
+    padding: 0.8em 0.7em 0.75em;  
+    background: var(--clr-7);
+    width: fit-content;
+    /* border: 1px solid #dddddd; */
+    border-radius: 5px;
+    width: 15em;
+    position: relative;
+    overflow: hidden;              /* hides price tag overflow */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.product-card .product-img {
+    margin-bottom: 0.5em;
+    height: 11em;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #e5e5e5bf;
+    /* background: #f7f7f7; */
+    padding: 0.2em 0em;
+    position: relative;
+}
+.product-img img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.price-box {
+    display: flex;
+    gap: 0.5em;
+    align-items: flex-end;
+    white-space: nowrap;
+}
+.price-box h4 {
+    cursor: pointer;
+    font-size: 0.93em;
+    line-height: 1em;
+    margin-bottom: 0;
+}
+.price-box h6 {
+    margin-bottom: 0;
+    font-size: 0.7em;
+    color: red;
+    line-height: 1.2em;
+    text-decoration: line-through;
+}
+.product-card h5 {
+    font-size: 0.9em;
+    margin-bottom: 0;
+    margin-top: 0.6em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #004c7f;
+}
+/* .product-slider .slick-slide>div {
+    padding: 0em .35em 0em;
+} */
+.ratings {
+    transform: translateY(3px);
+}
+.pharmacy-cards > div:not(:first-child) .cat-heading {
+    margin: 1.2em 0 0.7em;
+}
+.pharmacy-cards .cart-action {
+    font-size: 1.4em;
+    padding: 0.3em 0px 0px;
+    background: var(--clr-7);
+    box-shadow: none;
+}
+.pharmacy-cards .cart-action > div {
+    gap: 0.3em;
+}
+.pharmacy-cards .btn-box {
+    margin-top: 0;
+    box-shadow: none;
+    border: none;
+}
+.pack-sizes-box>div {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-right: 0!important;
+}
+.pack-sizes>div {
+    border: 1px solid #b2b2b2;
+    border-radius: .6em;
+    cursor: pointer;
+    min-width: 6em;
+    padding: .5em .7em; 
+}
+.pack-sizes-box label {
+    display: block;
+    font-family: Poppins;
+    font-size: 1em;
+    font-weight: 400;
+}
+.pack-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8em;
+}
+.pack-sizes>div.active {
+    background: #f3f8ff;
+    border: 1px solid #4f96ff;
+}
+.pack-sizes h5 {
+    font-size: .8em;
+    margin-bottom: .5em;
+}
+.pack-sizes>div.active h5 {
+    color: #3d3dbd;
+}
+.pack-sizes p {
+    color: #000;
+    font-size: .9em;
+    line-height: 1em;
+    margin-bottom: 0;
+}
+.pack-sizes .old-price {
+    color: #ff6666f2;
+    font-size: .8em;
+    font-weight: 500;
+    margin-top: .1em;
+    text-decoration: line-through;
+}
+
+/* ---- MEDIA QUERY ------------------------------ */
+
+@media only screen and (max-width: 700px) {
+    /* .main-category .cat-content {
+        gap: 0.5em;
+        overflow: auto;
+        flex-wrap: nowrap;
+    }
+    .main-category-item {
+        min-width: auto;
+    } */
+}
+
+@media only screen and (max-width: 480px) {
+    .cat-list {
+        font-size: 0.9em;
+        justify-content: flex-start;
+    }
+    .sec-left {
+        display: grid;
+        place-items: center;
+    }
+    .sec-left img {
+        max-width: 80%;
+    }
+    .feat-categories {
+        /* font-size: 0.9em; */
+    }
+    .cat-heading {
+        margin: 0.2em 0 0.5em;
+    }
+    .featCat-sub-list .featCat-list-item {
+        min-width: 5rem;
+    }
+    .pharmacy-cards .cat-heading {
+        margin: 0.8em 0 0.2em;
+    }
+}

@@ -1,0 +1,213 @@
+50) $lookup join - Used to join two documents having some commont field value. Ex -
+
+    const customers = [                     // Customers collection.
+        {
+            userName: 'Max',
+            favBooks: ['id1', 'id2']
+        }
+    ]
+
+    const books = [                         // Books collection.
+        {
+            id: 'id1',
+            name: 'Lord of the Rings.'
+        },
+        {
+            id: 'id2',
+            name: 'Harry Potter and the chamber of secrets.'
+        }
+    ]
+
+    customers.aggregate([                       // pass a list of queries because we can perform multiple conditional queries with aggregate method.
+        { 
+            $lookup: {                          // passing $lookup as a query.
+                from: 'books',                  // name of target (books) collection to look upon.
+                localField: 'favBooks',         // name of local (customers) collection's field to use with lookup.
+                foreignField: '_id',            // name of foreign (books) collection's field in which references of localField can be found.
+                as: 'favBookData'               // creates new field which will hold the returned results of the $lookup query.
+            } 
+        }
+    ]);
+    ->  { 
+            userName: 'Max', 
+            favBooks: ['id1', 'id2'], 
+            favBookData: [                  // new key having results of the $lookup query.
+                {
+                    id: 'id1',
+                    name: 'Lord of the Rings.'
+                },
+                {
+                    id: 'id2',
+                    name: 'Harry Potter and the chamber of secrets.'
+                }
+            ],
+        }
+
+53) Schema Validation - If we define a Schema for a collection then it is used to validate the data before saving to database.
+    1. Validation level - What kind of Validation is applied.
+        1) Strict - Validate before running any insert, updated methods.
+        2) Moderate - All inserts are checked but Updates are only checked for documents which were valid before. so If we have an invalid documents before we set an Schema then it can be changed.
+    2. Validation action - What to do when Validation fails.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+75) Atomicity - MongoDB makes sure that our queries effect documents as a whole. for example suppose we try to insert a document that has few layer of embedded documents. now during insertion the mongo server will make sure
+            that whole document is inserted without missing any of it's fields and values. If any issue happens during insertion then the document is fully removed from the database. This is called atomicity and it
+            works only on documents level. It doesn't work if we try to insert multiple documents, That means if we try to insertMany with multiple documents then all the individual documents will either be inserted as
+            a whole or be not inserted if any error happens. The documents will be inserted normally and whenever error happens the operation breaks and rest of documents will not be inserted. It will work as Ordered
+            insert described above.
+
+76) Import Data with MongoImport - Use mongoimport tool to import data to our databases. First add path to access mongoimport any anywhere from cmd or move the folder where your database.json file exist.
+
+    > mongoimport myData.json -d moviesData -c movies --jsonArray --drop        
+
+    Explanation - Import data from myData.json and insert it into moviesData's movies collection. The database and the collection will be created if they don't exist already. --drop to spcify that if movies collection already 
+                  exist then drop it and they add the new data from myData.json. otherwise it will append the new data to existing movies collection's data.
+
+
+-------------------------------------------------------
+
+88) $and Operator - Takes array of filters and returns all documents that match any of these filters. don't confuse $and with similar operation $elematch. The $elematch method has a great Difference from $and.
+    *** Difference between - See difference with an example in the point where $elematch is described.
+    db.movies.find({ $and: [{"rating.average": {$gt: 9}, {genres: "Drama"}}] })           // find all documents where rating is greater than 9 and genres has a value of Drama.
+    db.movies.find({ "rating.average": {$gt: 9}, genres: "Drama" })                       // Shorthand for the query written above. Just seperate filters with comma.
+
+    ***Since shorthand is easy then why use $and Operator - Suppose we need to search for two genres horror and thriller now the shorthand query will be like this.
+    db.movies.find({ genres: "Drama", genres: "Drama" })        // We can see that we have to pass two similar keys which is not valid json for Javascript.
+    db.movies.find({ genres: "Drama", genres: "Drama" })        // First key will be simply replace the second key and the query will become like this. We need to use $and Operator to avoid these situations.
+
+89) $not Operator - It has some starange using method. Run a query and they follow it with $not operator to return documents where the that query is resolves to false.
+    db.movies.find({ runtime: {$not: {$eq: 60}}})       // Return document where runtime is not equal to 60. Finds where runtime is 60 and then return rest of the documents where runtime is not 60.
+    db.movies.find({ runtime: {$ne: 60}})               // Alternative method using $ne (not equal) operator. Finds where runtime is not equal to 60.
+
+90) $exist operator - categorised as element operator. Used to filter documents by checking if a specific field exists or not.
+    db.users.find({ age: {$exists: true} })                     // Return all documents where age field exists with any type of value.
+    db.users.find({ age: {$exists: true, $ne: null} })          // Return all documents where age field has value not equal to null.
+
+91) $type operator - Filter documents by type of data in the fields.
+    db.users.find({phone: {$type: "number"}})                   // find documents where phone is number type.
+    db.users.find({phone: {$type: ["number", "double"]}})       // check for multiple type. find documents where phone is type of number or double (Floating point numbers, JS doesn't supports these so all are used as numbers).
+
+92) $regex operator - Find documents by filtering text contents using regex.
+    db.users.find({summary: {$regex: /musical/}})               // find all documents where summary flield contains word musical.
+
+93) $expr operator - use condition if else or perform computation on field values then filter the documents according to the it's results.
+    Ex - Sales Collection = [
+        {"volume": 100, "target": 120}
+        {"volume": 89, "target": 80}
+        {"volume": 200, "target": 177}
+    ]
+
+    db.sales.find({$expr: {$gt: ["$volume", "$target"]}})                   // find documents where volume is greater than the target.
+    db.sales.find({$expr: {$gt: [                                           // check greater than. below two lines are arguments for this $gt operator.
+        {$cond: {if: {$gte: ["$volume", 190]}, then: {$subtract: ["$volume", 30]}, else: "$volume}},    // check if volume >= 190. if yes then subtract 30 and return else return original volume as first argument for above operator.
+        "$target"                                                                                       // second argument.
+    ]}})                                                                                                // $cond opeator takes if else condition and returns a value.
+
+95) $size - Find documents by length of a nested array.
+    db.users.find({hobbies: {$size: 3}})                            // find all docs where a user has exactly 3 hobbies. hobbies field has a array of 3 items.
+    -> { name: 'John', hobbies: ['music', 'cricket', 'baseball'] }
+
+96) $all - Normal find queries looks only for exact match. but using it with $all can make it flexible to include more results.
+    db.users.find({genre: ["action", "thriller"]})                  // find all docs where genre is exactly equal to ["action", "thriller"]. if some docs have ["thriller", "action"] (diffrent order) then it will be excluded.  
+    db.users.find({genre: {$all: ["action", "thriller"]}})          // find all docs where genre inludes ["action", "thriller"] irrespective of their orders. even if it is number, embedded docs or diffrent array.   
+
+97) $elematch - Filter by multiple conditions and return docs where all conditions are satisfied in same embedded document. Remind the difference b/w $and and $elematch described below.
+    db.users.find({hobbies: {$elematch: {title: "Sports", frequency: {$gte: 3}}}})                  // find docs where hobbies has title sports and frequency of greater than 3 and both are in same hobbies item.
+
+    *** Difference between $and and $elematch - The $and tries to match condition on whole document but using $elematch we can perform condition matching only a specific field of the document or embedded documents / collections.
+        For example take a collection of documents of patient_1 and Suppose we want to find all to patients where the history list has a an entry having disease: 'cold' and treatment: 'syrup' in same history item.
+        now if we perform an simple $and query then it will try to match both conditions on whole document. so now if a history item has field of the disease: 'cold' and another history item in the same document has field
+        treatment: 'syrup' the it will satisfy the $and condition because $and operator matches the condition on whole document not on a specific field which is history items in our case.
+        
+        db.patients.find({ $and: [{"history.disease": "cold", {"history.treatment": "syrup"}}] })   --> Wrong results.  
+                                                                                                    
+        If you want to find only documents where disease: 'cold' treatment: 'syrup' are present in same history item which is not fullfilled by $and operator. We have to use $elematch for that.
+
+        db.patients.find({ history: {$elematch: {disease: "cold", treatment: "syrup"}} })  // will return only results where disease: 'cold' and treatment: 'syrup' are present in same history item.
+
+
+98) Cursors - the find method gives us a cursor that by default loads only first 20 documents from the result to save resources. It can be controlled.
+
+99) Cursor usage - We can use cusor in the following ways.
+    const cursor = db.movies.find()
+    cursor.next()                                   // next() method gives the next 20 results.
+    cursor.hasNext() -> false                       // when all the results are returned and the cursor is exhausted.    
+    cursor.forEach(doc => printjson(doc))           // can also use forEach on cursor to iterate over all the documents to perform some operation on the documents before returning them as result.
+
+100) Sorting - find() returns the Cursor and the cursor can be used to sort the results. Multiple order in same query is also possible.
+     
+    db.movies.find().sort({"rating.average": 1})                    // sort by "rating.average" field in ascending order. -1 for descending order.
+    db.movies.find().sort({"rating.average": 1, runtime: -1})       // first sort by "rating.average" and then sort by runtime in descending order. Multiple order in same query.
+
+101) skip() - Used to skip a number of results returned by the cursor. 
+    db.movies.find().sort({"rating.average": 1}).skip(10)           // skip first ten results. 
+
+    ⭐⭐🌟skip() has no respect for the order of the queries. In this example it will first skip the first 10 documents and then apply the sort on remaining docs.
+
+    limit() - Limit the number of results returned by the cursor.
+    db.movies.find().sort({"rating.average": 1}).skip(100)           // return only 100 documents.
+
+102) Projection - Get only required fields from the documents.
+    db.movies.find({}, {name: 1, genres: 1, runtime: 1})
+    -> { '_id: ObjectId, name: 'Andrew', genres: ['crime', 'si-fi'], runtime: 60 }         // renturns only the fields passed with 1. To exclude use 0. 
+
+    db.movies.find({}, {name: 1, genres: 1, _id: 0})
+    -> { name: 'Andrew', genres: ['crime', 'si-fi']}                       // Id is included by default we can use 0 to exclude it. 
+
+    Use on nested objects.
+    db.movies.find({}, {name: 1, genres: 1, "schedule.time": 1})                        // Get only time field from nested object in schedule field. schedule: {time: '21:00', data: '12/11/2025'} 
+    -> { name: 'Andrew', genres: ['crime', 'si-fi'], schedule: {time: '21:00'}}
+
+103) Projection on arrays - Confusing method. find more on web.
+    db.movies.find({genres: "Drama"}, {"genres.$": 1})
+    -> {"genres": ["Drama"]}                            // Find docs where genres array contains "Drama". 
+
+    db.movies.find({ 
+        genres: {$all: ["Drama", "Horror"]},            // Find all movies with having both Drama and Horror in genres list.
+        {"genres.$": 1}                                 // And then return only one value from genres list that is last matched value because 
+    })                                                  // last matched value (Horror) confirms that all previous values (Drama) are present in the genres list.
+    -> {"_id": 1, "genres": ["Horror"]}
+       {"_id": 2, "genres": ["Horror"]}
+       {"_id": 3, "genres": ["Horror"]}                
+
+    db.movies.find({                                
+        {genres: "Drama"},                              // Find all movies having Drama in genres list. 
+        {genres: {$elematch: {$eq: "Horror"}}}          // And then return only certain fields based on a condition. here the condition is to find docs who also have Horror in their genres list. 
+    })                                                  // and then we want to pull only genres field where the conditon is satisfied.
+    ->  {"_id": 1}                                      
+        {"_id": 2, "genres": ["Horror"]}                // genres field is only included where the $elematch condition is satisfied.
+        {"_id": 3},
+        {"_id": 2, "genres": ["Horror"]}  
+
+    db.movies.find({                                
+        {"rating.average": {$gt: 9}},                   // Find all movies having rating.average greater than 9. 
+        {genres: {$elematch: {$eq: "Horror"}}}          // and the pull out only genres field where the genres list contains Horror.
+    })                                                  
+    ->  {"_id": 1}                                      
+        {"_id": 2, "genres": ["Horror"]}                // genres field is only included where the $elematch condition is satisfied.
+        {"_id": 3},
+
+104) $slice - Use slice on nested arrays and then return desired number of items.
+    db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: 2}});          // Find movies where rating.average > 9 then return only genres field and then slice slice the genres list to return only first 2 items.
+    -> {"_id": 2, "genres": ["Horror", "Thriller"]}   
+
+    db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: [1, 2]}});     // Skip 1 item and then return next 2 items that is second and third items from genres list.
+    -> {"_id": 2, "genres": ["Thriller", "Adventure"]}   
+
+
+
+114) Updating a specific field of documents that are found by satisfying multiple conditions on same field - This type of filter operation can be performed with $elematch operator. Now we learn how to update or add new
+        fields to those specific flields or embedded documents.
+
+        db.patients.find({ history: {$elematch: {disease: "cold", treatment: "syrup"}} })           // return only documents where disease: 'cold' and treatment: 'syrup' are present in same history item.
+
+        db.patients.updateMany({                                                                    // this will overwrite the target item and we don't want this so don't do this.
+            history: {$elematch: {disease: "cold", treatment: "syrup"}}, 
+            $set: {"history.$": {severity: "moderate"}} 
+        })          
+
+        db.patients.updateMany({                                                                    // this will add severity field with value moderate or edit it to moderate if already exist..
+            history: {$elematch: {disease: "cold", treatment: "syrup"}}, 
+            $set: {"history.$.severity": "moderate"}  
+        })   

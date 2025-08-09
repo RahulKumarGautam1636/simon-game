@@ -191,13 +191,17 @@ const rentCategories = [
 
 const responsive = [
   {
-    breakpoint: 1500,
+    breakpoint: 1900,
     settings: {
       slidesToShow: 6,
       slidesToScroll: 6,
-      // speed: 10000,
-      // autoplay: 10000,
-      // cssEase: 'linear',
+    }
+  },
+  {
+    breakpoint: 1300,
+    settings: {
+      slidesToShow: 5,
+      slidesToScroll: 5,
     }
   },
   {
@@ -205,9 +209,6 @@ const responsive = [
     settings: {
       slidesToShow: 4,
       slidesToScroll: 4,
-      // speed: 10000,
-      // autoplay: 10000,
-      // cssEase: 'linear',
     }
   },
   {

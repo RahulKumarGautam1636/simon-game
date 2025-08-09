@@ -27,8 +27,13 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 	// 	return computeWithPackSize(similarProduct, similarProductActivePacksize, vType);
 	// }
 
+	let relatedProducts = [];
 
-	const relatedProducts = [productData.data.ItemMaster, ...productData.data.itemMasterCollection];
+	if (isEmpty(productData.data.ItemMaster)) {
+		relatedProducts = productData.data.itemMasterCollection;
+	} else {
+		relatedProducts = [productData.data.ItemMaster, ...productData.data.itemMasterCollection]
+	}
 
 	const relatedProductPacksizes = relatedProducts.map(item => {
 		if (item.ItemPackSizeList && item.ItemPackSizeList.length) {
@@ -38,6 +43,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 	})
 
 	const placeZeroValuedAtLast = () => {
+		debugger;
 		const sortedBySRateAsc = relatedProductPacksizes.sort((a, b) => a.SRate - b.SRate);
 		const findZeroPriced = sortedBySRateAsc.filter(i => i.SRate === 0);
 		const findPriced = sortedBySRateAsc.filter(i => i.SRate !== 0);
@@ -45,7 +51,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 	}
 
 	const similarProduct = placeZeroValuedAtLast()[0] || {};
-	const showSimilar = !isEmpty(similarProduct);
+	const showSimilar = !isEmpty(similarProduct) && productData.data.ItemMaster.LocationItemId !== similarProduct.LocationItemId;
 	
 	useEffect(() => {										   
 		window.render_ProductPageSlider();
@@ -560,44 +566,32 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 							</div>
 						</div>
 						{showSimilar ?
-						<div className="col-lg-4 col-md-6 product-details-view-content">
-							{/* <div className='m-4 p-4 bg-white border border-gray-200 rounded-2xl product-info bg-slate-50'>
-								<h4 className='text-lg'>100% Similar Product at Low Cost</h4>
-								<div className='flex justify-center items-center mt-3 !mb-6'>
-									<img className="myimage img-fluid max-h-[11em]" src={similarProduct.ItemImageURL} alt="product" />
-								</div>
-								<div className='text-sm'>
-									<h4 className='text-lg !leading-6'>{similarProduct.Description}</h4>
-									<div className="price-box">
-										<span className="old-price">₹ {similarProduct.ItemMRP}</span>
-										<span className="new-price">₹ {similarProduct.SRate}</span>
-										<span className="discount-percentage" style={{paddingLeft:'15px', color:'green'}}>{similarProduct.DiscountPer}% OFF</span>
-									</div>
-									{globalData.location.LocationId && !similarProduct.StockQty ? <h6 className={`a wishlist-btn text-danger !text-[1.1em]`}><i className={`fa fa-window-close`}></i> Out of Stock</h6> : ''}
-									<Link class="continue-button rounded-lg font-semibold !py-2 mt-2 text-center w-full text-lg bg-gray-700" to={`/productPage/${similarProduct.ItemId}`}>View Product</Link>
-								</div>
-							</div> */}
-
+						<div className="col-lg-4 col-md-6 product-details-view-content bg-slate-100 px-4">
 							<div className="product-details-view-content pt-xs-20 pt-10">
-								<h4 className='text-lg mb-4'>100% Similar Product at Low Cost</h4>
+								<h4 className='text-lg mb-4 bg-orange-600 !text-white py-2 px-4 w-fit !mt-[-10px] !ml-[-0.84em]'>100% Similar Product at Low Cost</h4>
 								<div className="product-info">
-									<h2>{similarProduct.Description}</h2>
-									{similarProduct.ItemPackSizeList?.length ? <div className="product-variants pack-sizes-box pb-20 pb-xs-10" style={{borderBottom: '1px solid #e1e1e1'}}>
-										<div className="produt-variants-size">
-											<label>Pack size: </label>
-											<div className='pack-sizes'>
-												{similarProduct.ItemPackSizeList?.map((i, n) => (
-													<div key={i.CodeId} className={i.CodeId === similarProduct.PackSizeId ? 'active' : ''} onClick={() => handlePackSize(i)}>
-														<h5>{i.Description}</h5>
-														<div className='d-flex gap-2'>
-															<p className="old-price">₹ {i.MRP ? i.MRP : similarProduct.ItemMRP}</p>
-															<p>₹ {i.SRate ? i.SRate : similarProduct.SRate}</p>															
-														</div>
+									<div className='d-flex gap-4' style={{borderBottom: '1px solid #e1e1e1'}}>
+										<div>
+											<h2>{similarProduct.Description}</h2>
+											{similarProduct.ItemPackSizeList?.length ? <div className="product-variants pack-sizes-box pb-20 pb-xs-10">
+												<div className="produt-variants-size">
+													<label>Pack size: </label>
+													<div className='pack-sizes'>
+														{similarProduct.ItemPackSizeList?.map((i, n) => (
+															<div key={i.CodeId} className={i.CodeId === similarProduct.PackSizeId ? 'active' : ''} onClick={() => handlePackSize(i)}>
+																<h5>{i.Description}</h5>
+																<div className='d-flex gap-2'>
+																	<p className="old-price">₹ {i.MRP ? i.MRP : similarProduct.ItemMRP}</p>
+																	<p>₹ {i.SRate ? i.SRate : similarProduct.SRate}</p>															
+																</div>
+															</div>
+														))}
 													</div>
-												))}
-											</div>
+												</div>
+											</div> : ''}
 										</div>
-									</div> : ''}
+										<img src={similarProduct.ItemImageURL} className='ml-auto' style={{maxHeight: '100px'}} alt="product thumb" />
+									</div>
 									{globalData.location.LocationId ? <div className="price-box pt-4">
 										<span className="old-price">₹ {similarProduct.ItemMRP}</span>
 										<span className="new-price">₹ {similarProduct.SRate}</span>
@@ -609,37 +603,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 										<p> MFG By: <span> {similarProduct.ManufacturBY}</span></p>
 									</div>
 									<div className='pb-3' style={{borderBottom: 'var(--border-clr)'}}>
-										<div className="single-add-to-cart">
-											<form action="#" className="cart-quantity d-flex flex-wrap floating-cta-box w-100">
-												<div className="quantity d-flex gap-4 align-items-center">
-													<label>Quantity</label>
-													<div className="cart-plus-minus w-100">
-														<input onChange={handleDummyFunction} className="cart-plus-minus-box" value={counter} type="text"/>
-														<div className="dec qtybutton" onClick={() => {if (counter !== 1) setCounter(counter-1)}}><i className="fa fa-angle-down"></i></div>
-														<div className="inc qtybutton"><i onClick={() => setCounter(counter+1)} className="fa fa-angle-up"></i></div>
-													</div>
-												</div>
-												{(() => {
-													if (compCode === TAKE_HOME_ID|| compCode === ePharmaId) {
-														return (
-															<>
-																{similarProduct.Category !== 24856 ? <button className={`add-to-cart ${!globalData.location.LocationId || similarProduct.StockQty ? '' : 'opacity-50 pe-none'}`} type="button" onClick={handleAdd}>{isAddedToCart === 1 ? 'Remove from cart' : 'Add to cart'}</button> : 
-																<button className={`add-to-cart`} type="button" onClick={() => noticeToast({title: 'Over Counter Sales only..', msg: 'As Government Norms this Product is not to be sold Online - Contact with Service Provider for buying this product.'}, { position: "top-center", autoClose: 5000 })}>Counter Sale only</button>}
-															</>
-														)
-													} else {
-														return <button className={`add-to-cart ${!globalData.location.LocationId || similarProduct.StockQty ? '' : ''}`} type="button" onClick={handleAdd}>{isAddedToCart === 1 ? 'Remove from cart' : 'Add to cart'}</button>;
-													}
-												})()}
-												
-											</form>																		
-										</div>
-										<div className="product-additional-info pt-25 pt-xs-15">
-											<div className='d-flex gap-5 flex-wrap'>
-												<h6 className={`a wishlist-btn`} onClick={() => {cartAction('REMOVE_ITEM', productData.data.ItemMaster.LocationItemId, 'pharmacy'); wishlistAction('ADD_WISH_ITEM', {...productData.data.ItemMaster, count: counter, ...similarProduct}, 'pharmacy'); updateLocalStorageItems()}}><i className={`fa${isAddedToWishlist ? 's' : 'r'} fa-heart`}></i>{isAddedToWishlist === 1 ? 'Added' : 'Add'} to wishlist</h6>
-												{globalData.location.LocationId && !similarProduct.StockQty ? <h6 className={`a wishlist-btn text-danger`}><i className={`fa fa-window-close`}></i>Out of Stock</h6> : ''}
-											</div>
-										</div>
+										<Link to={`/productPage/${similarProduct.ItemId}`} className={`add-to-cart mt-[15px] block w-fit ml-auto bg-teal-600`} >View Product</Link>
 									</div>
 								</div>
 							</div>

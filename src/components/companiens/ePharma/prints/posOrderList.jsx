@@ -64,6 +64,9 @@ const PostOrderList = ({ modalAction, globalData, compCode, compInfo, modals, us
         <div id="target" className='w-100' style={{fontFamily: 'Lato', width: '100%'}}>
             <style>
                 {`
+                    p, td, span, h1, h2, h3, h4, h5, h6 {
+                        color: black !important;
+                    }
                     .app-container > *:not(.app-content) {				
                         display: none;
                     }
@@ -126,13 +129,13 @@ const PostOrderList = ({ modalAction, globalData, compCode, compInfo, modals, us
             </style>
             <div id="invoice-POS" className='invoice-body' style={{ fontSize: `${sliderValue}em`, padding: '1px', paddingRight: '1px 0.7em', background: '#FFF', fontFamily: 'Arial, Helvetica, sans-serif', width: '100%'}}>
                 <center id="top">
-                    {billData.loading || <div className="btnPrint mb-2" style={{textAlign: 'center'}}>
-                        <span className='btn btn-secondary px-2 py-1' onClick={() => window.printPage()}><i className='bx bxs-printer'></i> Print</span>
+                    {billData.loading || <div className="btnPrint mb-2 !text-[16px]" style={{textAlign: 'center'}}>
+                        <div className='btn btn-secondary px-2 py-1' onClick={() => window.printPage()}><i className='bx bxs-printer'></i> Print</div>
                         <Link to={'/'} onClick={handleClose} className='mx-3 btn btn-secondary px-2 py-1'><i className='bx bx-x'></i> Close</Link>
-                        <span className='btn btn-secondary px-2 py-1' onClick={() => setActive(!active)}><i className='bx bx-dots-vertical'></i></span>
+                        <div className='btn btn-secondary px-2 py-1' onClick={() => setActive(!active)}><i className='bx bx-dots-vertical'></i></div>
                         {active && 
                         <div>
-                            <ReactSlider value={[sliderValue]} onChange={value => {setSliderValue(value);localStorage.setItem('pos_invoice_text', value);}} step={0.05} className="pricing-slider single-thumb" thumbClassName="example-thumb" trackClassName="example-track" min={0.4} max={3.5}/>
+                            <ReactSlider value={[sliderValue]} onChange={value => {setSliderValue(value);localStorage.setItem('pos_invoice_text', value);}} step={0.05} className="pricing-slider single-thumb" thumbClassName="example-thumb" trackClassName="example-track" min={0.1} max={3.5}/>
                             <p className='price-values pt-4 mt-4'><span className='text-blue-600' style={{fontSize: 16}}>ADJUST SIZE: {sliderValue} pt.</span></p>
                         </div>}
                     </div>}
@@ -214,8 +217,8 @@ const PostOrderList = ({ modalAction, globalData, compCode, compInfo, modals, us
                         <div className="info" style={{textAlign: 'center'}}>
                         </div>
                     </div>
-                    {billData.loading || <div className="btnPrint mt-2" style={{textAlign: 'center'}}>
-                        <span className='btn btn-secondary px-2 py-1 me-3' onClick={() => window.printPage()}><i className='bx bxs-printer'></i> Print</span>
+                    {billData.loading || <div className="btnPrint mt-2 !text-[16px]" style={{textAlign: 'center'}}>
+                        <div className='btn btn-secondary px-2 py-1 me-3' onClick={() => window.printPage()}><i className='bx bxs-printer'></i> Print</div>
                         <Link to={'/'} onClick={handleClose} className='btn btn-secondary px-2 py-1'><i className='bx bx-x'></i> Close</Link>
                     </div>}
                 </div>
@@ -251,77 +254,77 @@ const testData = {
             BillQty: 2,
             Specification: ''
         },
-        { 
-            id: 3, 
-            Description: 'Dal Fry Tadka', 
-            BillQty: 2,
-            Specification: 'Test Note for this Item.'
-        },
-        { 
-            id: 4, 
-            Description: 'PLAIN DAL', 
-            BillQty: 1,
-            Specification: ''
-        },
-        { 
-            id: 5, 
-            Description: 'ALU BHAJA', 
-            BillQty: 1,
-            Specification: 'Test Note for this Item.'
-        },
-        { 
-            id: 6, 
-            Description: 'BOILED EGG DOUBLE', 
-            BillQty: 4,
-            Specification: ''
-        },
-        { 
-            id: 7, 
-            Description: 'Cheese Omelet (Double Egg)', 
-            BillQty: 3,
-            Specification: ''
-        },
-        { 
-            id: 8, 
-            Description: 'Bhola Fish Thali (Rice, Nimbu, Salad, Seasonal Sabji, Sag/Aloo Vaga, Dal, 1pcs Bhola Fish Curry, P', 
-            BillQty: 2,
-            Specification: ''
-        },
-        { 
-            id: 9, 
-            Description: 'Dal Fry Tadka', 
-            BillQty: 2,
-            Specification: 'Test Note for this Item.'
-        },
-        { 
-            id: 10, 
-            Description: 'PLAIN DAL', 
-            BillQty: 1,
-            Specification: ''
-        },
-        { 
-            id: 11, 
-            Description: 'ALU BHAJA', 
-            BillQty: 1,
-            Specification: 'Test Note for this Item.'
-        },
-        { 
-            id: 12, 
-            Description: 'BOILED EGG DOUBLE', 
-            BillQty: 4,
-            Specification: ''
-        },
-        { 
-            id: 13, 
-            Description: 'Bata Mach Thali (Rice, Nimbu, Salad, Seasonal Sabji, Sag/Aloo Vaga, Dal, 1pcs Shorshe Bata, Papad,', 
-            BillQty: 1,
-            Specification: 'Test Note for this Item.'
-        },
-        { 
-            id: 14, 
-            Description: 'Dal Fry Tadka', 
-            BillQty: 2,
-            Specification: 'Test Note for this Item.'
-        },
+        // { 
+        //     id: 3, 
+        //     Description: 'Dal Fry Tadka', 
+        //     BillQty: 2,
+        //     Specification: 'Test Note for this Item.'
+        // },
+        // { 
+        //     id: 4, 
+        //     Description: 'PLAIN DAL', 
+        //     BillQty: 1,
+        //     Specification: ''
+        // },
+        // { 
+        //     id: 5, 
+        //     Description: 'ALU BHAJA', 
+        //     BillQty: 1,
+        //     Specification: 'Test Note for this Item.'
+        // },
+        // { 
+        //     id: 6, 
+        //     Description: 'BOILED EGG DOUBLE', 
+        //     BillQty: 4,
+        //     Specification: ''
+        // },
+        // { 
+        //     id: 7, 
+        //     Description: 'Cheese Omelet (Double Egg)', 
+        //     BillQty: 3,
+        //     Specification: ''
+        // },
+        // { 
+        //     id: 8, 
+        //     Description: 'Bhola Fish Thali (Rice, Nimbu, Salad, Seasonal Sabji, Sag/Aloo Vaga, Dal, 1pcs Bhola Fish Curry, P', 
+        //     BillQty: 2,
+        //     Specification: ''
+        // },
+        // { 
+        //     id: 9, 
+        //     Description: 'Dal Fry Tadka', 
+        //     BillQty: 2,
+        //     Specification: 'Test Note for this Item.'
+        // },
+        // { 
+        //     id: 10, 
+        //     Description: 'PLAIN DAL', 
+        //     BillQty: 1,
+        //     Specification: ''
+        // },
+        // { 
+        //     id: 11, 
+        //     Description: 'ALU BHAJA', 
+        //     BillQty: 1,
+        //     Specification: 'Test Note for this Item.'
+        // },
+        // { 
+        //     id: 12, 
+        //     Description: 'BOILED EGG DOUBLE', 
+        //     BillQty: 4,
+        //     Specification: ''
+        // },
+        // { 
+        //     id: 13, 
+        //     Description: 'Bata Mach Thali (Rice, Nimbu, Salad, Seasonal Sabji, Sag/Aloo Vaga, Dal, 1pcs Shorshe Bata, Papad,', 
+        //     BillQty: 1,
+        //     Specification: 'Test Note for this Item.'
+        // },
+        // { 
+        //     id: 14, 
+        //     Description: 'Dal Fry Tadka', 
+        //     BillQty: 2,
+        //     Specification: 'Test Note for this Item.'
+        // },
     ]
 }

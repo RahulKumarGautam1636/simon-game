@@ -5,7 +5,7 @@ import { SliderSectionM } from './mobileView/homeM';
 import { ConnectedUpdateScroll, ControlledCarousel, escape, getFrom, MySlider, rentCategories, scrollPage, Spinner, SliderSection } from './utilities';
 import { connect } from 'react-redux';
 import { breadCrumbAction, filterAction, globalDataAction, modalAction } from '../../../actions';
-import { BASE_URL, defaultId, ePharmaId, garments, TAKE_HOME_ID, XYZ_ID } from '../../../constants';
+import { BASE_URL, defaultId, ePharmaId, garments, TAKE_HOME_ID, TAKEHOME_ELECTRONICS, XYZ_ID } from '../../../constants';
 import { agroCategories } from './agro/data';
 import { GridLoader } from '../../utils/utils';
 
@@ -34,6 +34,7 @@ function Home({ breadCrumbAction, compCode, filterAction, siteData, isLoggedIn, 
   const takeHome_banner_images = ['/assets/img/ePharma/bg-banner/slide-1.png', '/assets/img/ePharma/bg-banner/slide-2.png', '/assets/img/ePharma/bg-banner/slide-3.png'];
   const takeHome_agro_banner_images = ['/assets/img/agro/paddy.png', '/assets/img/agro/oils.png', '/assets/img/agro/fruits_nuts.png', '/assets/img/agro/pulses.png'];
   const takehome_garments_banner_images = ['/assets/img/garments/banner_1.jpg', '/assets/img/garments/banner_1.jpg'];
+  const takehome_electronics_banner_images = ['/assets/img/takehome/electronics/juicer.jpg', '/assets/img/takehome/electronics/mobiles.jpg', '/assets/img/takehome/electronics/fan.jpg'];
   const default_banner_images = ['/assets/img/ePharma/bg-banner/Final-03.jpg', '/assets/img/ePharma/bg-banner/Final-03.jpg', '/assets/img/ePharma/bg-banner/Final-03.jpg','/assets/img/ePharma/bg-banner/Final-03.jpg'];
 
   const [productsData, setProductsData] = useState(initState);
@@ -497,6 +498,8 @@ function Home({ breadCrumbAction, compCode, filterAction, siteData, isLoggedIn, 
                               if (compCode === TAKE_HOME_ID || compCode === XYZ_ID || isAgro) {
                                 if (isAgro) return <ControlledCarousel data={vType === 'ErpManufacturing' ? takehome_garments_banner_images : takeHome_agro_banner_images} interval={2000} controls={false} />;
                                 return <ControlledCarousel data={takeHome_banner_images} interval={2000} controls={false} />;
+                              } else if (compCode === TAKEHOME_ELECTRONICS) {
+                                return <ControlledCarousel data={takehome_electronics_banner_images} interval={2000} controls={false} />;
                               } else {
                                 return <ControlledCarousel data={default_banner_images} interval={2000} controls={false} />
                               }

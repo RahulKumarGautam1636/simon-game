@@ -778,7 +778,7 @@ export const MySlider = ({ name, dataList, responsive=[], customSettings={} }) =
     infinite: true,
     speed: 500,
     autoplay: 3000,
-    slidesToScroll: 1,
+    // slidesToScroll: 1,
     swipeToSlide: true,
     variableWidth: true,
     className: 'product-slider',

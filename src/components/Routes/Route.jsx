@@ -1,14 +1,16 @@
 import { connect } from "react-redux";
 import Header from "../companiens/default/header";
 import Footer from "../companiens/default/footer";
-import { BNH_ID, BSN_ID, CITIZEN_ID, HAYATT_ID, bhsId, defaultId, takehomeMain } from "../../constants";
+import { BCROY_ID, BNH_ID, BSN_ID, CITIZEN_ID, HAYATT_ID, RCC_ID, bhsId, defaultId, takehomeMain } from "../../constants";
 import { NotFound } from "../companiens/default/utilities";
 import { ConnectedB2BHome } from '../companiens/ePharma/B2B/Home';
 import { B2BOrders } from "../companiens/ePharma/B2B/Myorder";
 import { useHistory } from "react-router-dom";
 import { lazy } from "react";
 import Home from "../companiens/default/home";
-import Queries from "../companiens/ePharma/rentSale/queries";
+const Queries = lazy(() => import('../companiens/ePharma/rentSale/queries'));
+const BCRoyHome = lazy(() => import('../companiens/amNursingHome/bc_roy_home'));
+const BCRoyAboutPage = lazy(() => import('../companiens/amNursingHome/bcroyhomeabout'));
 // import Pharmacy from "../companiens/default/pharmacy";
 const Specialists = lazy(() => import("../companiens/default/specialists"));
 // const Home = lazy(() => import("../companiens/default/home"));
@@ -95,9 +97,11 @@ const HomePage = ({ compCode, match, vType, globalData, userInfo }) => {
     const b2bMode = globalData.userRegType.CodeValue === 'Retailer';
 
     if (vType === 'ErpHospital') {
-        if (compCode === defaultId || compCode === CITIZEN_ID) {
+        if (compCode === defaultId || compCode === CITIZEN_ID || compCode === RCC_ID) {
             // if (userInfo.UserType.toLowerCase() === 'doctor') return history.push('/dashboard')
             return <Specialists />;
+        } else if (compCode === BCROY_ID) {
+            return <BCRoyHome />
         } else if (compCode === BSN_ID || compCode === bhsId || compCode === BNH_ID) {
             return <BSNHome />;
         } else if (compCode === HAYATT_ID) {
@@ -162,6 +166,8 @@ const AboutUsPage = ({ compCode, vType }) => {
     if (vType === 'ErpHospital') {
         if (compCode === BSN_ID || compCode === bhsId || compCode === BNH_ID) {
             return <AboutUs />;
+        } else if (compCode === BCROY_ID) {
+            return <BCRoyAboutPage />
         }
     } if (vType === 'ErpPharma') {
         return <EPharmaAboutUs />;

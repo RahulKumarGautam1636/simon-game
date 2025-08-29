@@ -58,6 +58,10 @@
 		font-size: 8em;
 		margin-left: 3px;
 	}
+	.main-menu-wrapper {
+		position: sticky;
+    	top: 0;
+	}
 	.main-nav li > ul {
 		/*background-color: #fff;*/
 		border-radius: 0.3em;

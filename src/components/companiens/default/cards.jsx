@@ -4,7 +4,7 @@ import { cartAction, toastAction, userInfoAction, modalAction, bookingInfoAction
 import { connect } from 'react-redux';
 import { focusArea, getFrom, HoverDropdown, JQDatePicker, MyModal, productToast, stopPropagation } from './utilities';
 import Skeleton from 'react-loading-skeleton';
-import { ASTHA_ID, BASE_URL, BSN_ID, defaultId } from '../../../constants';
+import { ASTHA_ID, BASE_URL, BCROY_ID, BSN_ID, defaultId } from '../../../constants';
 
 
 function ProfileCard({ data, bookingInfoAction, modalAction }) {
@@ -535,29 +535,33 @@ function SpecialistPreviewCard({ data, reviews, bookingInfoAction, modalAction, 
     modalAction('APPN_BOOKING_MODAL', true);
     stopPropagation(e);
   }
+
   return (
     <div className="card dash-card">
-      {compCode !== defaultId ? <div className='pt-1'></div> : <div className="card-header">
-        <p>Total :<span className='text-info'>8</span></p>
+      <div className="card-header">
+        <p>FEES :<span className='text-info'>{data.Rate}</span></p>
         {/* <p>Today :<span style={{color: '#ff9800'}}>8</span></p><p>Booking :<span className='text-danger'>8</span></p> */}
         <Link to={`/doctors/${data.PartyCode}`}><i className="far fa-eye" style={{fontSize: '0.9em', cursor: 'pointer'}}></i></Link>
-      </div>}
+      </div>
       <div className="card-body">
-        <div className="dash-widget dct-border-rht mb-0 pb-0 border-0">
+        <div className={`dash-widget dct-border-rht mb-0 pb-0 border-0`}>
           <Link className='img-box' to={`/doctors/${data.PartyCode}`}>
             <img src={data.PhotoUrl !== '' ? data.PhotoUrl : '/img/DOC.png'} className="img-fluid" alt="patient"/>
           </Link>
-          <div className="dash-widget-info overflow-hidden">
-            <Link to={`/doctors/${data.PartyCode}`} title={data.Name}><h6>{data.Name}</h6></Link>
-            <h3 title={data.SpecialistDesc}>{data.SpecialistDesc}&nbsp;</h3>
-            <p className="text-muted" title={data.Qualification}>{data.Qualification}&nbsp;</p>
+          <div className={`dash-widget-info items-start overflow-hidden ${compCode === BCROY_ID && 'use_bangla'}`}>
+            <Link className='notranslate' to={`/doctors/${data.PartyCode}`} title={data.Name}><h6>{data.Name}</h6></Link>
+            <h3 title={data.SpecialistDesc}>{data.SpecialistDesc}</h3>
+            <p className="text-muted" title={data.Qualification}>{data.Qualification}</p>
+            {data.PrescriptionFooter && <div className='mt-1' dangerouslySetInnerHTML={{ __html: data.PrescriptionFooter}}></div>}
           </div>
         </div>
       </div>
       <div className="clinic-booking">
         {/* onClick={() => {userInfoAction({Doctor: data, UnderDoctId: data.PartyCode, AppointDate: '', AppTime: '', TimeSlotId: null}); modalAction('SCHEDULE_MODAL', true)}} */}
         <Link className="view-pro-btn my-0" to={`/doctors/${data.PartyCode}/${data.SpecialistId !== '' ? `?specialistId=${data.SpecialistId}` : ''}`}>View Doctor</Link>
-        <Link className="apt-btn my-0" to="#" onClick={(e) => handleBooking(e)}>Book Appointment</Link>
+        <Link className={`apt-btn my-0`} to="#" onClick={(e) => handleBooking(e)}>
+          {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}
+        </Link>
       </div>
       {compCode === defaultId ? <>
         <ul className="nav nav-tabs card-nav new-style" role="tablist" style={{display: compCode === ASTHA_ID ? 'none' : ''}}>

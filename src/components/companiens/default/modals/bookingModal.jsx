@@ -4,9 +4,9 @@ import { modalAction, loginStatusAction, userInfoAction, loaderAction, bookingIn
 import { useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
-import { ButtonSlider, CompanySlider, bookingToast, getConfirmation, getDateDifference, getFrom } from "../utilities";
+import { ButtonSlider, CompanySlider, bookingToast, getConfirmation, getDateDifference, getFrom, getTimeStr } from "../utilities";
 import MemberSelectModal from "./memberSelectModal";
-import { BASE_URL, SRC_URL } from "../../../../constants";
+import { BASE_URL, BCROY_ID, defaultId, RCC_ID, SRC_URL } from "../../../../constants";
 import { uType } from "../../../utils/utils";
 
 
@@ -19,7 +19,7 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [shift, setShift] = useState({ allShifts: [{name: '', duration: '', docInTime: '', docOutTime: ''}], activeShift: ''});
   const [appnPreviewActive, setAppnPreviewActive] = useState(false); 
-  const [bookingData, setBookingData] = useState({ AppointDate: '', AppTime: '', TimeSlotId: null });
+  // const [bookingData, setBookingData] = useState({ AppointDate: '', AppTime: '', TimeSlotId: null });
 
   const [companyTabList, setCompanyTabList] = useState({loading: true, data: {CompanyMasterList: []}, err: {status: false, msg: ''}});
   const [activeCompany, setActiveCompany] = useState({});
@@ -41,7 +41,7 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
   
   const handleBookingFormSubmit = async (e) => {
     e.preventDefault();
-    if (!bookingInfo.TimeSlotId) {
+    if (bookingInfo.TimeSlotId === undefined || bookingInfo.TimeSlotId === "") {
       alert('Please select a time slot first.');
       return;
     }
@@ -124,10 +124,14 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
         console.log('member booking');
         makeBookingRequest(newbookingData);
       }
+      // if (compCode === RCC_ID) {
+      //   window.location.href = 'http://localhost:3000/profile'
+      //   return;
+      // }
       if (activeCompany.EncCompanyId !== userInfo.selectedCompany.EncCompanyId) userInfoAction({ selectedCompany: activeCompany });
       setTimeout(() => { history.push(`/dashboard?tab=appn&day=${appDate}`) }, 2000);
     } else {
-      userInfoAction(bookingData);
+      // userInfoAction(bookingData);
       modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT});
     }
   }
@@ -170,10 +174,12 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
     } 
   }
 
+  const noSlot = compCode === BCROY_ID;         // allow booking with no slot selection.
+
   const selectSlot = (AutoId, SDateStr, SInTimeStr, EncCompanyId) => {
-    setBookingData(preValue => {
-      return {...preValue, AppointDate: SDateStr, AppTime: SInTimeStr, TimeSlotId: AutoId }
-    })
+    // setBookingData(preValue => {
+    //   return {...preValue, AppointDate: SDateStr, AppTime: SInTimeStr, TimeSlotId: AutoId }
+    // })
     bookingInfoAction({ AppointDate: SDateStr, AppTime: SInTimeStr, TimeSlotId: AutoId, companyId: EncCompanyId });
     setSelectedSlot(AutoId);
   }
@@ -265,7 +271,7 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
                 </div>
               )
             })}
-          </div> 
+          </div>  
         </>
       )
     }
@@ -275,7 +281,7 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
 
   const tabList = dateTabsList.data.map((item, index) => {
       return (                                                                           
-        <button onClick={() => {getDateSlotsList(bookingInfo.UnderDoctId, item.SDateStr); selectSlot('', '', '', '')}} key={item.SDateStr} type="button" id='tabButtons-1' className={`nav-item nav-link d-flex justify-content-center align-items-center ${index === activeIndex ? 'active' : ''} slotDate`} data-bs-toggle="tab" data-bs-target='#tabButtons-pane-1' role="tab" aria-controls='tabButtons-pane-1' aria-selected="true">
+        <button onClick={() => {getDateSlotsList(bookingInfo.UnderDoctId, item.SDateStr); selectSlot('', '', '', '')}} key={item.SDateStr} type="button" id='tabButtons-1' className={`nav-item nav-link d-flex justify-content-center align-items-center notranslate ${index === activeIndex ? 'active' : ''} slotDate`} data-bs-toggle="tab" data-bs-target='#tabButtons-pane-1' role="tab" aria-controls='tabButtons-pane-1' aria-selected="true">
           <h5 style={{fontSize: 'clamp(1em, 3.8vw, 1.4em)', margin: '0 1px 0 0', fontWeight: 'bold'}}>{item.Day}</h5>
             <div>
               <span className="p d-block mb-0 nMonth" style={{lineHeight: '1.25em', fontSize: 'clamp(0.4em, 1.9vw, 0.7em)'}}>{item.Month}</span>
@@ -299,9 +305,14 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
   }
 
   const handleAppnPreview = () => {
-    if (!bookingInfo.TimeSlotId) return alert('Please select a time slot first.');
+    // if (noSlot) {
+    //   bookingInfoAction({ AppointDate: new Date().toLocaleDateString('en-TT'), AppTime: getTimeStr(new Date()), TimeSlotId: 0, companyId: 'tSL0lTwETc1vrrU2ZIoFFA==' });
+    // } else {
+      if (bookingInfo.TimeSlotId === undefined || bookingInfo.TimeSlotId === "") return alert('Please select a time slot first.');
+    // }
+
     if (!isLoggedIn) {
-      userInfoAction(bookingData);
+      // userInfoAction(bookingData);
       // modalAction('APPN_BOOKING_MODAL', false);
       modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT});
     }
@@ -381,8 +392,20 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
                   <h4 className="text-blue-600 !mb-0 !text-[1em]">{bookingInfo.Doctor.Name}</h4>  
                   {bookingInfo.Doctor.SpecialistDesc && <p className="!mt-[0.4em] !mb-[0.1em]"><i className="bx bx-bookmark-alt-plus !text-[1.45em] align-middle text-orange-600"></i>&nbsp; {bookingInfo.Doctor.SpecialistDesc}</p>}
                   {bookingInfo.Doctor.Qualification && <span className="!text-[0.8em]">
-                    <i className="bx bxs-graduation !text-[1.45em] align-middle text-orange-600"></i>&nbsp; {bookingInfo.Doctor.Qualification}
+                    <i className="bx bxs-graduation !text-[1.45em] align-middle text-orange-600"></i>{bookingInfo.Doctor.Qualification}
                   </span>}
+
+                  <style>{`
+                    .injected * {
+                      height: auto !important;
+                      border: none !important;
+                      margin: 0 !important;
+                    }
+                    table {
+                      line-height: 1.5em !important;
+                    }
+                  `}</style>
+                  <div className='injected text-sm' dangerouslySetInnerHTML={{ __html: bookingInfo.Doctor.PrescriptionFooter}}></div>
                 </div>
               </div>
               {renderCompList(companyTabList)}
@@ -406,10 +429,10 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
                     </div> 
                     <div className="col-12 d-flex justify-content-between flex-wrap" style={{paddingTop: '1em', borderTop: '1px solid #0de0fe'}}>
                       <span className="text-blue-800">
-                        <span className="material-symbols-outlined text-orange-500 align-middle me-2">info</span>
+                        <span className="material-symbols-outlined text-orange-500 align-middle me-2 notranslate">info</span>
                         Select a time slot for Appointment.
                       </span>
-                      <button type="button" onClick={() => handleAppnPreview()} className="btn btn-primary px-3 d-block ms-auto btnSave fw-bold" tabIndex={1} style={{ minWidth: "8em", fontSize: '1.2em' }} > NEXT </button>
+                      <button type="button" onClick={() => handleAppnPreview()} className={`btn btn-primary px-3 d-block ms-auto btnSave fw-bold ${noSlot && 'opacity-50 bg-gray-500 pe-none'}`} tabIndex={1} style={{ minWidth: "8em", fontSize: '1.2em' }} > NEXT </button>
                     </div>
                   </div>
                 </form>
@@ -427,7 +450,7 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
         { isLoggedIn && <MemberSelectModal mode='component' />}
         <div className="form-group form-focus focused">
           <label className="focus-label">Remarks</label>
-          <input name="City" value={remarks} onChange={(e) => setRemarks(e.target.value)} className="form-control floating" tabIndex={1} type='text'/>
+          <input value={remarks} onChange={(e) => setRemarks(e.target.value)} className="form-control floating" tabIndex={1} type='text'/>
         </div>
         <h4 className="card-title mb-2"><i className="fas fa-stethoscope px-1"></i> Doctor Information</h4>
         <div className="card-body" style={{fontSize: '0.73em', padding: '2px'}}>

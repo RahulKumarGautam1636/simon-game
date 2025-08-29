@@ -2,10 +2,10 @@ import { Link, useHistory } from 'react-router-dom';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { loginStatusAction, userInfoAction, compInfoAction, compCodeAction, loaderAction, siteDataAction, modalAction } from '../../../actions';
 import { connect } from 'react-redux';
-import { useFetch, ModalComponent, handleNumberInputs, logOut, customTabsButtons, createDate, getDuration, MODULES, encrypt, JQDatePicker, MyModal, getTotalCartItems, getFrom } from './utilities';
+import { useFetch, ModalComponent, handleNumberInputs, logOut, customTabsButtons, createDate, getDuration, MODULES, encrypt, JQDatePicker, MyModal, getTotalCartItems, getFrom, LangaugeControl } from './utilities';
 import axios from 'axios';
 import Menu from './menu';
-import { amNursingId, ASTHA_ID, ATINDRA_ID, BASE_URL, defaultId, existingLogos, MEDICO_HEALTH_ID, SRC_URL, zero } from '../../../constants';
+import { amNursingId, ASTHA_ID, ATINDRA_ID, BASE_URL, BCROY_ID, defaultId, existingLogos, MEDICO_HEALTH_ID, SRC_URL, zero } from '../../../constants';
 import { Button } from 'react-bootstrap';
 import { AutoComplete } from '../ePharma/utilities';
 import { amNursingHome } from '../amNursingHome/home';
@@ -152,7 +152,13 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                       }}
                       className="img-fluid logo" alt={compInfo.COMPNAME}
                     />
-                    <span style={{width: 'auto', whiteSpace: 'normal', fontSize: '1.3em'}} className="d-none d-md-inline text-uppercase text-background"> {compInfo.COMPNAME}</span>
+                    {(() => {
+                      if (compCode === BCROY_ID) {
+                        return <span style={{width: 'auto', whiteSpace: 'normal', fontSize: '1.3em'}} className="d-none d-md-inline text-uppercase text-background"> Dr. B.&nbsp;C. Roy General Hospital & Maternity Home</span>
+                      } else {
+                        return <span style={{width: 'auto', whiteSpace: 'normal', fontSize: '1.3em'}} className="d-none d-md-inline text-uppercase text-background"> {compInfo.COMPNAME}</span>
+                      }
+                    })()}
                   </span>                                                                                                                                                                                        
                 }
               </Link>
@@ -176,7 +182,12 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                 </div>
               </div>
             </li> */}
-            
+
+            <div className='flex gap-2 poppins items-center me-4 d-lg-none text-[0.8em]'>
+              <span className='text-dark'>View In : </span>
+              <LangaugeControl variant='dark' />  
+            </div>
+
             <li className="nav-item d-sm-none p-0" style={{display: !isLoggedIn ? '' : 'none'}}>
               {/* <button className="nav-link header-login me-2">Login</button>
               <button className="nav-link header-login me-2">Join us</button> */}
@@ -189,10 +200,10 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Patient
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Patient
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PROVIDER})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">handshake</span> As Provider
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">handshake</span> As Provider
                         </span>
                       </>
                     )
@@ -200,7 +211,7 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Patient
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Patient
                         </span>
                       </>
                     )
@@ -208,7 +219,7 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.MARKETBY})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Marketing Executive
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Marketing Executive
                         </span>
                       </>
                     )
@@ -216,25 +227,25 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Patient
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Patient
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.DOCTOR})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">stethoscope</span> As Doctor
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">stethoscope</span> As Doctor
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PROVIDER})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">handshake</span> As Provider
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">handshake</span> As Provider
                         </span>
                         {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: 'REFERRER'})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">stethoscope_arrow</span> As Referrer
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">stethoscope_arrow</span> As Referrer
                         </span> */}
                         {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.COLLECTOR.level})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">approval_delegation</span> As Collector
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">approval_delegation</span> As Collector
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.POLYCLINIC.level})} className="dropdown-item">
                           <i className='bx bx-clinic h3 mb-0 me-2'></i> As Polyclinic
                         </span> */}
                         {compCode === defaultId && <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.MARKETBY})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">handshake</span> As Marketing Executive
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">handshake</span> As Marketing Executive
                         </span>}
                       </>
                     )
@@ -340,12 +351,17 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                 </li>
             </ul>
         </div> */}
+        <div className='flex gap-2 poppins items-center me-4 d-none d-lg-flex text-[0.9em]'>
+          <span className='text-dark'>View In : </span>
+          <LangaugeControl variant='dark' />  
+        </div>
+        
         <ul className="nav header-navbar-rht">
           {MODULES[compCode]?.includes('OPD') || <li className={`px-0 py-1 tab-btn big-menu ${activeLink === '/specialists' ? 'active': ''}`}>        {/* Toggle activeLink by directly tracking the hash. */}
               <Link className='nav-link' to="/specialists" style={{fontSize: '0.9em', padding: '0.6em 0.7em'}}>
                   OPD SERVICES
                   <hr style={{"margin": "0", "marginTop": "2px", "background": "#0000004f"}} />
-                  <span className="d-block mt-1" style={{"fontWeight": "500", "fontSize": "0.84em"}}>Book Appointments</span>
+                  <span className="d-block mt-1" style={{"fontWeight": "500", "fontSize": "0.84em"}}>{compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}</span>
               </Link>
           </li>}
           {/* {MODULES[compCode]?.includes('PHARMACY') || <li className={`px-0 py-1 tab-btn big-menu ${activeLink === '/pharmacy' ? 'active': ''}`} style={{display: 'inline-flex'}}>
@@ -418,10 +434,10 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Patient
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Patient
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PROVIDER})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">handshake</span> As Provider
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">handshake</span> As Provider
                         </span>
                       </>
                     )
@@ -429,7 +445,7 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Patient
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Patient
                         </span>
                       </>
                     )
@@ -437,7 +453,7 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.MARKETBY})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-2">personal_injury</span> As Marketing Executive
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-2">personal_injury</span> As Marketing Executive
                         </span>
                       </>
                     )
@@ -445,25 +461,25 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                     return (
                       <>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PATIENT})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-3">personal_injury</span> As Patient
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-3">personal_injury</span> As Patient
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.DOCTOR})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-3">stethoscope</span> As Doctor
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-3">stethoscope</span> As Doctor
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.PROVIDER})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-3">handshake</span> As Provider
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-3">handshake</span> As Provider
                         </span>
                         {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: 'REFERRER'})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-3">stethoscope_arrow</span> As Referror
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-3">stethoscope_arrow</span> As Referror
                         </span> */}
                         {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.COLLECTOR.level})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-3">approval_delegation</span> As Collector
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-3">approval_delegation</span> As Collector
                         </span>
                         <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.POLYCLINIC.level})} className="dropdown-item">
                           <i className='bx bx-clinic h3 mb-0 me-3'></i> As Polyclinic
                         </span> */}  
                         {compCode === defaultId && <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.MARKETBY})} className="dropdown-item">
-                          <span className="material-symbols-outlined h3 mb-0 me-3">personal_injury</span> As Marketing Executive
+                          <span className="material-symbols-outlined notranslate h3 mb-0 me-3">personal_injury</span> As Marketing Executive
                         </span>}
                       </>
                     )
@@ -535,7 +551,7 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                 <i className="fas fa-times"></i>
             </span>
         </div>
-        {isHeaderActive && <Menu isLoggedIn={isLoggedIn} />}
+        {isHeaderActive && <Menu isLoggedIn={isLoggedIn} handleOpen={setMenuOpen} />}
         <style>{compCode === amNursingId && amNursingHome}</style>
     </div>
     </>

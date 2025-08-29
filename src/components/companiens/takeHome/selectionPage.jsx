@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BASE_URL, TAKE_HOME_ID, TAKEHOME_AGRO, TAKEHOME_ELECTRONICS, TAKEHOME_GARMENTS } from "../../../constants";
+import { BASE_URL, TAKE_HOME_ID, TAKEHOME_AGRO, TAKEHOME_ELECTRONICS, TAKEHOME_GARMENTS, TAKEHOME_SURGICAL } from "../../../constants";
 import { Link } from "react-router-dom";
 import { getFrom, MySlider } from "../ePharma/utilities";
 import { GridLoader } from "../../utils/utils";
@@ -13,6 +13,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
   const [garmentsCategory, setGarmentsCategory] = useState({ loading: true, data: { LinkCategoryList: [] }, err: { status: false, msg: '' } });
   const [rentCategory, setRentCategory] = useState({ loading: true, data: { LinkCategoryList: [] }, err: { status: false, msg: '' } });
   const [electronicsCategory, setElectronicsCategory] = useState({ loading: true, data: { LinkCategoryList: [] }, err: { status: false, msg: '' } });
+  const [surgicalCategory, setSurgicalCategory] = useState({ loading: true, data: { LinkCategoryList: [] }, err: { status: false, msg: '' } });
 
   const openLogin = (subDomain, companyCode) => {
     // compCodeAction(companyCode);
@@ -57,6 +58,15 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
         console.log('No data received');
       }
     }
+    const getSurgicalCategories = async () => {
+      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_SURGICAL}&LOCID=1634`, {}, setSurgicalCategory);
+      if (res) {
+      const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
+        setSurgicalCategory({ loading: false, data: { ...res.data, LinkCategoryList: categories }, err: { status: false, msg: '' } }); 
+      } else {
+        console.log('No data received');
+      }
+    }
     // setTimeout(() => {
     //   setRentCategory((pre) => ({...pre, loading: false, data: { LinkCategoryList: rentCategories }}))      
     // }, 1500);
@@ -64,6 +74,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
     getAgroCategories();
     getGarmentsCategories();
     getElectronicsCategories();
+    getSurgicalCategories();
   }, [])
 
   const renderContent = (data, type) => {
@@ -105,6 +116,18 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
           <div style={{ padding: "0px clamp(0.5em, 1vw, 1.5em)" }} className="overflow-hidden lg:flex-1 text-[0.75em]">
             <div className="cat-slider w-100">
               {renderContent(pharmaCategory, 'pharma')}
+            </div>
+          </div>
+        </div>
+        <div className="d-flex">
+          <Link to="#" className="d-non d-lg-flex card-item" href="#" onClick={() => openLogin("ea", TAKEHOME_ELECTRONICS)}>
+            <p className="float-label">COMING SOON</p>
+            <img className="img-fluid" src="assets/img/takehome/landing_page/appliance.jpeg" alt="electornics" />
+            <h3>Surgicals</h3>
+          </Link>
+          <div style={{ padding: "0px clamp(0.5em, 1vw, 1.5em)" }} className="overflow-hidden lg:flex-1 text-[0.75em]">
+            <div className="cat-slider w-100">
+              {renderContent(surgicalCategory, '')}
             </div>
           </div>
         </div>
@@ -152,6 +175,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
             </div>
           </div>
         </div>
+
         {/* <a className="d-non d-lg-flex card-item" onClick={() => openLogin("#" style={{transform: "translateY(")}1.6em) scale(0.95)"}}>
           <p className="float-label">COMING SOON</p>
           <img className="img-fluid" src="assets/img/takehome/landing_page/finance.jpeg" alt="Pharmacy" />

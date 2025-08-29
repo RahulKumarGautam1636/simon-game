@@ -896,7 +896,7 @@ export const CardType5 = connect(() => ({}), {modalAction})(CardType5m);
 
 export const OrderSummaryCard = ({ data, tabActive }) => {
     return (
-        <Link to={`/myOrders/${data.BillId}?pane=${'active'}`} className="order-section px-[1em] py-[.9em]">
+        <Link to={`/myOrders/${data.BillId}?pane=${tabActive}`} className="order-section px-[1em] py-[.9em]">
             <div className='card-title !pt-3 !pb-2'>
                 <h5 className='mb-0'><i className='bx bx-gift'></i> <span className='ms-2 me-4'>ORDER ID: {data.VchNo}</span></h5>
             </div>

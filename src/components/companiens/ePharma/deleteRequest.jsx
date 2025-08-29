@@ -296,7 +296,7 @@ const DeleteAccount = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 !px-4 pt-4" style={{fontFamily: 'Nunito'}}>
+    <div className="min-h-screen bg-gray-50 !p-4" style={{fontFamily: 'Nunito'}}>
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         {currentStep === 3 || <div className="text-center">
@@ -364,6 +364,6 @@ const DeleteAccountPage = () => {
   return <div className='fixed inset-0 bg-gray-200 z-[9999] overflow-auto'><DeleteAccount /></div>
 }
 
-const mapStateToProps = (state) => {}
+const mapStateToProps = (state) => ({})
 
 export default connect(mapStateToProps, {modalAction})(DeleteAccountPage);

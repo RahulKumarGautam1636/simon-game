@@ -1,9 +1,14 @@
+import { CircleCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BCROY_ID } from "../../../constants";
+import { useSelector } from "react-redux";
 
 const colors = ['#59fff6', '#ffd145', '#FF9800', '#76e4ff', '#cddc39', '#ffe5c6', '#4eff4e', '#ff77a6'];
 
-const Menu = ({ isLoggedIn }) => {
+const Menu = ({ isLoggedIn, handleOpen }) => {
+
+    const compCode = useSelector(i => i.compCode)
 
     const subDepartments2 = [
         {name: 'PRIMARY CARE', link: '#', img: ''},
@@ -13,12 +18,26 @@ const Menu = ({ isLoggedIn }) => {
     ]
 
     const subDepartments1 = [
-        {name: 'Neurology', link: '#', img: 'neurology.png'},
-        {name: 'Cardiology', link: '#', img: 'cardiology.jpg', hasChild: true, child: subDepartments2},
-        {name: 'Dentist', link: '#', img: 'dentist.png'},
-        {name: 'Orthopaedics', link: '#', img: 'orthopaedics.png'},
-        {name: 'Surgical', link: '#', img: 'surgery.png'},
-        {name: 'Urology', link: '#', img: 'urology.png'},
+        // {name: 'Neurology', link: '#', img: 'neurology.png'},
+        // {name: 'Cardiology', link: '#', img: 'cardiology.jpg', hasChild: true, child: subDepartments2},
+        // {name: 'Dentist', link: '#', img: 'dentist.png'},
+        // {name: 'Orthopaedics', link: '#', img: 'orthopaedics.png'},
+        // {name: 'Surgical', link: '#', img: 'surgery.png'},
+        // {name: 'Urology', link: '#', img: 'urology.png'},
+
+        {name: 'Emergency Unit', link: '#', img: ''},
+        
+        {name: 'Burn Unit', link: '#', img: ''},
+        {name: 'Dengue Unit', link: '#', img: ''},
+        {name: 'Chemotherapy Unit', link: '#', img: ''},
+        {name: 'Dialysis Unit', link: '#', img: ''},
+        {name: 'Day-care Unit', link: '#', img: ''},
+       
+        {name: 'Maternity Ward', link: '#', img: ''},
+        {name: 'Surgery Wards', link: '#', img: ''},
+        {name: 'Intensive Care Unit', link: '#', img: ''},
+        {name: 'High Dependency Unit', link: '#', img: ''},
+        {name: 'Neonatal Intensive Care Unit', link: '#', img: ''},
     ]
 
     const subServices = [
@@ -32,6 +51,7 @@ const Menu = ({ isLoggedIn }) => {
 
     const menuLinks = [
         {name: 'Home', link: '/', icon: 'bx bx-home'},
+        {name: 'About Us', link: '/aboutUs', icon: 'bx bxs-shield', visible: compCode === BCROY_ID},
         {name: 'Appointments / Order Manage', link: '/dashboard', icon: 'bx bxs-copy-alt', visible: isLoggedIn},
         {name: 'Members', link: '/profile', icon: 'icofont-people', visible: isLoggedIn},
         {name: 'Specialities', link: '/specialists', icon: 'icofont-medical-sign-alt'},
@@ -63,7 +83,7 @@ const Menu = ({ isLoggedIn }) => {
                 if (i.hasChild) {
                     return <li key={i.name}><span><i className={i.icon}></i> {i.name} <i className='bx bxs-down-arrow'></i></span>{i.hasChild && createMenu(i.child, true)}</li>
                 } else {
-                    return <li key={i.name}><Link to={i.link}><i className={i.icon}></i> {i.name}</Link></li>
+                    return <li onClick={() => handleOpen(false)} key={i.name}><Link to={i.link}><i className={i.icon}></i> {i.name}</Link></li>
                 }
             })}
         </ul>
@@ -76,7 +96,7 @@ const Menu = ({ isLoggedIn }) => {
                     return (
                         <li key={i.name}>
                             <span>
-                                {i.img && <img src={`/img/${i.img}`} className="me-3" alt="circle" />}
+                                {i.img ? <img src={`/img/${i.img}`} className="me-3" alt="circle" /> : <CircleCheck className="me-3 bg-blue-700 text-white rounded-full" />}
                                 {i.name} <i className='bx bxs-down-arrow'></i>
                             </span>
                             {i.hasChild && createMenu(i.child, true)}
@@ -84,9 +104,9 @@ const Menu = ({ isLoggedIn }) => {
                     )
                 } else {
                     return (
-                        <li key={i.name}>
+                        <li key={i.name} onClick={() => handleOpen(false)}>
                             <Link to={i.link}>
-                                {i.img && <img src={`/img/${i.img}`} className="me-3" alt="circle" />}
+                                {i.img ? <img src={`/img/${i.img}`} className="me-3" alt="circle" /> : <CircleCheck className="me-3 bg-blue-700 text-white rounded-full" />}
                                 {i.name}
                             </Link>
                         </li>

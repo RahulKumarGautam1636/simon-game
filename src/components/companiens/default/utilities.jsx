@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { toastAction, isMobileAction, cartAction, modalAction, globalDataAction } from '../../../actions';
 import Carousel from 'react-bootstrap/Carousel';
 import Tab from 'react-bootstrap/Tab';
@@ -21,7 +21,7 @@ import CollectorDashboard from './dashboards/collectorDashboard';
 import Slider from 'react-slick';
 import CryptoJS from 'crypto-js';
 import { createPortal } from 'react-dom';
-import {  BASE_URL, BSN_ID, currentVersion, existingLogos, SRC_URL } from '../../../constants';
+import {  BASE_URL, BCROY_ID, BSN_ID, currentVersion, existingLogos, SRC_URL } from '../../../constants';
 import { toast } from 'react-toastify';
 // import ProviderProfile from './profiles/providerProfile';
 import ProviderProfile from './profiles/providerProfile-new';
@@ -869,7 +869,8 @@ export const MODULES = {
   'r7GrVAPQzw/kllPyQ5rxCA==': ['PHARMACY', 'LAB_TEST'],
   'Za2mOwLGdnsDt9dWguvATw==': ['PHARMACY', 'LAB_TEST'],
   'qHz3Nkhia89KjStqSPartg==': ['PHARMACY'],
-  'KHLqDFK8CUUxe1p1EotU3g==': ['OPD', 'LAB_TEST']
+  'KHLqDFK8CUUxe1p1EotU3g==': ['OPD', 'LAB_TEST'],
+  'ji4C/%2BQbn%2BBofLeoFG9clw==': ['LAB_TEST']
 }
 
 export const encrypt = (data) => CryptoJS.AES.encrypt(JSON.stringify(data), process.env.REACT_APP_SECRET_KEY).toString();
@@ -1002,6 +1003,7 @@ export const focusArea = (globalDataAction) => {
 export const wait = async (time) => await new Promise((resolve) => setTimeout(resolve, time));
 
 export const HoverDropdown = ({ modalAction, member, userInfoAction }) => {
+  const compCode = useSelector(i => i.compCode);
   const toggleMember = () => {
     userInfoAction({selectedMember: member});
   }
@@ -1010,7 +1012,7 @@ export const HoverDropdown = ({ modalAction, member, userInfoAction }) => {
       <Link to='#' className='dashboard-card__btn-box-item' style={{'--clr': '#26AE24', '--bg': '#3cf7a952', '--bClr': '#26ae2454'}}>BOOK SERVICES</Link>
       <ul className="dropdown-menu">
         <li><Link className="dropdown-item" onClick={() => modalAction('MEMBER_PROFILE_MODAL', true, {tab: 'appointments', memberId: member.MemberId})} to="#"><i className='bx bx-user-circle' style={{'--clr': '#0494f9'}}></i> View Bookings</Link></li>
-        <li><Link className="dropdown-item" onClick={toggleMember} to="/specialists"><i className='bx bx-calendar-check' style={{'--clr': '#0494f9'}}></i> Book Appointments</Link></li>
+        <li><Link className="dropdown-item" onClick={toggleMember} to="/specialists"><i className='bx bx-calendar-check' style={{'--clr': '#0494f9'}}></i> {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}</Link></li>
         <li><Link className="dropdown-item" onClick={toggleMember} to="/labTests"><i className='bx bx-test-tube' style={{'--clr': '#ab54fd'}}></i> Book Lab Tests</Link></li>
       </ul>
     </div>
@@ -1180,8 +1182,9 @@ export const validRegType = (UserRegTypeId, warn=true) => {
 
 export const LangaugeControl = ({ styles, classes, variant='secondary' }) => {
   const [selectedLang, setSelectedLang] = useState("English");
+  const compCode = useSelector(i => i.compCode);
 
-  const languages = [{ key: 'en', title: 'English' }, { key: 'bn', title: 'বাংলা' }]
+  const languages = [{ key: 'en', title: 'English' }, { key: 'bn', title: 'বাংলা' }, { key: 'hi', title: 'Hindi'}]
 
   const changeLanguage = (lang) => {
     const selectField = document.querySelector(".goog-te-combo");
@@ -1195,7 +1198,10 @@ export const LangaugeControl = ({ styles, classes, variant='secondary' }) => {
 
   useEffect(() => {
     const saved = localStorage.getItem("selectedLanguage");
-    if (!saved) return;
+    if (!saved) {
+      if (compCode === BCROY_ID) changeLanguage({ key: 'bn', title: 'বাংলা' })
+      return;
+    };
     const savedLang = JSON.parse(saved);
     if (savedLang.key === 'en') return;
     changeLanguage(savedLang)
@@ -1218,6 +1224,32 @@ export const LangaugeControl = ({ styles, classes, variant='secondary' }) => {
         .VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
           display: none;
         }
+          ${selectedLang === 'বাংলা' && `
+              p, h1, h2, h3, h4, h5, h6, div, .menu-list > li > a, .menu-list > li > span {
+                font-family: "Noto Sans Bengali", serif !important;
+              }
+              .dash-widget p {
+                font-size: 0.95em !important;
+              }
+              .use_bangla * {
+                height: auto !important;
+                border: none !important;
+                color: black !important;
+              }
+              ,use_bangla table {
+                line-height: 1.5rem !important;
+              }
+              .use_bangla p, .use_bangla span, .use_bangla font {
+                font-size: 1.3rem;
+              }
+              .clinic-booking a {
+                font-size: 1.2rem;
+                padding: 0.5em 1.5em !important;
+              }
+              .custom_check font {
+                  font-size: 1.1em;
+              }
+            `}
         `}
       </style>
     </div>
@@ -1314,4 +1346,12 @@ export const NoContent = ({ head='No Items Found.', tSize='clamp(1.8em, 5.2vw, 2
 
 export const isEmpty = (obj) => {
   return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+export const getTimeStr = (date) => {
+  return date.toLocaleTimeString([], { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    hour12: true 
+  }).toUpperCase();
 }

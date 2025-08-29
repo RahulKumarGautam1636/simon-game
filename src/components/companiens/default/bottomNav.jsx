@@ -1,6 +1,7 @@
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MODULES, getTotalCartItems, makeAppointment } from './utilities';
+import { BCROY_ID } from '../../../constants';
 
 const BottomNav = ({ compCode, isLoggedIn, cart, userInfo }) => {
   // const history = useHistory();
@@ -23,6 +24,22 @@ const BottomNav = ({ compCode, isLoggedIn, cart, userInfo }) => {
 
     <div className="bottomNav d-md-none default-global">
       <ul className="icons d-flex justify-content-center align-items-center ps-0">
+        
+        {(() => {
+          if (compCode === BCROY_ID) {
+            return (
+              <>
+                <li>
+                  <Link to="/"><i className="icofont-home fw-bold"></i>Home</Link>
+                </li>
+                <li>
+                  <Link to="/aboutUs"><i className="icofont-phone fw-bold"></i>About Us</Link>
+                </li>
+              </>
+            )
+          }
+        })()}
+
         {MODULES[compCode]?.includes('OPD') || <li>    
           <Link to="/specialists"><i className="icofont-stethoscope-alt fw-bold"></i>OPD</Link>  
         </li>}
@@ -38,7 +55,7 @@ const BottomNav = ({ compCode, isLoggedIn, cart, userInfo }) => {
         {isLoggedIn && <li>
           <Link to={`/profile/${userInfo.PartyCode}`}><i className="icofont-people"></i>Members</Link> 
         </li>}
-        {(MODULES[compCode]?.includes('PHARMACY') && MODULES[compCode]?.includes('LAB_TEST')) || <li>
+        {(MODULES[compCode]?.includes('PHARMACY') || MODULES[compCode]?.includes('LAB_TEST')) || <li>
           <Link to="/cartPage"><i className="icofont-cart fw-bold">
             {cartLenght > 0 && <span id="cart-badge" className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{fontSize: '0.4rem', fontFamily: 'Jost', display: 'block'}}>{cartLenght}</span>}  
           </i>cart</Link>

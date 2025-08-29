@@ -52,7 +52,7 @@ const Orders = ({ breadCrumbAction, userInfo, compCode, isLoggedIn, modalAction,
             url = `${BASE_URL}/api/Pharma/GetOrderDetails?CID=${compCode}&ORDERID=${id}&PID=${partyCode}&Type=${tabActive}&LOCID=${locationId}`
             // url = `${BASE_URL}/api/Pharma/Get?CID=${compCode}&PID=${partyCode}&Type=${tabActive}&LOCID=${locationId}`
         } else {
-            url = `${BASE_URL}/api/Pharma/GetOrderList?CID=${compCode}&PID=${partyCode}&Type=${'active'}&LOCID=${locationId}`
+            url = `${BASE_URL}/api/Pharma/GetOrderList?CID=${compCode}&PID=${partyCode}&Type=${tabActive}&LOCID=${locationId}`
         }
         const res = await getFrom(url, {}, setMyOrderData);
         if (res) {
@@ -139,8 +139,7 @@ const Orders = ({ breadCrumbAction, userInfo, compCode, isLoggedIn, modalAction,
             return noItemFound('Orders', tabActive);
         } else {
             return data.data.OrderList.map(order => {
-                console.log(order.BillStatus);
-                if (!orderId) return <OrderSummaryCard data={order} />
+                if (!orderId) return <OrderSummaryCard data={order} tabActive={tabActive} />
 
                 if (orderId && String(order.BillId) !== orderId) return;
                 let firstInvoice = order.InvoiceList[0]?.VchNo;
@@ -268,7 +267,6 @@ const Orders = ({ breadCrumbAction, userInfo, compCode, isLoggedIn, modalAction,
                                 </div>
                                 <div className="my-2 align-items-start">
                                     <h6>Billing Status: </h6>
-                                    <span className='badge badge-pill d-flex align-items-center' style={{ background: order.BillStatus === 'PENDING' ? '#f29101' : '#00ad44', fontSize: '0.8em' }}>{order.BillStatus === 'CLOSED' ? 'DONE' : order.BillStatus}</span>
                                     <span className='badge badge-pill d-flex align-items-center' style={{ background: order.BillStatus === 'PENDING' ? '#f29101' : '#00ad44', fontSize: '0.8em' }}>{order.BillStatus === 'CLOSED' ? 'DONE' : order.BillStatus}</span>
                                 </div>
                             </div>}

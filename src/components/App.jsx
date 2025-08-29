@@ -34,7 +34,7 @@ import HeaderRoute, { FooterRoute, HomeRoute, BottomNavRoute, BedStatusRoute, In
 } from './Routes/Route.jsx';
 
 import CssRoute, { ScreenSplash } from './Routes/CssRoute.jsx';
-// import Auth from './companiens/default/auth.jsx';
+import Auth from './companiens/default/auth.jsx';
 import InitHeader from './companiens/common/initHeader';
 import Articles from './companiens/bsn/Articles.jsx';
 import { ToastContainer } from 'react-toastify';
@@ -51,6 +51,7 @@ import Outstandings, { Trasnsactions } from './companiens/ePharma/B2B/Outstandin
 import ProtectedRoute from './utils/ProtectedRoute.jsx';
 import Shop from './companiens/ePharma/shop.jsx';
 import DeleteAccountPage from './companiens/ePharma/deleteRequest.jsx';
+import { BCROY_ID } from '../constants.js';
 
 
 function App({ isLoading, compCode, vType, compInfo }) {
@@ -147,6 +148,14 @@ function App({ isLoading, compCode, vType, compInfo }) {
               }
           }
         `}
+        {compCode === BCROY_ID && `
+          :root {
+            --clr-1: var(--tw-blue-600);
+          }  
+            // .tabs-carousel .slick-slide button {
+            //   font-size: 1.4em;
+            // }      
+        `}
       </style>
     </div>
   );
@@ -163,13 +172,13 @@ export const SiteHeader = ({ isLoading, vType }) => {
   const history = useHistory();
   return (
     <>
-      <CacheBusting />
+      {/* <CacheBusting /> */}
       {isLoading ? <GlobalLoader/> : ''}
       {!isOnline && <WifiLoader/>}
       <CssRoute />
       <HeaderRoute />
       <InitHeader vType={vType} />
-      {/* <Auth history={history}/> */}
+      <Auth history={history}/>
       <BottomNavRoute vType={vType} />
       <ScrollToTop/>
     </>

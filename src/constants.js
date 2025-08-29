@@ -23,14 +23,17 @@ export const PILLS_CURES = process.env.REACT_APP_PILLS_CURES;
 export const TAKEHOME_AGRO = process.env.REACT_APP_TAKEHOME_AGRO;
 export const TAKEHOME_GARMENTS = process.env.REACT_APP_TAKEHOME_GARMENTS;
 export const TAKEHOME_ELECTRONICS = process.env.REACT_APP_TAKEHOME_ELECTRONICS; 
+export const TAKEHOME_SURGICAL = 'aS8HN5gcPcKUC8hc/JCvBA=='; 
 export const HEXAGON_ID = process.env.REACT_APP_HEXAGON_COMPCODE;
+export const BCROY_ID = 'ji4C/%2BQbn%2BBofLeoFG9clw==';
+export const RCC_ID = 'WUnfjiDjOBWdyQyZ9zb02w==';
 
 
 export const SC_BAGCHI = process.env.SC_BAGCHI; 
 
 export const initSiteData = {isLoading: true, catLoading: true, productLoading: true, itemMasterCollection: [], ItemBrandList: [], LinkCategoryList: [], LinkSubCategoryList: []};
 
-export const currentVersion = '45554';
+export const currentVersion = 'UNSSEEESSSS';
 
 export const testMode = false;
 
@@ -44,11 +47,11 @@ export const memberLabel = 'Member';
 
 // Job / Manpower website template - https://www.spruko.com/demo/rejoin/Rejoin/html/index.html
 
-export const BASE_URL = testMode ? process.env.REACT_APP_TEST_BASE_URL : process.env.REACT_APP_BASE_URL;
-export const SRC_URL = 'https://erp.gsterpsoft.com';
+// export const BASE_URL = testMode ? process.env.REACT_APP_TEST_BASE_URL : process.env.REACT_APP_BASE_URL
+// export const SRC_URL = 'https://erp.gsterpsoft.com';
 
-// export const BASE_URL = process.env.REACT_APP_GSTERPSOFT_URL;
-// export const SRC_URL = 'https://gsterpsoft.com';
+export const BASE_URL = process.env.REACT_APP_GSTERPSOFT_URL;
+export const SRC_URL = 'https://gsterpsoft.com';
 
 export const existingLogos = ['598','608','612','635','636','637','639','620', '659', '680', '796'];
                           

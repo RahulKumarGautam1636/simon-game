@@ -188,7 +188,7 @@ const Investigation = ({ id, compCode, type }) => {
         <>
             <style>{styles}</style>
             {!isVerified && renderData(data)}
-            {isVerified && <MyModal name='local-modal' handleClose={setVerified} customClass='' isStatic={true} child={<Verification loaderAction={loaderAction} compCode={compCode} handleClose={setVerified} />} width="31em" closeIcon={false}/>}
+            {isVerified && <MyModal name='local-modal' handleClose={setVerified} customClass='' isStatic={true} child={<Verification loaderAction={loaderAction} compCode={compCode} handleClose={setVerified} UHID={data.data.SalesObj?.CpartyCode} />} width="31em" closeIcon={false}/>}
             {openReport.state && <ReportPad loaderAction={loaderAction} compInfo={data.data.SalesObj.CompanyMaster} compCode={compCode} handleClose={setOpenReport} billId={openReport.billId} autoId={openReport.autoId} />}
         </>
     )
@@ -197,7 +197,7 @@ const Investigation = ({ id, compCode, type }) => {
 export default Investigation;
 
 
-const Verification = ({ loaderAction, compCode, handleClose }) => {
+const Verification = ({ loaderAction, compCode, handleClose, UHID }) => {
 
     const [data, setData] = useState({ phone: '', inputOtp: '', password: '' });
     const [otp, setOtp] = useState({ recievedOtp: '', fieldOpen: false, sent: false, verified: false });
@@ -263,7 +263,19 @@ const Verification = ({ loaderAction, compCode, handleClose }) => {
     //     } else {
     //         handleClose(false);
     //     }
-    // }    
+    // }  
+    
+    const [uhid, setUhid] = useState('');
+
+    const checkUHID = (e) => {
+        e.preventDefault()
+        if (UHID == uhid) {
+            setOtp({...otp, fieldOpen: false, verified: true});
+            handleClose(false);
+        } else {
+            alert('Wront UHID / MRD Number.')
+        }
+    }
 
     return (
         <div>
@@ -299,6 +311,14 @@ const Verification = ({ loaderAction, compCode, handleClose }) => {
                 </div>
                 {(otp.fieldOpen && seconds) ? <div className="form-text mt-3" style={{color: '#4040df'}}>Resend OTP in {seconds} Seconds</div> : ''}
             </form>
+
+            {otp.sent && <form onSubmit={handleSubmit} className="!mt-7 !pt-5 border-t border-blue-200">
+                <div className="mb-3">
+                    <label className="form-label fw-medium mb-4 text-rose-600">Unable to Recieve OTP ? Enter UHID/MRD Number.</label>
+                    <input type="text" name="uhid" placeholder="UHID / MRD Number" value={uhid} onChange={(e) => setUhid(e.target.value)} className="form-control" tabIndex={1} maxLength={10} />
+                </div>
+                <button onClick={checkUHID} type="button" className={`btn btn-primary d-block ml-auto`}>SUBMIT</button>
+            </form>}
         </div>
     )
 }

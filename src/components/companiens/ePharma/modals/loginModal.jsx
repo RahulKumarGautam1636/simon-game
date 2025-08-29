@@ -11,7 +11,7 @@ import Timer, { userLevel, uType } from "../../../utils/utils";
 
 
 const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loaderAction, userInfoAction, userInfo, vType, modals, compInfo, globalData, globalDataAction}) => {
-    const redirectTo = modals.LOGIN_MODAL.data.redirect;
+    const redirectTo = modals?.LOGIN_MODAL?.data?.redirect;
     console.log(redirectTo);    
     const businessType = globalData.userRegType.CodeValue === 'Retailer' ? 'B2B' : 'B2C';
     const userRegTypeId = globalData.userRegType.CodeId;
@@ -351,7 +351,7 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
                 handleRedirect({ phone: data.RegMob1, password: data.UserPassword, compCode: compCode });
                 return;
             }
-            // localStorage.setItem("userLoginData", encrypt({ phone: loginData.phone, password: data.UserPassword, compCode: compCode }));
+            localStorage.setItem("userLoginData", encrypt({ phone: loginData.phone, password: data.UserPassword, compCode: compCode }));
         }
     }
 

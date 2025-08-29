@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import ReactSlider from 'react-slider';
 import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import { BASE_URL, BSN_ID, defaultId, SRC_URL, zero } from '../../../constants';
+import { BASE_URL, BCROY_ID, BSN_ID, defaultId, SRC_URL, zero } from '../../../constants';
 import { GridLoader } from '../../utils/utils';
 
 
@@ -300,7 +300,7 @@ function Specialists({ compCode, userInfo, loaderAction, userInfoAction, isMobil
 
   const tabList = () => filterDates.dates.map((item, index) => {
     return (
-      <button key={item.date} type="button" id='tabButtons-1' onClick={() => handleDateChange(item)} className={`nav-item nav-link d-flex justify-content-center align-items-center ${index === 0 ? 'active' : ''} slotDate`} data-bs-toggle="tab" data-bs-target='#tabButtons-pane-1' role="tab" aria-controls='tabButtons-pane-1' aria-selected="true">
+      <button key={item.date} type="button" id='tabButtons-1' onClick={() => handleDateChange(item)} className={`nav-item nav-link d-flex justify-content-center align-items-center notranslate ${index === 0 ? 'active' : ''} slotDate`} data-bs-toggle="tab" data-bs-target='#tabButtons-pane-1' role="tab" aria-controls='tabButtons-pane-1' aria-selected="true">
         <h5 style={{fontSize: 'clamp(1em, 3.8vw, 1.4em)', margin: '0 2px 0 0', fontWeight: 'bold'}}>{item.dateStr.split(' ')[2]}</h5>
         <div>
           <span className="p d-block mb-0 nMonth" style={{lineHeight: '1.25em', fontSize: 'clamp(0.4em, 1.9vw, 0.7em)', fontWeight: '500'}}>{item.dateStr.split(' ')[1]}</span>
@@ -452,6 +452,8 @@ function Specialists({ compCode, userInfo, loaderAction, userInfoAction, isMobil
     }
   }
 
+  const showAllDoctorsOnly = false;
+
   return (
     <div className='default-global'>
       <BreadCrumb data={breadCrumbData}/>
@@ -538,43 +540,30 @@ function Specialists({ compCode, userInfo, loaderAction, userInfoAction, isMobil
                   </div>
 
                   <div className="d-flex flex-column col-md-12 col-lg-8 col-xl-9 position-relative justify-content-start align-items-start flex-md-column overflow-auto pb-2" style={{paddingTop: '1px'}}>
-                      {/* <nav ref={scrollRef} className='tabs-carousel button-carousel w-100 bg-white mb-3' style={{fontSize: '0.9em', padding: '0.6em 0.9em 0.55em', borderRadius: '7px', boxShadow: 'rgb(0 0 0 / 13%) 0px 1px 3px 0px, rgb(27 31 35 / 8%) 0px 0px 0px 1px'}}>
-                        <div className="nav nav-tabs pt-2 pb-1 px-2" role="tablist" style={{borderBottom: 'none'}}><RenderCarousel data={tabList()} responsive={{ 0: { items: 5 }, 550: {items: 6}, 880: {items: 9}}}/></div>
-                      </nav> */}
-                      <nav ref={scrollRef} className='tabs-carousel d-block w-100 button-carousel w-100 bg-white mb-3' style={{padding: '0.6em 0.9em 0.55em', borderRadius: '7px', boxShadow: 'rgb(0 0 0 / 13%) 0px 1px 3px 0px, rgb(27 31 35 / 8%) 0px 0px 0px 1px'}}>
-                        <div className="nav nav-tabs d-block w-100 pt-2 pb-1 px-2" role="tablist" style={{borderBottom: 'none'}}>
-                          <ButtonSlider customSettings={{slidesToShow: 9, slidesToScroll: 4}} dataList={tabList()} responsive={responsiveSlick}/>
-                        </div>
-                      </nav>
-                      {/* <div className="nav nav-tabs px-2 w-100" role="tablist" style={{borderBottom: 'none'}}>
-                        <div className="filter-widget mb-0" >
-                          <div className="top-nav-search">
-                            <form onSubmit={(e) => {e.preventDefault(); scrollRef.current.scrollIntoView()}}>
-                              <input onChange={(e) => searchDoctor(e.target.value, searchList)} value={searchTerm} type="text" className="form-control" placeholder="Search Doctor"/>
-                              <button className="btn" type="submit"><i className="fa fa-search"></i></button>
-                            </form>
+                        <nav ref={scrollRef} className='tabs-carousel d-block w-100 button-carousel w-100 bg-white mb-3' style={{padding: '0.6em 0.9em 0.55em', borderRadius: '7px', boxShadow: 'rgb(0 0 0 / 13%) 0px 1px 3px 0px, rgb(27 31 35 / 8%) 0px 0px 0px 1px'}}>
+                          <div className="nav nav-tabs d-block w-100 pt-2 pb-1 px-2" role="tablist" style={{borderBottom: 'none'}}>
+                            <ButtonSlider customSettings={{slidesToShow: 9, slidesToScroll: 4}} dataList={tabList()} responsive={responsiveSlick}/>
                           </div>
-                        </div>
-                      </div> */}
-                      <div className='w-100'>
-                        <h4 style={{fontSize: '1.1em', marginBottom: '0.9em', color: '#4c4c4c', lineHeight: '1.5em'}}>Showing <span style={{color: 'var(--clr-3)'}}>{userInfo.Department.dName === 'All' ? 'All Doctors' : (userInfo.Department.dName.trim() + 's')}</span> available on <span style={{color: 'var(--clr-3)'}}>{filterDates.activeDate}</span></h4>
-                        {compCode === BSN_ID ?
-                          renderDesktopSearchList2(searchList3)
-                          :
-                          renderDesktopSearchList2(searchList3, activePage, visibleItems, setActivePage)
-                        }
-                        
-                      </div>
+                        </nav>
+                        {showAllDoctorsOnly ? null :
+                        <div className='w-100'>
+                          <h4 style={{fontSize: '1.1em', marginBottom: '0.9em', color: '#4c4c4c', lineHeight: '1.5em'}}>Showing <span style={{color: 'var(--clr-3)'}}>{userInfo.Department.dName === 'All' ? 'Doctors' : (userInfo.Department.dName.trim() + 's')}</span> available on <span style={{color: 'var(--clr-3)'}}>{filterDates.activeDate}</span></h4>
+                          {compCode === BSN_ID ?
+                            renderDesktopSearchList2(searchList3)
+                            :
+                            renderDesktopSearchList2(searchList3, activePage, visibleItems, setActivePage)
+                          }                        
+                        </div>}
                       <div className='w-100 mt-4 mt-lg-0'>
-                        <div className='d-flex justify-content-between gap-3' style={{padding: '0.4em 0', marginBottom: '0.9em', borderBottom: '1px solid #cacaca'}}>
-                          <h4 style={{fontSize: 'clamp(1.1em, 4vw, 1.3em)', lineHeight: '1.5em'}}>
+                        <div className='d-flex justify-content-between gap-3 bg-white shadow-sm p-4 mt-4 ' style={{padding: '0.4em 0', marginBottom: '0.9em', borderBottom: '1px solid #cacaca'}}>
+                          <h4 className='mb-0' style={{fontSize: 'clamp(1.1em, 4vw, 1.3em)', lineHeight: '1.5em'}}>
                             <span style={{color: '#005de5'}}><i className='bx bxs-hand-right'></i></span>&nbsp;
-                            All Doctors available 
+                            All Doctors available on other days 
                             {userInfo.Department.dName === 'All' ? '' : <span> in <span style={{color: '#0067ff'}}>{userInfo.Department.dName.trim()}</span></span>} 
                           </h4>
                           {compCode === BSN_ID ? <Link to={`/doctors?deptId=${userInfo.Department.SubCode || 0}`} className="text-info" style={{fontSize: '1.3em', fontWeight: 500}}>View All</Link> : ''}
                         </div>
-                        {renderDesktopSearchList2(upcomingDoctors, activePage2, visibleItems, setActivePage2, 'allDoctors')}
+                        {compCode === BCROY_ID ? renderDesktopSearchList2(upcomingDoctors) : renderDesktopSearchList2(upcomingDoctors, activePage2, visibleItems, setActivePage2, 'allDoctors')}
                       </div>
                   </div>
               </div>

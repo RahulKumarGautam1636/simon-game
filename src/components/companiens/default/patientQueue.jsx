@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { loaderAction } from '../../../actions';
 import { GlobalLoader } from '../../App';
-import { BASE_URL } from '../../../constants';
+import { BASE_URL, BCROY_ID } from '../../../constants';
 
 const PatientQueue = ({ compCode, userInfo, loaderAction }) => {
 
@@ -86,7 +86,9 @@ const PatientQueue = ({ compCode, userInfo, loaderAction }) => {
         const queue = list.filter(i => i.TokenNo);      
         return (
             <main>
-                <h3 style={{color: '#253691'}} className='text-xl'>{userInfo.selectedCompany.COMPNAME}</h3>
+                <h3 style={{color: '#253691'}} className='text-xl'>
+                    {compCode === BCROY_ID ? 'Dr. B. C. Roy General Hospital & Maternity Home' : userInfo.selectedCompany.COMPNAME}
+                </h3>
                 <section>
                     {queue.map(i => (<QueueCard data={i} key={i.MPartyCode} />))}
                     {queue.length === 0 && <div className='text-center my-5 w-100'><h2 className="mark">No Data Found.</h2></div>}

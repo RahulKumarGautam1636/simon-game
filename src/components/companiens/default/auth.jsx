@@ -135,6 +135,11 @@ const Authentication = ({ compCode, vType, bookingInfo, modalAction, loginStatus
           ContactPerson: data.ContactPerson || '',
           BusinessType: data.BusinessType || '',
 
+          UnderDoctId: data.UnderDoctId,
+          ReferrerId: data.ReferrerId,
+          ProviderId: data.ProviderId,
+          MarketedId: data.MarketedId,
+
           UserLevelSeq: data.UserLevelSeq,  //  58, // 
           UserCompList: data.UserCompList[0],
       };

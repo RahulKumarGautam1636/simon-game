@@ -994,7 +994,7 @@ export const ConnectedBusinessTypeSelector = connect(mapStateToBusinessTypeSelec
 export const addToCart = (globalDataAction, globalData, isAdded, data, cartAction, computeWithPackSize, wishlistAction, count=1) => {
   if (!globalData.location.LocationId) return focusArea(globalDataAction);
   if (isAdded) return cartAction('REMOVE_ITEM', data.LocationItemId, 'pharmacy');
-  cartAction('ADD_ITEM', {...data, count: count, ...computeWithPackSize()}, 'pharmacy'); 
+  cartAction('ADD_ITEM', {...data, ...computeWithPackSize(), count: count}, 'pharmacy'); 
   wishlistAction('REMOVE_WISH_ITEM', data.LocationItemId, 'pharmacy');
   let productToastData = { msg: 'Added to Cart', product: {name: data.Description, price: computeWithPackSize().SRate}, button: {text: 'Visit Cart', link: '/cartPage'} };
   productToast(productToastData);
@@ -1004,7 +1004,7 @@ export const addToCart = (globalDataAction, globalData, isAdded, data, cartActio
 export const buyNow2 = (globalData, globalDataAction, computeWithPackSize, cartAction, wishlistAction, data, history) => {
   if (!globalData.location.LocationId) return focusArea(globalDataAction);
   cartAction('DUMP_CART', {}, 'pharmacy');
-  cartAction('ADD_ITEM', {...data, count: 1, ...computeWithPackSize()}, 'pharmacy'); 
+  cartAction('ADD_ITEM', {...data, ...computeWithPackSize(), count: 1}, 'pharmacy'); 
   wishlistAction('REMOVE_WISH_ITEM', data.LocationItemId, 'pharmacy');
   updateLocalStorageItems();
   history.push('/checkout');
@@ -1013,7 +1013,7 @@ export const buyNow2 = (globalData, globalDataAction, computeWithPackSize, cartA
 export const addToWishlist2 = (globalData, globalDataAction, computeWithPackSize, cartAction, wishlistAction, data, isAddedToWishlist) => {
   if (!globalData.location.LocationId) return focusArea(globalDataAction);
   if (isAddedToWishlist) return wishlistAction('REMOVE_WISH_ITEM', data.LocationItemId, 'pharmacy');
-  wishlistAction('ADD_WISH_ITEM', {...data, count: 1, ...computeWithPackSize()}, 'pharmacy');
+  wishlistAction('ADD_WISH_ITEM', {...data, ...computeWithPackSize(), count: 1}, 'pharmacy');
   cartAction('REMOVE_ITEM', data.LocationItemId, 'pharmacy');
   let productToastData = { msg: 'Added to Wishlist', product: {name: data.Description, price: computeWithPackSize().SRate}, button: {text: 'View Wishlist', link: '/wishlist'} };
   productToast(productToastData); 

@@ -4,7 +4,7 @@ import { loaderAction, modalAction, bookingInfoAction } from '../../../../action
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CommentsCard } from '../cards';
-import { BASE_URL, defaultId, zero } from '../../../../constants';
+import { BASE_URL, BCROY_ID, defaultId, zero } from '../../../../constants';
 import Skeleton from 'react-loading-skeleton';
 
 const DectorProfile = ({ match, compCode, loaderAction, modalAction, userInfo, bookingInfoAction, isLoggedIn}) => {
@@ -175,6 +175,16 @@ const DectorProfile = ({ match, compCode, loaderAction, modalAction, userInfo, b
 											<i className="fas fa-star"></i>
 											<span className="d-inline-block average-rating">(35)</span>
 										</div>
+										<style>{`
+											table * {
+												height: auto !important;
+												border: none !important;
+											}
+											table {
+												line-height: 1.5em !important;
+											}
+										`}</style>
+										<div className='text-sm' dangerouslySetInnerHTML={{ __html: data.PrescriptionFooter}}></div>
 										{/* <div className="clinic-details">
 											<p className="doc-location"><i className="fas fa-map-marker-alt"></i> Newyork, USA - <Link to="#">Get Directions</Link></p>
 											<ul className="clinic-gallery">
@@ -231,8 +241,10 @@ const DectorProfile = ({ match, compCode, loaderAction, modalAction, userInfo, b
 											<i className="fas fa-video"></i>
 										</Link>
 									</div>
-									<div className="clinic-booking">
-										<Link className="apt-btn" to="#" onClick={() => handleBooking(data)}>Book Appointment</Link>
+									<div className={`clinic-booking ${compCode === BCROY_ID && 'opacity-50 pe-none'}`}>
+										<Link className="apt-btn" to="#" onClick={() => handleBooking(data)}>
+											{compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}
+										</Link>
 									</div>
 								</div>
 							</div>

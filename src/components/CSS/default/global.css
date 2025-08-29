@@ -3176,7 +3176,7 @@ label.custom_check:hover {
 	background-color: var(--clr-15);
     border: 2px solid var(--clr-1);
     border-radius: 4px;
-    color: #006e93;
+    color: var(--clr-1);
     display: block;
     /* font-size: 0.75em; */
     font-size: 0.75em;
@@ -4163,9 +4163,9 @@ label.custom_check:hover {
 -----------------------*/
 
 .dash-widget {
-	-webkit-box-align: center;
+	/* -webkit-box-align: center;
 	-ms-flex-align: center;
-	align-items: center;
+	align-items: center; */
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -4178,7 +4178,7 @@ label.custom_check:hover {
 }
 .dash-widget h6 {
     font-size: 1em;
-    font-weight: 400;
+    /* font-weight: 400; */
 }
 .dash-widget h3 {
     font-size: 1.5em;
@@ -6751,12 +6751,6 @@ li.pr-0.tab-btn a {
 	margin-bottom: 1.875em;
 }
 
-.text-background {
-	color: transparent;
-    background: linear-gradient(to right, #ff2a2ab8, #ec4bffb5);
-    -webkit-background-clip: text;
-	background-clip: text;
-}
 .reviews-page {
 	font-family: "Poppins";
 	text-align: left;
@@ -7494,7 +7488,7 @@ li.pr-0.tab-btn a {
 	position: fixed;
 	background: transparent;
     inset: 0;
-    z-index: 1;
+    z-index: 12;
 	pointer-events: none;
 	visibility: hidden;
 	transition: 0.2s linear;
@@ -7529,14 +7523,15 @@ li.pr-0.tab-btn a {
 }
 .doc-preview .dash-widget h6 {
     font-size: 0.9em;
-	margin-bottom: 0.3em;
+    margin-bottom: 0.5em;
 }
 .doc-preview .dash-widget h3 {
-    font-size: 0.7em;
-	margin-bottom: 0.3em;
+    font-size: 0.8em;
+    margin-bottom: 0.3em;
+	color: #6b6b6b;
 }
 .doc-preview .dash-widget p {
-    font-size: 0.65em;
+    font-size: 0.75em;
 }
 .doc-preview .clinic-booking {
     font-size: 0.8em;

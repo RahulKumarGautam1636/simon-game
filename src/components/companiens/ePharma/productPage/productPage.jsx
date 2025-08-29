@@ -11,6 +11,7 @@ import { BASE_URL, ePharmaId, TAKE_HOME_ID, XYZ_ID } from '../../../../constants
 import Reviews from './reviews';
 import { ConnectedProductCardM } from '../mobileView/cards';
 import { isEmpty } from '../../default/utilities';
+import { ChevronUp, Copy } from 'lucide-react';
 
 const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartAction, isMobile, cart, wishlistAction, wishlist, modalAction, globalData, globalDataAction, siteData, vType }) => {
 
@@ -43,14 +44,13 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 	})
 
 	const placeZeroValuedAtLast = () => {
-		debugger;
 		const sortedBySRateAsc = relatedProductPacksizes.sort((a, b) => a.SRate - b.SRate);
 		const findZeroPriced = sortedBySRateAsc.filter(i => i.SRate === 0);
 		const findPriced = sortedBySRateAsc.filter(i => i.SRate !== 0);
 		return [...findPriced, ...findZeroPriced]
 	}
 
-	const similarProduct = placeZeroValuedAtLast()[0] || {};
+	const similarProduct = vType === 'ErpPharma' ? placeZeroValuedAtLast()[0] || {} : {};
 	const showSimilar = !isEmpty(similarProduct) && productData.data.ItemMaster.LocationItemId !== similarProduct.LocationItemId;
 	
 	useEffect(() => {										   
@@ -231,6 +231,31 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 		}
 		updateLocalStorageItems()
     }
+
+	const handleCopy = () => {
+		const text = `Product Highlights
+			Blouse: Running Blouse
+			Color: Yellow
+			Net Quantity (N): Single
+			Occasion: Party
+
+			Additional Details
+			Saree Fabric: Georgette
+			Transparency: No
+			Type: Bandhani
+			Blouse Color: Green
+			Blouse Fabric: Bangalori Silk
+			Blouse Pattern: Embroidered
+			Border: Lace
+			Border Width: Small Border
+			Generic Name: Sarees
+			Loom Type: Powerloom
+			Ornamentation: Lace border
+			Pallu Details: Same as Saree
+			Pattern: Embroidered`;
+		
+		navigator.clipboard.writeText(text);
+	};
 
   	return (
 		<div className='pt-3 epharma-global'>
@@ -417,21 +442,15 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 												
 											</form>																		
 										</div>
-										<div className="product-additional-info pt-25 pt-xs-15">
+										{/* <div className="product-additional-info pt-25 pt-xs-15">
 											<div className='d-flex gap-5 flex-wrap'>
 												<h6 className={`a wishlist-btn`} onClick={() => {cartAction('REMOVE_ITEM', productData.data.ItemMaster.LocationItemId, 'pharmacy'); wishlistAction('ADD_WISH_ITEM', {...productData.data.ItemMaster, count: counter, ...packSize()}, 'pharmacy'); updateLocalStorageItems()}}><i className={`fa${isAddedToWishlist ? 's' : 'r'} fa-heart`}></i>{isAddedToWishlist === 1 ? 'Added' : 'Add'} to wishlist</h6>
 												{globalData.location.LocationId && !packSize().StockQty ? <h6 className={`a wishlist-btn text-danger`}><i className={`fa fa-window-close`}></i>Out of Stock</h6> : ''}
 											</div>
-											{/* {compCode === TAKE_HOME_ID ? '' : <div className="product-social-sharing pt-25">
-												<ul>
-													<li className="facebook"><Link to="#"><i className="fa fa-facebook"></i>Facebook</Link></li>
-													<li className="twitter"><Link to="#"><i className="fa fa-twitter"></i>Twitter</Link></li>
-													<li className="google-plus"><Link to="#"><i className="fa fa-google-plus"></i>Google +</Link></li>
-													<li className="instagram"><Link to="#"><i className="fa fa-instagram"></i>Instagram</Link></li>
-												</ul>
-											</div>} */}
-										</div>
+										</div> */}
+
 									</div>
+									{/* <AdditionalDetails2 product={productData.data.ItemMaster}/> */}
 									{/* <div className="my-4 border-1 border-slate-200 rounded-xl overflow-hidden">
 										<h2 className="px-4 py-3 text-black bg-slate-200 mb-0">SOLD BY</h2>
 										<div className="p-4 flex gap-4 items-end flex-wrap">
@@ -471,97 +490,6 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 											</div>
 										</div>
 									</div> */}
-									<div className="accordion accordion-flush block-reassurance pt-25 pt-xs-15" id="reassurance-accordion">
-										<div className="accordion-item">
-											<h2 className="accordion-header" id="headingDefaultOne">
-												<button type="button" className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDefaultOne" aria-expanded="true" aria-controls="collapseDefaultOne">
-													<i className="fas fa-exchange-alt"></i> Return policy
-												</button>
-											</h2>
-											<div id="collapseDefaultOne" className="accordion-collapse collapse" aria-labelledby="headingDefaultOne" data-bs-parent="#reassurance-accordion">
-												<div className="accordion-body">
-													<div className="categories-box position-relative">
-														<div className="card mb-4">
-															<div className="card-header d-flex justify-content-between align-items-baseline p-4">
-																<h5 className="mb-0">RETURN PROCESS:</h5>
-															</div>
-															<div className="card-body cart">
-																<ol className='mb-0'>
-																	<li>For Return intimation, please visit <Link onClick={() => modalAction('RETURN_POLICY_MODAL', false)} to="/contactUs">www.takehomemedicine.in/#/contactUs</Link>.</li>
-																	<li>TakeHome customer care team will verify the claim made by the customer within 72 (seventy-two) business hours from the time of receipt of complaint.</li>
-																	<li>Once the claim is verified as genuine and reasonable, TakeHome will initiate the collection of product(s) to be returned.</li>
-																	<li>The customer will be required to pack the product(s) in original manufacturer’s packaging.</li>
-																	<li>Refund will be completed within 30 (thirty) days from date of reverse pick up (if required).</li>
-																</ol>
-															</div>
-															<div className="card-footer">
-																<Link to="/returnPolicy" className="continue-button ms-auto d-table">Read More</Link>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div className="accordion-item">
-											<h2 className="accordion-header" id="headingDefaultTwo">
-											<button type="button" className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDefaultTwo" aria-expanded="false" aria-controls="collapseDefaultTwo">
-												<i className="fa fa-truck"></i> Shipping Details
-											</button>
-											</h2>
-											<div id="collapseDefaultTwo" className="accordion-collapse collapse" aria-labelledby="headingDefaultTwo" data-bs-parent="#reassurance-accordion">
-												<div className="accordion-body">
-													<div className="categories-box position-relative">
-														<div className="card mb-4">
-															<div className="card-header d-flex justify-content-between align-items-baseline p-4">
-																<h5 className="mb-0">SHIPPING CHARGES:</h5>
-															</div>
-															<div className="card-body cart">
-																<p className='mb-0'>Estimated shipping charges are calculated as per the value of the order and can be viewed in the cart section at the time of checkout. For any further shipping related information, please write to hbkalyanipharmacy@gmail.com For any further Refund related information, please write to hbkalyanipharmacy@gmail.com</p>
-															</div>
-															<div className="card-footer">
-																<Link to="/returnPolicy" className="continue-button ms-auto d-table">Read More</Link>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div className="accordion-item">
-											<h2 className="accordion-header" id="headingDefaultThree">
-											<button type="button" className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDefaultThree" aria-expanded="false" aria-controls="collapseDefaultThree">
-												<i className="fas fa-shield-alt"></i> Privacy Policy
-											</button>
-											</h2>
-											<div id="collapseDefaultThree" className="accordion-collapse collapse" aria-labelledby="headingDefaultThree" data-bs-parent="#reassurance-accordion">
-												<div className="accordion-body">
-													<div className="categories-box position-relative">
-														<div className="card mb-4">
-															<div className="card-header d-flex justify-content-between align-items-baseline p-4">
-																<h5 className="mb-0">Privacy Policy</h5>
-															</div>
-															<div className="card-body cart">
-																<p>TakeHome collects Data to improve user experience. The data includes following categories:</p>
-																<ol className='mb-0'>
-																	<li>Contact information: first and last name, email address, postal address, country, employer, phone number and other similar contact data.</li>
-																	<li>Financial information: payment instrument information, transactions, transaction history, preferences, method, mode and manner of payment, spending pattern or trends, and other similar data.</li>
-																	<li>Technical information: website, device and mobile app usage, Internet Protocol (IP) address and similar information collected via automated means, such as cookies, pixels and similar technologies.</li>
-																	<li>Transaction information: the date of the transaction, total amount, transaction history and preferences and related details.</li>
-																	<li>Health related information, such as information or records relating to Your medical/ health history, health status, details of treatment plans and medication prescribed by a Medical Practitioner, dosage details such as frequency of dosage, alternative medication, medicines ordered by You through the Platform, laboratory testing results and any other information inferred there from</li>
-																	<li>Product and service information: Your account membership number, registration and payment information, and program-specific information, when you request products and/or services directly from us, or participate in marketing programs.</li>
-																	<li>Personal information: Age, sex, date of birth, marital status, nationality, details of government identification documents provided, occupation, ethnicity, religion, travel history or any other personal information provided in responses to surveys or questionnaires.</li>
-																	<li>Your reviews, feedback and opinions about our products, programmes and services.</li>
-																	<li>Loyalty programme information: your loyalty membership information, account details, profile or password details and any frequent flyer or travel partner programme affiliation.</li>
-																</ol>
-															</div>
-															<div className="card-footer">
-																<Link to="/privacyPolicy" className="continue-button ms-auto d-table">Read More</Link>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
 								</div>}
 							</div>
 						</div>
@@ -625,7 +553,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 				</section>
 			: 
 				<>
-					<div className="product-area pt-35 pt-xs-10">
+					{/* <div className="product-area pt-35 pt-xs-10">
 						<div className="container">
 							<div className="row">
 								<div className="col-lg-12">
@@ -651,15 +579,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 									</div> }
 								</div>
 							</div> 
-
-
 							<div className="tab-content">
-								{/* <div id="description" className="tab-pane active show" role="tabpanel">
-									<div className="product-description">
-										<span>Model Specification</span>
-										<span>Model Technicalname</span>
-									</div>
-								</div> */}
 								<div id="product-details" className="tab-pane" role="tabpanel">
 									<div className="product-details-manufacturer">
 										<Link to="#">
@@ -767,7 +687,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					{renderProductSlider && <section className="product-area li-laptop-product pt-30 pt-xs-5">
 						<div className="container">
 							<div className="row">
@@ -789,6 +709,97 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 							</div>
 						</div>
 					</section>}
+					<div className="accordion accordion-flush block-reassurance p-6 bg-white" id="reassurance-accordion">
+						<div className="accordion-item">
+							<h2 className="accordion-header" id="headingDefaultOne">
+								<button type="button" className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDefaultOne" aria-expanded="true" aria-controls="collapseDefaultOne">
+									<i className="fas fa-exchange-alt"></i> Return policy
+								</button>
+							</h2>
+							<div id="collapseDefaultOne" className="accordion-collapse collapse" aria-labelledby="headingDefaultOne" data-bs-parent="#reassurance-accordion">
+								<div className="accordion-body">
+									<div className="categories-box position-relative">
+										<div className="card mb-4">
+											<div className="card-header d-flex justify-content-between align-items-baseline p-4">
+												<h5 className="mb-0">RETURN PROCESS:</h5>
+											</div>
+											<div className="card-body cart">
+												<ol className='mb-0'>
+													<li>For Return intimation, please visit <Link onClick={() => modalAction('RETURN_POLICY_MODAL', false)} to="/contactUs">www.takehomemedicine.in/#/contactUs</Link>.</li>
+													<li>TakeHome customer care team will verify the claim made by the customer within 72 (seventy-two) business hours from the time of receipt of complaint.</li>
+													<li>Once the claim is verified as genuine and reasonable, TakeHome will initiate the collection of product(s) to be returned.</li>
+													<li>The customer will be required to pack the product(s) in original manufacturer’s packaging.</li>
+													<li>Refund will be completed within 30 (thirty) days from date of reverse pick up (if required).</li>
+												</ol>
+											</div>
+											<div className="card-footer">
+												<Link to="/returnPolicy" className="continue-button ms-auto d-table">Read More</Link>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="accordion-item">
+							<h2 className="accordion-header" id="headingDefaultTwo">
+							<button type="button" className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDefaultTwo" aria-expanded="false" aria-controls="collapseDefaultTwo">
+								<i className="fa fa-truck"></i> Shipping Details
+							</button>
+							</h2>
+							<div id="collapseDefaultTwo" className="accordion-collapse collapse" aria-labelledby="headingDefaultTwo" data-bs-parent="#reassurance-accordion">
+								<div className="accordion-body">
+									<div className="categories-box position-relative">
+										<div className="card mb-4">
+											<div className="card-header d-flex justify-content-between align-items-baseline p-4">
+												<h5 className="mb-0">SHIPPING CHARGES:</h5>
+											</div>
+											<div className="card-body cart">
+												<p className='mb-0'>Estimated shipping charges are calculated as per the value of the order and can be viewed in the cart section at the time of checkout. For any further shipping related information, please write to hbkalyanipharmacy@gmail.com For any further Refund related information, please write to hbkalyanipharmacy@gmail.com</p>
+											</div>
+											<div className="card-footer">
+												<Link to="/returnPolicy" className="continue-button ms-auto d-table">Read More</Link>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="accordion-item">
+							<h2 className="accordion-header" id="headingDefaultThree">
+							<button type="button" className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDefaultThree" aria-expanded="false" aria-controls="collapseDefaultThree">
+								<i className="fas fa-shield-alt"></i> Privacy Policy
+							</button>
+							</h2>
+							<div id="collapseDefaultThree" className="accordion-collapse collapse" aria-labelledby="headingDefaultThree" data-bs-parent="#reassurance-accordion">
+								<div className="accordion-body">
+									<div className="categories-box position-relative">
+										<div className="card mb-4">
+											<div className="card-header d-flex justify-content-between align-items-baseline p-4">
+												<h5 className="mb-0">Privacy Policy</h5>
+											</div>
+											<div className="card-body cart">
+												<p>TakeHome collects Data to improve user experience. The data includes following categories:</p>
+												<ol className='mb-0'>
+													<li>Contact information: first and last name, email address, postal address, country, employer, phone number and other similar contact data.</li>
+													<li>Financial information: payment instrument information, transactions, transaction history, preferences, method, mode and manner of payment, spending pattern or trends, and other similar data.</li>
+													<li>Technical information: website, device and mobile app usage, Internet Protocol (IP) address and similar information collected via automated means, such as cookies, pixels and similar technologies.</li>
+													<li>Transaction information: the date of the transaction, total amount, transaction history and preferences and related details.</li>
+													<li>Health related information, such as information or records relating to Your medical/ health history, health status, details of treatment plans and medication prescribed by a Medical Practitioner, dosage details such as frequency of dosage, alternative medication, medicines ordered by You through the Platform, laboratory testing results and any other information inferred there from</li>
+													<li>Product and service information: Your account membership number, registration and payment information, and program-specific information, when you request products and/or services directly from us, or participate in marketing programs.</li>
+													<li>Personal information: Age, sex, date of birth, marital status, nationality, details of government identification documents provided, occupation, ethnicity, religion, travel history or any other personal information provided in responses to surveys or questionnaires.</li>
+													<li>Your reviews, feedback and opinions about our products, programmes and services.</li>
+													<li>Loyalty programme information: your loyalty membership information, account details, profile or password details and any frequent flyer or travel partner programme affiliation.</li>
+												</ol>
+											</div>
+											<div className="card-footer">
+												<Link to="/privacyPolicy" className="continue-button ms-auto d-table">Read More</Link>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</>
 			}
 		</div>
@@ -800,3 +811,175 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {loaderAction, breadCrumbAction, cartAction, modalAction, globalDataAction, wishlistAction})(ProductPage);
+
+
+const AdditionalDetails = ({ product }) => {
+	const [isExpanded, setIsExpanded] = useState(true);
+
+	const details = [
+		{ label: 'Breed', content: 'Gir, Sahiwal, Murrah, etc.' },
+		{ label: 'Age', content: '2–6 yrs' },
+		{ label: 'Milk Yield', content: '8–15 L/day' },
+		{ label: 'Health', content: 'Vaccinated, Dewormed' },
+		{ label: 'Unit', content: 'Per Animal' },	 
+	]
+	return (
+		<div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-4 text-[1.2em]">
+			<div className="flex items-center justify-between !p-4 border-y border-gray-200">
+				<h3 className="!text-lg font-semibold text-gray-900 mb-0">Additional Details</h3>
+				<button 
+				onClick={() => setIsExpanded(!isExpanded)}
+				className="text-gray-600 hover:text-gray-800"
+				>
+				<ChevronUp 
+					size={20} 
+					className={`transform transition-transform ${isExpanded ? 'rotate-0' : 'rotate-180'}`}
+				/>
+				</button>
+			</div>
+			{isExpanded && (
+				<div className="!p-4 grid grid-cols-2 !gap-4 font-lato">
+					{details.map(i => (
+						<div className="">
+							<div className="!text-sm text-gray-600 !mb-1">{i.label}</div>
+							<div className="!text-sm font-medium text-gray-900">{i.content}</div>
+						</div>
+					))}
+
+
+					{/* <div className="grid grid-cols-2 !gap-4">
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Type</div>
+						<div className="!text-sm font-medium text-gray-900">Bandhani</div>
+						</div>
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Blouse Color</div>
+						<div className="!text-sm font-medium text-gray-900">Green</div>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-2 !gap-4">
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Blouse Fabric</div>
+						<div className="!text-sm font-medium text-gray-900">Bangalori Silk</div>
+						</div>
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Blouse Pattern</div>
+						<div className="!text-sm font-medium text-gray-900">Embroidered</div>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-2 !gap-4">
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Border</div>
+						<div className="!text-sm font-medium text-gray-900">Lace</div>
+						</div>
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Border Width</div>
+						<div className="!text-sm font-medium text-gray-900">Small Border</div>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-2 !gap-4">
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Generic Name</div>
+						<div className="!text-sm font-medium text-gray-900">Sarees</div>
+						</div>
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Loom Type</div>
+						<div className="!text-sm font-medium text-gray-900">Powerloom</div>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-2 !gap-4">
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Ornamentation</div>
+						<div className="!text-sm font-medium text-gray-900">Lace border</div>
+						</div>
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Pallu Details</div>
+						<div className="!text-sm font-medium text-gray-900">Same as Saree</div>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-2 !gap-4">
+						<div>
+						<div className="!text-sm text-gray-600 !mb-1">Pattern</div>
+						<div className="!text-sm font-medium text-gray-900">Embroidered</div>
+						</div>
+						<div></div>
+					</div> */}
+				</div>
+			)}
+		</div>
+	)
+}
+
+const AdditionalDetails2 = ({ product }) => {
+	const [activeTab, setActiveTab] = useState('overview');
+
+	const details = [
+		{ label: 'Breed', value: 'Gir, Sahiwal, Murrah, etc.' },
+		{ label: 'Age', value: '2–6 yrs' },
+		{ label: 'Milk Yield', value: '8–15 L/day' },
+		{ label: 'Health', value: 'Vaccinated, Dewormed' },
+		{ label: 'Unit', value: 'Per Animal' },	 
+	]
+	return (
+		<div className="max-w-6xl mx-auto bg-white text-[1.2em]">
+		{/* Tab Navigation */}
+		<div className="flex border-b border-gray-200">
+			<button
+			onClick={() => setActiveTab('overview')}
+			className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+				activeTab === 'overview'
+				? 'text-green-700 border-green-600'
+				: 'text-gray-800 border-transparent hover:text-gray-700'
+			}`}
+			>
+			Overview
+			</button>
+			<button
+			onClick={() => setActiveTab('description')}
+			className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+				activeTab === 'description'
+				? 'text-green-700 border-green-600'
+				: 'text-gray-800 border-transparent hover:text-gray-700'
+			}`}
+			>
+			Description
+			</button>
+		</div>
+
+		{/* Tab Content */}
+		<div className="mt-4">
+			{activeTab === 'overview' && (
+			<div className="space-y-0">
+				{details.map((item, index) => (
+				<div
+					key={index}
+					className={`grid grid-cols-4 py-3 px-4 ${
+					index % 2 === 1 ? 'bg-blue-50' : 'bg-white'
+					}`}
+				>
+					<div className="text-sm font-medium text-gray-900">
+					{item.label}
+					</div>
+					<div className="col-span-3 text-sm text-gray-700">
+					{item.value}
+					</div>
+				</div>
+				))}
+			</div>
+			)}
+
+			{activeTab === 'description' && (
+			<div className="p-4">
+				<p className="text-gray-600">Description content would go here...</p>
+			</div>
+			)}
+		</div>
+		</div>
+	);
+}
+

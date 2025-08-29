@@ -82,7 +82,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
     const b2bGrandTotal = num(b2bSubtotal - cartDiscount + cartGSTtotal); 
 
     // B2B SUMMARY ENDS-----------------------------------------------------------------------------------------------------
-
+    
     const [orderData, setOrderData] = useState({
         PartyCode: '',
         InsBy: '',              
@@ -97,6 +97,15 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
         DeliveryState: userInfo.State,
         DeliveryAddress : userInfo.Address + ' ' + userInfo.Address2 + ' ' + userInfo.Pin,
 
+        UnderDoctId: 0,
+        ReferrerId: 0,
+        ReferrerId1: 0,
+        MarketedId: 0,
+        DeptId: 0,
+        BedCatId: 0,
+        CollectedById: 0,  
+        CashPartyMobile: '', 
+        VisitId: 0,  
     });
     
     const [locationModalActive, setLocationModalActive] = useState(false);
@@ -243,11 +252,18 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
 
                     // --------- NEW FIELDS FOR RESTAURANT STARTS ---------------------------------------
 
-                    BillId: restaurantTable?.ProvInvBillid,
-                    BedId: restaurantTable?.BedId,
+                    BillId: restaurantTable?.ProvInvBillid || 0,
+                    BedCatId: restaurantTable?.BedGroupId || 0,
+                    BedId: restaurantTable?.BedId || 0,
                     CollectedById: '',
                     
                     // --------- NEW FIELDS FOR RESTAURANT ENDS ---------------------------------------
+
+                    UnderDoctId: userInfo.UnderDoctId,
+                    ReferrerId: userInfo.ReferrerId,
+                    ReferrerId1: userInfo.ProviderId,
+                    MarketedId: userInfo.MarketedId,
+                    DeptId: userInfo?.UserCompList?.PahrmaDeptId,
 
                     AccPartyMemberMaster: {
                         Salutation: '',
@@ -329,7 +345,6 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
         }
         init();
     },[isLoggedIn, userInfo, cartSubtotal, compCode, orderList, locationId, prescription.src, restaurantTable?.ProvInvBillid, restaurantTable?.BedId])
-
     
     const placeOrder = async () => {
         if (!isLoggedIn) return alert('please login to place an order.');
@@ -460,8 +475,9 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
     })),[previousOrder.data.SalesObj.SalesDetails, restaurantTable?.BedId, note.id])       // previousOrder depends on table Id. 
 
     const previousValueList = previousOrderItems.map(item => parseFloat(item.Amount));
-
     const previousTotal = parseFloat(previousValueList.reduce((total, num) => total + num, 0).toFixed(2)); 
+    const previousTaxableValueList = previousOrderItems.map(item => parseFloat(item.TaxableAmount));
+    const previousTaxableTotal = parseFloat(previousTaxableValueList.reduce((total, num) => total + num, 0).toFixed(2)); 
 
     useEffect(() => {
         if (!isRestaurant) return;
@@ -477,7 +493,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
     }, [compCode, locationId, restaurantTable?.ProvInvBillid, restaurantTable?.BedId])
 
     useEffect(() => { 
-        if (!isRestaurant) return;
+        if (!isRestaurant) return;        
         setOrderData(pre => ({
             ...pre,
             PartyCode: compInfo.DefaultCashParty,
@@ -486,7 +502,8 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
             CashPartyMobile: customer.customerPhone,
             VchNo: previousOrder.data.SalesObj.VchNo, 
             SalesDetailsList: [ ...orderList,  ...previousOrderItems ],
-            Amount: cartSubtotal + previousTotal
+            Amount: cartSubtotal + previousTotal,
+            VisitId: previousOrder.data.SalesObj.VisitId
         }))
     }, [selectedWaiter.PartyCode, customer.customerName, customer.customerPhone, previousOrderItems, previousTotal, orderList, cartSubtotal, restaurantTable?.BedId])      // depends on table Id.
 
@@ -914,7 +931,8 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                                                         </td>
                                                         <td className="cart-product-name"><strong className="product-quantity">{item.BillQty}</strong></td>
                                                         <td className="cart-product-name text-end text-nowrap"><strong className="product-quantity">{item.Rate}</strong></td>
-                                                        <td className="cart-product-total text-end text-nowrap">₹ {item.Amount}<span className="amount"> </span></td>
+                                                        <td className="cart-product-total text-end text-nowrap">{num(item.BillQty * item.Rate)}<span className="amount"> </span></td>
+                                                        {/* <td className="cart-product-total text-end text-nowrap">₹ {item.Amount}<span className="amount"> </span></td> */}
                                                     </tr>
                                                     {item.Specification ? <tr>
                                                         <td className="cart_item p-2" colSpan={4} style={{background: 'aliceblue'}}>
@@ -935,13 +953,13 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                                                 <th className="py-3">Previous Total</th>
                                                 <th className="py-3"></th>
                                                 <th className="py-3"></th>
-                                                <th className="py-3 text-end">₹ {previousOrder.data.SalesObj.Amount}</th>
+                                                <th className="py-3 text-end">₹ {previousTaxableTotal}</th>
                                             </tr>
                                             <tr className="order-total">
                                                 <th>Order Total</th>
                                                 <td></td>
                                                 <td></td>
-                                                <th className='text-end'><strong><span className="amount">₹ {cartSubtotal + previousTotal}</span></strong></th>
+                                                <th className='text-end'><strong><span className="amount">₹ {cartSubtotal + previousTaxableTotal}</span></strong></th>
                                             </tr>
                                         </tbody>
                                     </table> : ''}
@@ -1226,8 +1244,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 }
 
 
-
-// BACKUP ---------------------------------------------------------------------------------------
+// LAST BACKUP ---------------------------------
 
 // import React, { useEffect, useState, useMemo, Fragment } from 'react';
 // import { ModalComponent, getFrom, handleNumberInputs, updateLocalStorageItems, Spinner, focusArea, createDate, AutoComplete, getBase64String } from './utilities';
@@ -1235,7 +1252,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 // import { connect } from 'react-redux';
 // import { Link, useHistory } from 'react-router-dom';
 // import axios from 'axios';
-// import { BASE_URL, ROYAL_INN_ID, TAKE_HOME_ID, XYZ_ID } from '../../../constants';
+// import { BASE_URL, memberLabel, ROYAL_INN_ID, TAKE_HOME_ID, XYZ_ID } from '../../../constants';
 // import { WaiterCard } from './cards';
 // import Skeleton from 'react-loading-skeleton';
 // import { num } from '../default/utilities';
@@ -1246,8 +1263,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //     const locationId = globalData.location.LocationId;
 //     const isRestaurant = (vType === 'RESTAURANT' || vType === 'HOTEL' || vType === 'RESORT');
 //     let b2bMode = globalData.userRegType.CodeValue === 'Retailer';
-//     const slug = { Name: userInfo.Name, EncCompanyId: compCode, RegMob1: userInfo.RegMob1, Address: userInfo.Address, UserPassword: userInfo.UserPassword, Doctor: {PartyId: '', Name: ''} };
-    
+        
 //     useEffect(() => {
 //         if (!isLoggedIn) {
 //             modalAction('LOGIN_MODAL', true);
@@ -1259,7 +1275,8 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //             } else {
 //                 setLocationModalActive(true);
 //             }
-//         }}, [userInfo.Pin, isLoggedIn, isRestaurant, locationId])
+//         }
+//     }, [userInfo.Pin, isLoggedIn, isRestaurant, locationId])
 
 //     useEffect(() => {
 //         if (compCode === XYZ_ID || isRestaurant) return;
@@ -1366,6 +1383,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                     SGSTRATE: i.SGSTRATE,
 //                     IGSTRATE: i.IGSTRATE,
 //                     Specification: i.Specification,
+//                     LocationId: i.LocationId
 //                 }
 //             })
 //         } else if (isRestaurant) {
@@ -1395,6 +1413,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                     SGSTRATE: i.SGSTRATE,
 //                     IGSTRATE: i.IGSTRATE,
 //                     Specification: i.Specification,
+//                     LocationId: i.LocationId
 //                 }
 //             })
 //         } else {
@@ -1414,12 +1433,11 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                 SGSTRATE: i.SGSTRATE,
 //                 IGSTRATE: i.IGSTRATE,
 //                 Specification: i.Specification,
+//                 LocationId: i.LocationId
 //             }))
 //         }
 //         return items;
 //     } ,[cart])   
-
-//     console.log(orderList)
 
 //     const restaurantTable = globalData.restaurant.table;
     
@@ -1429,14 +1447,22 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                 let cashPartyName;
 //                 let cashPartyMobile; 
 //                 let partyCode;
+//                 let billingState;
+//                 let deliveryState;
+
 //                 if (isRestaurant) {
 //                     cashPartyName = '';
 //                     cashPartyMobile = '';
 //                     partyCode = compInfo.DefaultCashParty;
+//                     billingState = compInfo.StateId || userInfo.State;          // Remove userInfo.Satete when compInfo.StateId is available.
+//                     deliveryState = compInfo.StateId || userInfo.State;
+
 //                 } else {
 //                     cashPartyName = prescription.patient.name || userInfo.Name;
 //                     cashPartyMobile = prescription.patient.phone || userInfo.RegMob1;  
 //                     partyCode = userInfo.PartyCode;
+//                     billingState = userInfo.State;
+//                     deliveryState = prescription.patient.state.CodeId || userInfo.State;
 //                 }
 
 //                 setOrderData((preValues) => ({
@@ -1445,10 +1471,12 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                     PaymentMethod: 'COD',
 //                     Amount: b2bMode ? b2bGrandTotal : cartSubtotal,
 //                     EncCompanyId: compCode,
-//                     SalesDetailsList: orderList,                       
-//                     BillingState: userInfo.State,
+//                     SalesDetailsList: orderList, 
+
+//                     BillingState: billingState,
+//                     DeliveryState: deliveryState,
+
 //                     BillingAddress: userInfo.Address + ' ' + userInfo.Address2 + ' ' + userInfo.Pin,
-//                     DeliveryState: userInfo.State,
 //                     DeliveryAddress : userInfo.Address + ' ' + userInfo.Address2 + ' ' + userInfo.Pin,
 //                     LocationId: locationId,
 //                     filesToUpload: prescription,
@@ -1549,7 +1577,6 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //         }
 //         init();
 //     },[isLoggedIn, userInfo, cartSubtotal, compCode, orderList, locationId, prescription.src, restaurantTable?.ProvInvBillid, restaurantTable?.BedId])
-
     
 //     const placeOrder = async () => {
 //         if (!isLoggedIn) return alert('please login to place an order.');
@@ -1580,9 +1607,8 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //         try {
 //             loaderAction(true);
 //             const res = await axios.post(`${BASE_URL}/api/Pharma/Post`, body);
-//             console.log(res.data); 
 //             loaderAction(false);
-//             if (res.data === 'N' || res.status !== 200) {console.log(body, res.data); return alert('Failed to Place Order.');};
+//             if (res.data === 'N' || res.status !== 200) {return alert('Failed to Place Order.');};
 //             cartAction('DUMP_CART', {}, 'pharmacy');
 //             updateLocalStorageItems();
 //             if (isRestaurant) {
@@ -1592,7 +1618,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                 setCustomer({ customerName: '', customerPhone: '' });
 //                 setSelectedWaiter({ Name: '', PartyCode: '' });
 //             } else {
-//                 try {const status = axios.post(`${process.env.REACT_APP_BASE_URL_}`, slug)} catch (error) {}
+
 //                 modalAction('ORDER_SUCCESS_MODAL', true);
 //                 globalDataAction({ prescription: { required: prescription.required, patient: {docName: '', docAddress: '' }} });
 //             }
@@ -1600,7 +1626,6 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //             console.log(err);
 //             return false;
 //         }
-//         console.log(body);
 //     }
 
 //     const closeModal = () => setLocationModalActive(false);
@@ -1682,7 +1707,6 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //     })),[previousOrder.data.SalesObj.SalesDetails, restaurantTable?.BedId, note.id])       // previousOrder depends on table Id. 
 
 //     const previousValueList = previousOrderItems.map(item => parseFloat(item.Amount));
-
 //     const previousTotal = parseFloat(previousValueList.reduce((total, num) => total + num, 0).toFixed(2)); 
 
 //     useEffect(() => {
@@ -1700,7 +1724,6 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 
 //     useEffect(() => { 
 //         if (!isRestaurant) return;
-//         console.log('totalAmount recalculated: ', cartSubtotal + previousTotal);
 //         setOrderData(pre => ({
 //             ...pre,
 //             PartyCode: compInfo.DefaultCashParty,
@@ -1741,8 +1764,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                 } else {
 //                     list[note.id].Specification = note.text;
 //                 }
-//                 let newState = {...pre, data: { SalesObj: { ...pre.data.SalesObj, SalesDetails: list } }};
-//                 console.log(newState);                
+//                 let newState = {...pre, data: { SalesObj: { ...pre.data.SalesObj, SalesDetails: list } }};               
 //                 return newState;
 //             });
 //         } else {
@@ -1773,7 +1795,7 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                                                         <table className="table">
 //                                                             <thead>
 //                                                                 <tr>
-//                                                                     <th className="cart-product-name text-nowrap"><span onClick={() => {history.push(`/posOrderList/${previousOrder.data.SalesObj.BillId}`);console.log(orderData);}}>T</span>able : &nbsp;&nbsp;&nbsp;</th>
+//                                                                     <th className="cart-product-name text-nowrap"><span onClick={() => {history.push(`/posOrderList/${previousOrder.data.SalesObj.BillId}`)}}>T</span>able : &nbsp;&nbsp;&nbsp;</th>
 //                                                                     <th className="cart-product-total" style={{width: '73%'}}>
 //                                                                         {restaurantTable?.BedId ? 
 //                                                                             <span style={{color: '#005ee9'}} role='button' onClick={() => modalAction('TABLE_SELECTION_MODAL', true)}>{restaurantTable?.BedDesc}, &nbsp; {restaurantTable?.BedGroupDesc} <i style={{verticalAlign: 'sub', color: '#f17e1d'}} className='bx bx-caret-down'></i></span>
@@ -1981,7 +2003,6 @@ function LocationModal({ closeModal, compCode, userInfo, globalData, setDelivera
 //                                             {
 //                                                 b2bMode ? 
 //                                                 cartArray.map((item, index) => {
-//                                                     console.log(item);
 //                                                     const activeItem = item.ItemPackSizeList.find(x => x.CodeId === item.PackSizeId);
 //                                                     const activePackSize = activeItem ? activeItem.Description : 'N/A';
 

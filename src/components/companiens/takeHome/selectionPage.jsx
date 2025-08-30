@@ -120,9 +120,9 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
           </div>
         </div>
         <div className="d-flex">
-          <Link to="#" className="d-non d-lg-flex card-item" href="#" onClick={() => openLogin("ea", TAKEHOME_ELECTRONICS)}>
+          <Link to="#" className="d-non d-lg-flex card-item" href="#" onClick={() => openLogin("snh", TAKEHOME_SURGICAL)}>
             <p className="float-label">COMING SOON</p>
-            <img className="img-fluid" src="assets/img/takehome/landing_page/appliance.jpeg" alt="electornics" />
+            <img className="img-fluid" src="assets/img/takehome/surgical/surgical.jpeg" alt="electornics" />
             <h3>Surgicals</h3>
           </Link>
           <div style={{ padding: "0px clamp(0.5em, 1vw, 1.5em)" }} className="overflow-hidden lg:flex-1 text-[0.75em]">

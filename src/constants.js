@@ -47,11 +47,11 @@ export const memberLabel = 'Member';
 
 // Job / Manpower website template - https://www.spruko.com/demo/rejoin/Rejoin/html/index.html
 
-// export const BASE_URL = testMode ? process.env.REACT_APP_TEST_BASE_URL : process.env.REACT_APP_BASE_URL
-// export const SRC_URL = 'https://erp.gsterpsoft.com';
+export const BASE_URL = testMode ? process.env.REACT_APP_TEST_BASE_URL : process.env.REACT_APP_BASE_URL
+export const SRC_URL = 'https://erp.gsterpsoft.com';
 
-export const BASE_URL = process.env.REACT_APP_GSTERPSOFT_URL;
-export const SRC_URL = 'https://gsterpsoft.com';
+// export const BASE_URL = process.env.REACT_APP_GSTERPSOFT_URL;
+// export const SRC_URL = 'https://gsterpsoft.com';
 
 export const existingLogos = ['598','608','612','635','636','637','639','620', '659', '680', '796'];
                           

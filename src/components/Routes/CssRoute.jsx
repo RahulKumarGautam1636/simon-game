@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { BNH_ID, BSN_ID, RAJE_RESTAURANT_ID, SRC_URL, TAKEHOME_ELECTRONICS, TAKE_HOME_ID, XYZ_ID, bhsId, defaultId, ePharmaId, takehomeMain } from "../../constants";
+import { BNH_ID, BSN_ID, RAJE_RESTAURANT_ID, SRC_URL, TAKEHOME_ELECTRONICS, TAKEHOME_SURGICAL, TAKE_HOME_ID, XYZ_ID, bhsId, defaultId, ePharmaId, takehomeMain } from "../../constants";
 import { useState } from "react";
 import { wait } from '../../components/companiens/default/utilities';
 
@@ -30,7 +30,7 @@ const CssRoute = ({ compCode, vType, compInfo }) => {
             } else if (vType === 'agro') {
                 await import('../CSS/takeHome/version-2.css');
             } else if (vType === 'ErpManufacturing') {
-                if (compCode === TAKEHOME_ELECTRONICS) return await import('../CSS/takeHome/version-4.css');
+                if (compCode === TAKEHOME_ELECTRONICS || compCode === TAKEHOME_SURGICAL) return await import('../CSS/takeHome/version-4.css');
                 await import('../CSS/takeHome/version-3.css');
             }
         } else {

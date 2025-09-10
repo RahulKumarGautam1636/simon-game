@@ -344,7 +344,7 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
         } else {
             loginStatusAction(true);
             modalAction('LOGIN_MODAL', false);
-            userInfoAction(data);
+            userInfoAction({ ...data, UserCompList: data?.UserCompList[0]});
             handleLoginSuccess(data);
             modalAction('ALERT_MODAL', true, 'login');
             if (redirectTo) {

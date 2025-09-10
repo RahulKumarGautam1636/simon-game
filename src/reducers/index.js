@@ -156,6 +156,7 @@ const globalData = {
                 // { CodeId: 43195, Description: 'Strategic Partner', CodeValue: 'SP', for: 'Doctor' }
                 // { CodeId: 43196, Description: 'Master Partner', CodeValue: 'MP', for: 'Referrer' }
                 // { CodeId: 43197, Description: 'Associate Partner', CodeValue: 'AP', for: 'Provider' }
+                // { CodeId: 43352, Description: 'Market By', CodeValue: 'MarketBy', for: 'Marketing Executive' }
 };
 const globalDataReducer = (state={...globalData}, action) => {  
   if (action.type === 'OTHER_DATA') {

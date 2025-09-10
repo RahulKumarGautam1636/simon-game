@@ -450,7 +450,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 										</div> */}
 
 									</div>
-									{/* <AdditionalDetails2 product={productData.data.ItemMaster}/> */}
+									<AdditionalDetails2 product={productData.data.ItemMaster}/>
 									{/* <div className="my-4 border-1 border-slate-200 rounded-xl overflow-hidden">
 										<h2 className="px-4 py-3 text-black bg-slate-200 mb-0">SOLD BY</h2>
 										<div className="p-4 flex gap-4 items-end flex-wrap">

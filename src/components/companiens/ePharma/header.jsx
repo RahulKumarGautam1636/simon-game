@@ -6,7 +6,7 @@ import { AutoComplete, ConnectedBreadCrumb, escape, getFallbackImg, getFrom, get
 import qs from 'query-string';
 import axios from 'axios';
 import { CardType5, ConnectedAreaCard, ConnectedSearchListCard } from './cards';
-import { BASE_URL, defaultId, ePharmaId, initSiteData, RAJE_RESTAURANT_ID, ROYAL_INN_ID, SRC_URL, TAKE_HOME_ID, TAKEHOME_AGRO, TAKEHOME_ELECTRONICS, TAKEHOME_GARMENTS, takehomeMain, XYZ_ID } from '../../../constants';
+import { BASE_URL, defaultId, ePharmaId, initSiteData, RAJE_RESTAURANT_ID, ROYAL_INN_ID, SRC_URL, TAKE_HOME_ID, TAKEHOME_AGRO, TAKEHOME_ELECTRONICS, TAKEHOME_GARMENTS, takeHome_ids, takehomeMain, XYZ_ID } from '../../../constants';
 import { getTotalCartItems, useScrollPosition, logOut } from '../default/utilities';
 import { ConnectedProductCard3 } from './B2B/Home';
 import { rentSaleProducts } from './rentSale/takehome-database';
@@ -99,6 +99,7 @@ const Header = ({ isLoggedIn, modalAction, cartAction, wishlistAction, filterDat
     const [autoCompleteList, setAutoCompleteList] = useState({loading: false, data: {itemMasterCollection: []}, err: {status: false, msg: ''}}); 
     const [autoCompleteList2, setAutoCompleteList2] = useState({loading: false, data: {LocationMasterList: []}, err: {status: false, msg: ''}}); 
     const [isListActive, setListActive] = useState(false); 
+    const isTakehome = takeHome_ids.includes(compCode);
 
     const totalRentItems = useMemo(() => {
         return rentSaleProducts.map(i => i.data).reduce((arr, item) => [...arr, ...item])
@@ -346,6 +347,7 @@ const Header = ({ isLoggedIn, modalAction, cartAction, wishlistAction, filterDat
 
                                 <ul class="hm-menu d-none d-md-flex gap-[2.8rem]">
                                     {(() => {
+                                        if (!isTakehome) return <li className='w-28'></li>;
                                         if (vType === 'ErpPharma' || vType === 'ErpManufacturing' || vType === 'agro') {
                                             return (
                                                 <>

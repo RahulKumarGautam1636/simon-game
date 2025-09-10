@@ -7,7 +7,6 @@ import Skeleton from 'react-loading-skeleton';
 import { userInfoAction } from '../../../../actions';
 import { AppnRow, DashboardAppnListCard, ErrorCard, LabAppnRow, TestAppnCard } from '../cards';
 import qs from 'query-string';
-import { uType } from '../../../utils/utils';
 
 const DoctorDashboard = ({ isLoggedIn, compCode, userInfo, userInfoAction, globalData, isMobile }) => {
   const [activeTab, setActiveTab] = useState('appointments');

@@ -22,7 +22,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
             return;
         } else {
             modalAction('LOGIN_MODAL', false);
-            if (isRestaurant) {
+            if (compCode === XYZ_ID || isRestaurant) {
                 setDeliverable(true);
             } else {
                 setLocationModalActive(true);
@@ -112,6 +112,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
     const [isDeliverable, setDeliverable] = useState(false);
     const [selectedServiceLocation, setSelectedServiceLocation] = useState({ LocationName: '', Address: '', PIN: '' });
 
+    console.log(orderData);
     
     let orderList = useMemo(() => {
         let cartList = Object.values(cart.pharmacy);
@@ -223,7 +224,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                     cashPartyMobile = prescription.patient.phone || userInfo.RegMob1;  
                     partyCode = userInfo.PartyCode;
                     billingState = userInfo.State;
-                    deliveryState = prescription.patient.state.CodeId || userInfo.State;
+                    deliveryState = prescription.patient.state?.CodeId || userInfo.State;
                 }
 
                 setOrderData((preValues) => ({

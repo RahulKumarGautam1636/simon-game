@@ -33,7 +33,7 @@ export const SC_BAGCHI = process.env.SC_BAGCHI;
 
 export const initSiteData = {isLoading: true, catLoading: true, productLoading: true, itemMasterCollection: [], ItemBrandList: [], LinkCategoryList: [], LinkSubCategoryList: []};
 
-export const currentVersion = 'UNSSEEESSSS';
+export const currentVersion = '5252344';
 
 export const testMode = false;
 
@@ -44,6 +44,8 @@ export const agro = false;
 export const takehomeMain = false;
 
 export const memberLabel = 'Member';
+
+export const takeHome_ids = [TAKE_HOME_ID, TAKEHOME_AGRO, TAKEHOME_ELECTRONICS, TAKEHOME_SURGICAL, TAKEHOME_GARMENTS]
 
 // Job / Manpower website template - https://www.spruko.com/demo/rejoin/Rejoin/html/index.html
 

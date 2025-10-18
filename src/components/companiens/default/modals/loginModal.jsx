@@ -1,7 +1,7 @@
   import { Link, useHistory } from 'react-router-dom';
   import React, { useState, useEffect } from 'react';
   import { loginStatusAction, userInfoAction, loaderAction } from '../../../../actions';
-  import { connect } from 'react-redux';
+  import { connect, useSelector } from 'react-redux';
   import { useFetch, ModalComponent, handleNumberInputs, createDate, getDuration, encrypt, JQDatePicker, useRegType, stringToast, CustomOffcanvas } from '../utilities';
   import axios from 'axios';
   import { Accordion } from 'react-bootstrap';
@@ -173,7 +173,7 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
     }
     
     const makeLoginRequest = async (params) => {
-      const body = { UserName: params.phone, UserPassword: encodeURIComponent(params.password), EncCompanyId: params.companyCode };
+      const body = { UserName: params.phone, UserPassword: params.password, EncCompanyId: params.companyCode };
       loaderAction(true);
       const res = await axios.post(`${BASE_URL}/api/UserAuth/CheckCompLogin`, body);
       // const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?UN=${params.phone}&UP=${params.password}&CID=${params.companyCode}`);
@@ -574,52 +574,6 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
         }
       }
     
-      const ForgotPassword = () => {
-        const [forgotPasswordModal, setForgotPasswordModal] = useState({passwordRecoveryNumber: ''});
-        const [isPasswordSent, setPasswordSent] = useState(false);
-        const handleForgotPasswordForm = (e) => {
-          e.preventDefault();
-          sendPassword();
-        }
-        const handleForgotPasswordModal = (state) => {
-          setTabActive('login');
-          setForgotPasswordModal({passwordRecoveryNumber: ''});
-          setLoginError({status: false, message: ''});
-          setPasswordSent(false);
-        }
-        const sendPassword = async () => {
-          loaderAction(true);
-          const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?id=0&UN=${forgotPasswordModal.passwordRecoveryNumber}&CID=${compCode}&Type=FP`, {});
-          loaderAction(false);
-          if (res.data === 'Y') {
-            setLoginError({status: true, message: 'Your Password has been sent to your registered mobile number. please check !'});
-            setPasswordSent(true);
-          } else {
-            setLoginError({status: true, message: 'This number is not Registered.'});
-          }
-        }
-        return (
-          <form onSubmit={handleForgotPasswordForm} style={{fontSize: '1.2em'}} className='d-flex justify-content-center'>
-            <div className='w-100'>
-              <h4 className="card-title" style={{fontSize: '1em'}}>Reset Your Password.</h4>
-              <div className="row gx-2">
-                <div className="col-12">
-                  <div className="form-group form-focus focused" id="forgotPassword">
-                    <label className="focus-label"><b className='text-danger'>* </b>Mobile Number</label>
-                    <input name="passwordRecoveryNumber" onChange={(e) => handleNumberInputs(e, setForgotPasswordModal)} value={forgotPasswordModal.passwordRecoveryNumber} required className="form-control floating" tabIndex={1} id="password_recovery_number" maxLength={10} />
-                  </div>
-                  <p className="text-danger" style={{display: loginError.status ? 'block' : 'none'}}>{loginError.message}</p>
-                  <div className='d-flex gap-3 justify-content-end'>
-                    <button onClick={() => handleForgotPasswordModal()} type="button" className="d-block btn btn-primary text-sm" style={{"minWidth": "9rem"}}>BACK TO LOGIN</button>
-                    {!isPasswordSent && <button type="submit" className="d-block btn btn-primary text-sm" style={{"minWidth": "9rem"}}>GET PASSWORD</button>}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        )
-      }
-    
       const handleDate = (props) => {
         const { Age, AgeMonth, AgeDay, currField, currValue }  = props;
         let calculatedDOB;
@@ -656,13 +610,11 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
         }))
       }
     
-      // const handleAniversary = (date) => {
-      //   setRegisterData(pre => ({ 
-      //       ...pre, 
-      //       AnniversaryDate: date,
-      //       AnniversaryDatestr: date
-      //   }))
-      // }
+      const backToLogin = () => {
+        setTabActive('login');
+        setLoginError({status: false, message: ''});
+      }
+
       return (
         <>
           <div className="modal-header" style={{padding: '0.8em 1.3em 0.4em', borderRadius: '0.5em 0.5em 0 0'}}>
@@ -801,7 +753,7 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
                     </form>
                   </div>
                   <div className={`tab-pane fade ${isTabActive === 'forgotPassword' ? 'show active' : ''}`}>
-                    <ForgotPassword />
+                    <ForgotPassword backToLogin={backToLogin} />
                   </div>
                   <div className={`tab-pane fade ${isTabActive === 'register' ? 'show active' : ''}`} style={{display: hideReg ? 'none' : ''}}>
                     <div className="row" id="divEnqDataContent">
@@ -1093,3 +1045,56 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
     }
     
     export const ConnectedLoginModal = connect(mapStateToPropsTwo, {loginStatusAction, userInfoAction, loaderAction})(LoginModal);
+
+
+
+    const ForgotPassword = ({ backToLogin }) => {
+
+      const [forgotPasswordModal, setForgotPasswordModal] = useState({passwordRecoveryNumber: '', msg: ''});
+      const [isPasswordSent, setPasswordSent] = useState(false);
+      const compCode = useSelector(i => i.compCode);
+
+      const handleForgotPasswordForm = (e) => {
+        e.preventDefault();
+        sendPassword();
+      }
+
+      const goToLogin = () => {
+        backToLogin();
+        setForgotPasswordModal({passwordRecoveryNumber: '', msg: ''});
+        setPasswordSent(false);
+      }
+
+      const sendPassword = async () => {
+        loaderAction(true);
+        const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?id=0&UN=${forgotPasswordModal.passwordRecoveryNumber}&CID=${compCode}&Type=FP`, {});
+        loaderAction(false);
+        if (res.data === 'Y') {
+          setForgotPasswordModal(pre => ({...pre, passwordRecoveryNumber: '', msg: 'Your Password has been sent to your registered mobile number. please check !'}))
+          setPasswordSent(true);
+        } else {
+          setForgotPasswordModal(pre => ({...pre, passwordRecoveryNumber: '', msg: 'This number is not Registered.'}))
+        }
+      }
+
+      return (
+        <form onSubmit={handleForgotPasswordForm} style={{fontSize: '1.2em'}} className='d-flex justify-content-center'>
+          <div className='w-100'>
+            <h4 className="card-title" style={{fontSize: '1em'}}>Reset Your Password.</h4>
+            <div className="row gx-2">
+              <div className="col-12">
+                <div className="form-group form-focus focused" id="forgotPassword">
+                  <label className="focus-label"><b className='text-danger'>* </b>Mobile Number</label>
+                  <input name="passwordRecoveryNumber" onChange={(e) => handleNumberInputs(e, setForgotPasswordModal)} value={forgotPasswordModal.passwordRecoveryNumber} required className="form-control floating" tabIndex={1} id="password_recovery_number" maxLength={10} />
+                </div>
+                <p className="text-danger" style={{display: forgotPasswordModal.msg ? 'block' : 'none'}}>{forgotPasswordModal.msg}</p>
+                <div className='d-flex gap-3 justify-content-end'>
+                  <button onClick={() => goToLogin()} type="button" className="d-block btn btn-primary text-sm" style={{"minWidth": "9rem"}}>BACK TO LOGIN</button>
+                  {!isPasswordSent && <button type="submit" className="d-block btn btn-primary text-sm" style={{"minWidth": "9rem"}}>GET PASSWORD</button>}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      )
+    }

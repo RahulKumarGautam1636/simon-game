@@ -101,9 +101,9 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
           <h2>TakeHome</h2>
           <p className="tagline animate-pulse">Simplifying Your Searches</p>
         </div>
-        <Link to="#">
+        <a href="https://play.google.com/store/search?q=takehome&c=apps&hl=en_IN">
           <img src="./assets/img/takehome/landing_page/download.png" className="d-none d-lg-block" style={{ maxWidth: "15em" }} alt="" />
-        </Link>
+        </a>
       </div>
 
       <div className="content-grid">
@@ -184,9 +184,9 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
       </div>
       
       <div className="container d-flex d-lg-none flex-column-reverse flex-lg-row justify-content-center pb-3 items-center" style={{ rowGap: "2em" }}>
-        <Link to="#">
+        <a href="https://play.google.com/store/search?q=takehome&c=apps&hl=en_IN">
           <img src="./assets/img/takehome/landing_page/download.png" className="" style={{ maxWidth: "15em", margin: "auto" }} alt="" />
-        </Link>
+        </a>
       </div>
 
       <div className="foot-links text-center text-lg-end d-flex justify-content-center flex-wrap align-items-start pb-[3em] mt-8" style={{ gap: "1em 1.4em" }}>

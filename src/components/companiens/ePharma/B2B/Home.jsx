@@ -64,7 +64,7 @@ const Home = ({ cart, cartAction, globalData, compCode }) => {
             const url = `${BASE_URL}/api/item/Get?CID=${compCode}&SearchStr=${text}&LOCID=${globalData.location.LocationId}`          
             const res = await axios.get(url,{ cancelToken: cancelTokenSourceRef.current.token });
             if(Array.isArray(res?.data?.itemMasterCollection) && text){
-                setOrders(getRequiredFieldsOnly(res.data.itemMasterCollection, globalData.location.LocationId));
+                setOrders(getRequiredFieldsOnly(res.data.itemMasterCollection));
             }
             setLoading(false);
         }

@@ -65,7 +65,7 @@ const CartPage = ({ breadCrumbAction, cartAction, modalAction, wishlistAction, c
       if (!companyCode) return alert('no companyCode received');                  
       const res = await getFrom(`${BASE_URL}/api/item/Get?CID=${companyCode}&SearchStr=${key.query}&LOCID=${globalData.location.LocationId}`, {}, setSearchList);
       if (res) {  
-        let requiredFields = getRequiredFieldsOnly(res.data.itemMasterCollection, globalData.location.LocationId);                                                                  
+        let requiredFields = getRequiredFieldsOnly(res.data.itemMasterCollection);                                                                  
         setSearchList(pre => ({ ...pre, loading: false, data: {itemMasterCollection: requiredFields }}));
       } else {
         console.log('No data received');

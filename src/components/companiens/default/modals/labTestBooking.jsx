@@ -71,7 +71,7 @@ const LabTestBooking = ({ bookingInfo, modalAction, isLoggedIn, userInfo, userIn
           EnqDateStr: testDate,
           Doctor: {},
           
-          // UnderDoctId: userInfo.UnderDoctId,  // sales
+          UnderDoctId: userInfo.UnderDoctId,  // sales
           ReferrerId: userInfo.ReferrerId,   // refBy
           ProviderId: userInfo.ProviderId,   // provider
           MarketedId: userInfo.MarketedId,   // marketing,
@@ -113,7 +113,7 @@ const LabTestBooking = ({ bookingInfo, modalAction, isLoggedIn, userInfo, userIn
           EnqDateStr: testDate,
           Doctor: {},
           
-          // UnderDoctId: userInfo.UnderDoctId,  // sales
+          UnderDoctId: userInfo.selectedMember.UnderDoctId,  // sales
           ReferrerId: userInfo.selectedMember.ReferrerId,   // refBy
           ProviderId: userInfo.selectedMember.ProviderId,   // provider
           MarketedId: userInfo.selectedMember.MarketedId,   // marketing,

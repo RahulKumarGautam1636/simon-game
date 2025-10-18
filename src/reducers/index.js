@@ -2,10 +2,11 @@ import { combineReducers  } from 'redux';
 import _ from 'lodash';
 import qs from 'query-string';
 import { initAppState } from './appState'
+import { BCROY_ID, TAKEHOME_AGRO } from '../constants';
 
 const queryString = qs.parse(window.location.search, { ignoreQueryPrefix: true, decode: false });
 let LID = queryString.LID ? queryString.LID : 0;
-let compCode = queryString.CID ? queryString.CID : process.env.REACT_APP_TAKE_HOME_COMPCODE // REACT_APP_TAKEHOME_AGRO // REACT_APP_DEFAULT_COMPCODE  // REACT_APP_TAKE_HOME_COMPCODE // REACT_APP_BSN_COMPCODE // REACT_APP_SC_BAGCHI // TAKEHOME_GARMENTS // REACT_APP_BCF_COMPCODE // REACT_APP_AM_NURSING_HOME_COMPCODE  // TAKEHOME_GARMENTS 
+let compCode = queryString.CID ? queryString.CID : process.env.REACT_APP_TAKE_HOME_COMPCODE // BCROY_ID //  REACT_APP_TAKEHOME_AGRO // c  // REACT_APP_TAKE_HOME_COMPCODE // REACT_APP_BSN_COMPCODE // REACT_APP_SC_BAGCHI // TAKEHOME_GARMENTS // REACT_APP_BCF_COMPCODE // REACT_APP_AM_NURSING_HOME_COMPCODE  // TAKEHOME_GARMENTS 
 // // TAKEHOME_AGRO // REACT_APP_CITIZEN_COMPCODE //  REACT_APP_RAJE_RESTAURANT_COMPCODE //  REACT_APP_BNH_COMPCODE 
 // REACT_APP_MEDICO_HEALTH_COMPCODE  // REACT_APP_E_PHARMA_COMPCODE //     
 //

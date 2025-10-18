@@ -275,11 +275,11 @@ export const ControlledTabs = ({ children, data, activetab}) => {
 }
 
 export const makeAppointment = (isLoggedIn, action, status, mode, history) => {
-  if (isLoggedIn) {
+  // if (isLoggedIn) {
     history.push('/specialists');
-  } else {
-    action('LOGIN_MODAL', status, {mode: mode});
-  }
+  // } else {
+  //   action('LOGIN_MODAL', status, {mode: mode});
+  // }
 }
 
 export const useDocumentTitle = (title, prevailOnUnmount = false) => {      // To Dynamicall set the website Title.
@@ -1355,3 +1355,5 @@ export const getTimeStr = (date) => {
     hour12: true 
   }).toUpperCase();
 }
+
+export const isOlderDate = (a, b) => new Date(a).getTime() < new Date(b).getTime();

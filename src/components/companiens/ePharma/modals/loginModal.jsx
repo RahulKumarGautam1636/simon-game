@@ -233,7 +233,7 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
     const refreshUserInfo = async (params) => {
         try {
             loaderAction(true);
-            const body = { UserName: params.RegMob1, UserPassword: encodeURIComponent(params.UserPassword), EncCompanyId: compCode };
+            const body = { UserName: params.RegMob1, UserPassword: params.UserPassword, EncCompanyId: compCode };
             const res = await axios.post(`${BASE_URL}/api/UserAuth/CheckCompLogin`, body);
             // const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?UN=${params.RegMob1}&UP=${encodeURIComponent(params.UserPassword)}&CID=${compCode}`);
             const data = res.data[0];
@@ -268,7 +268,7 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
     }
 
     const makeLoginRequest = async () => {
-        const body = { UserName: loginData.phone, UserPassword: encodeURIComponent(loginData.password), EncCompanyId: compCode };
+        const body = { UserName: loginData.phone, UserPassword: loginData.password, EncCompanyId: compCode };
         loaderAction(true);
         // const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?UN=${loginData.phone}&UP=${encodeURIComponent(loginData.password)}&CID=${compCode}`);
         const res = await axios.post(`${BASE_URL}/api/UserAuth/CheckCompLogin`, body);
@@ -288,15 +288,15 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
             setRegData(pre => ({
                 ...pre,
                 Name: data.Name,
-                EncCompanyId: data.EncCompanyId,
+                // EncCompanyId: data.EncCompanyId,
                 PartyCode: '',
                 PartyId: '',
                 UserId: data.UserId,
                 RegMob1: data.RegMob1,
                 Email: data.Email,
                 Address: data.Address,
-                UserPassword: data.UserPassword,
-                UserType: data.UserType,
+                // UserPassword: data.UserPassword,
+                // UserType: data.UserType,
                 Address2: data.Address2,
                 City: data.City,
                 State: data.State,
@@ -307,11 +307,11 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
                 Age: data.Age,
                 AgeMonth: data.AgeMonth,
                 AgeDay: data.AgeDay,
-                IsDOBCalculated: 'N',
+                IsDOBCalculated: data.IsDOBCalculated || 'N',
                 GenderDesc: data.GenderDesc,
                 Gender: data.Gender,
                 Country: data.Country,
-                MemberId: data.MemberId,
+                MemberId: 0,
                 Aadhaar: "",
                 Salutation: "",
                 Qualification: "",
@@ -326,11 +326,11 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
                 compPhone2: "",
                 compMail: "",
                 RegMob2: data.RegMob2,            // for Business type.
-                GstIn: data.GstIn,  
-                LicenceNo: data.LicenceNo,
-                ContactPerson: data.ContactPerson,
-                BusinessType: data.BusinessType,
-                UserLevelSeq: data.UserLevelSeq
+                GstIn: '',  
+                LicenceNo: '',
+                ContactPerson: '',
+                // BusinessType: data.BusinessType,
+                // UserLevelSeq: data.UserLevelSeq
             }))
             setOTP(pre => ({ ...pre, verified: true})); 
             setAllFields(true);

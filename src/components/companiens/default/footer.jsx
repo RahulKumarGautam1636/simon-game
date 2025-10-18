@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { userInfoAction } from '../../../actions';
 import { amNursingId, ASTHA_ID, defaultId, existingLogos, SRC_URL } from "../../../constants";
 import { uType } from "../../utils/utils";
+import { Link } from "react-router-dom";
 
 
 function Footer({ compInfo, userInfo, userInfoAction, compCode }) {
@@ -129,6 +130,7 @@ function Footer({ compInfo, userInfo, userInfoAction, compCode }) {
                                 <li><a href="#"><i className="fas fa-angle-double-right"></i> Login</a></li>
                                 <li><a href="#"><i className="fas fa-angle-double-right"></i> Register</a></li>
                                 <li><a href="#"><i className="fas fa-angle-double-right"></i> Doctor Dashboard</a></li>
+                                <li><Link to="/privacyPolicy"><i className="fas fa-angle-double-right"></i> Privacy Policy</Link></li>
                             </ul>
                         </div>
                     </div>

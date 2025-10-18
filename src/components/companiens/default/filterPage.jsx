@@ -317,7 +317,7 @@ const FilterPage = ({ siteData, breadCrumbAction, compCode, modals, modalAction,
     let hideOutStock = getField('hideOutStock') || 'N';
     let categories = insertStatus(siteData.LinkCategoryList, 'Parent', catIds);
     let subCategories = insertStatus([...new Map(siteData.LinkSubCategoryList.map(item => [item['CategoryId'], item])).values()], 'CategoryId', subCatIds);
-    let brands  = insertStatus(siteData.ItemBrandList, 'Value', brandsNames);
+    let brands  = insertStatus(siteData.ItemBrandList, 'Text', brandsNames);
     setSearchTerm(query);
     const selectedSortBy = sortByOptions.find(i => i.value === sortBy);
     setSortBySelected(selectedSortBy);
@@ -342,7 +342,7 @@ const FilterPage = ({ siteData, breadCrumbAction, compCode, modals, modalAction,
   const handleFilters = (sortBy) => {
     let selectedCategories = getSelectedItems('categories', 'Parent');
     let selectedSubCategories = getSelectedItems('subCategories', 'CategoryId');
-    let selectedBrands = getSelectedItems('brands', 'Value');
+    let selectedBrands = getSelectedItems('brands', 'Text');
     let newQueryString = { ...queryString, catVal: selectedCategories, subCatVal: selectedSubCategories, brands: selectedBrands, sortBy: sortBy, query: searchTerm, page: '1', hideOutStock: hideOutOfStockItems };
     let parsed = qs.stringify(newQueryString);
     history.push(`?${parsed}`);
@@ -602,7 +602,7 @@ const FilterPage = ({ siteData, breadCrumbAction, compCode, modals, modalAction,
                                 <form className='d-flex gap-3 pt-3 flex-wrap'>
                                     {renderSelectedItemButtons('categories', 'Parent', 'ParentDesc')}
                                     {renderSelectedItemButtons('subCategories', 'CategoryId', 'CategoryDesc')}
-                                    {renderSelectedItemButtons('brands', 'Value', 'Text')} 
+                                    {renderSelectedItemButtons('brands', 'Text', 'Text')} 
                                     <button onClick={clearAll} type='button' className="btn-clear-all"><i className="fas fa-times"></i> Clear All</button> 
                                 </form>
                                 {(isHospital || isRestaurant) ? '' : <form className='pt-3'>
@@ -645,7 +645,7 @@ const FilterPage = ({ siteData, breadCrumbAction, compCode, modals, modalAction,
                                     <div className="categori-checkbox">
                                         <form action="#">
                                             <ul className='list-inline'>
-                                                {renderCategory('brands', 'Value', 'Text')}
+                                                {renderCategory('brands', 'Text', 'Text')}
                                             </ul>
                                         </form>
                                         {renderCount('brands')}

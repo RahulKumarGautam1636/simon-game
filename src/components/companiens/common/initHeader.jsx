@@ -148,7 +148,7 @@ const InitHeader = ({ vType, vTypeAction, compCode, userInfo, loaderAction, user
             const getProducts = async (signal) => {                 
                 const res2 = await axios.get(`${BASE_URL}/api/Pharma/GetCatItemsWithBrand?CID=${compCode}&LOCID=${locationId}`, { signal: signal });
                 if (res2.status === 200) {
-                    const products = getRequiredFieldsOnly(res2.data.itemMasterCollection, locationId);
+                    const products = getRequiredFieldsOnly(res2.data.itemMasterCollection);
                     // if (vType === 'agro') {
                     //     siteDataAction({ ...res2.data, itemMasterCollection: products });
                     //     return;

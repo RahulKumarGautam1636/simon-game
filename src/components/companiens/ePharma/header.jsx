@@ -111,7 +111,7 @@ const Header = ({ isLoggedIn, modalAction, cartAction, wishlistAction, filterDat
             if (!companyCode) return alert('no companyCode received');                  
             const res = await getFrom(`${BASE_URL}/api/item/Get?CID=${companyCode}&SearchStr=${key.query}&LOCID=${globalData.location.LocationId}`, {}, setAutoCompleteList, signal);
             if (res) {                                                                    
-                let requiredFields = getRequiredFieldsOnly(res.data.itemMasterCollection, globalData.location.LocationId);
+                let requiredFields = getRequiredFieldsOnly(res.data.itemMasterCollection);
                 setAutoCompleteList(pre => ({ ...pre, loading: false, data: {itemMasterCollection: requiredFields }}));
             } else {
                 console.log('No data received');
@@ -366,7 +366,7 @@ const Header = ({ isLoggedIn, modalAction, cartAction, wishlistAction, filterDat
                                                     {compCode === TAKEHOME_AGRO || <li class="">
                                                         <a href='https://agro.takehome.live/#/' target='_blank' className='text-center pointer'>
                                                             <img className='h-[3em] block mx-auto' style={{transform: 'scale(1.2)'}} src="/assets/img/agro/segmentImages/grocery.png" alt="Grocery" />
-                                                            <p className='mb-0 mt-1'>Grocery</p>
+                                                            <p className='mb-0 mt-2 relative !leading-[1] !text-[0.85em]'>Agro<span className="float-link text-nowrap">& Grocery</span></p>
                                                         </a>
                                                     </li>}  
                                                     {compCode === TAKEHOME_GARMENTS || <li class="">

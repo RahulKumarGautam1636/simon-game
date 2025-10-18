@@ -6,6 +6,7 @@ import axios from "axios";
 import { Spinner } from "../../../ePharma/utilities";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+const invalidDate = '0001-01-01T00:00:00'
 
 const Investigation = ({ id, compCode, type }) => {
 
@@ -144,36 +145,45 @@ const Investigation = ({ id, compCode, type }) => {
                                     <th>
                                         {i.VchNo}
                                         {/* <Link className="text-primary text-decoration-underline" to={`/invoices/${i.BillId}`}>{i.VchNo}</Link> */}
-                                        <strong className="ms-5">Date:</strong> {new Date(i.VchDate).toLocaleDateString('en-TT')}
+                                        {i.VchDate === invalidDate || <><strong className="ms-5">Date:</strong> {new Date(i.VchDate).toLocaleDateString('en-TT')}</>}
                                     </th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td colSpan={3} className="p-0">
-                                        <table className="items-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Test Name</th>
-                                                    <th className="text-nowrap text-center">Report Date</th>
-                                                    <th className="text-nowrap text-center">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {i.SalesDetailsList.map((x, n) => (
-                                                    <tr key={x.Description}>
-                                                        {/* <td>{x + 1}</td> */}
-                                                        <td className="px-3 py-2">{x.Description}</td>	
-                                                        <td className="text-nowrap text-center px-3 py-2">{new Date(x.ReportDate).toLocaleDateString('en-TT')}</td>
-                                                        <td className="pointer text-nowrap px-3 py-2">{x.LabRecId > 0 ? <span className="text-info" onClick={() => setOpenReport({ state: true, billId: x.BillId, autoId: x.LabRecId })}>Done <i className="fas fa-eye ms-2"></i></span> : 'Pending'}</td> 
+                                {i.IsProvisionalInv === "1" ? 
+                                    <tr>
+                                        <td className="p-0" colSpan={2}>
+                                            <p className="!p-10 mb-0 bg-rose-50 text-rose-600 text-center !text-lg">THIS IS PROVISIONAL INVOICE BILL AND <br/> IT CAN NOT BE SHOWN</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={3} className="p-0">
+                                            <table className="items-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Test Name</th>
+                                                        <th className="text-nowrap text-center">Report Date</th>
+                                                        <th className="text-nowrap text-center">Status</th>
                                                     </tr>
-                                                    // >
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {i.SalesDetailsList.map((x, n) => {
+                                                        if (i.Department === "IPD- In Patient Services" && x.ReportGenerated !== 'Y') return;
+                                                        else return (
+                                                            <tr key={x.Description}>
+                                                                <td className="px-3 py-2">{x.Description}</td>	
+                                                                <td className="text-nowrap text-center px-3 py-2">{x.ReportDate === invalidDate || new Date(x.ReportDate).toLocaleDateString('en-TT')}</td>
+                                                                <td className="pointer text-nowrap px-3 py-2">{x.ReportGenerated === 'Y' ? <span className="text-info" onClick={() => setOpenReport({ state: true, billId: x.BillId, autoId: x.LabRecId })}>Done <i className="fas fa-eye ms-2"></i></span> : 'Pending'}</td> 
+                                                            </tr>
+                                                        )
+                                                    })}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -486,11 +496,11 @@ const ReportPad = ({ handleClose, billId, autoId, compCode, compInfo }) => {
                                                             {compCode === HEXAGON_ID ? <tr><td></td></tr> : <>
                                                                 <tr>
                                                                     <td><b>Collection Date</b></td>
-                                                                    <td>: {new Date(itemOne.SampleDate).toLocaleDateString('en-TT')}</td>
+                                                                    <td>: {itemOne.SampleDate === invalidDate || new Date(itemOne.SampleDate).toLocaleDateString('en-TT')}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>Lab Received Date</b></td>
-                                                                    <td>: {new Date(itemOne.LabReceivedDate).toLocaleDateString('en-TT')}</td>
+                                                                    <td>: {itemOne.LabReceivedDate === invalidDate || new Date(itemOne.LabReceivedDate).toLocaleDateString('en-TT')}</td>
                                                                 </tr>
                                                             </>}
                                                             <tr>
@@ -520,135 +530,149 @@ const ReportPad = ({ handleClose, billId, autoId, compCode, compInfo }) => {
                                 <td>
                                     <div>
                                         <table className="report-content" style={{ width: '100%'}}>
-                                            <tbody>
-                                                {i.SalesDetails.map(sale => (
-                                                    <tr key={sale.AutoId}>
-                                                        <td colSpan="4">
-                                                            <div style={{ width: '100%' }}>
-                                                                <div style={{ width: '100%', textAlign: 'center', fontWeight: 'bold' }}>
-                                                                    <table align="center" style={{ width: '100%' }}>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td align="center"><u>DEPARTMENT OF {sale.ItemGroup1}</u></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="center" style={{ fontFamily: 'Times New Roman' }}>
-                                                                                    <u>{sale.ItemGroup}</u>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="center" style={{border: '1px solid #060505'}}>
-                                                                                    <table style={{ width: '70%' }} align="center" cellPadding="0" cellSpacing="0">
-                                                                                        <tbody>
-                                                                                            <tr>
-                                                                                                <td
-                                                                                                    style={{ fontSize: '14px', fontFamily: 'Times New Roman', textAlign: 'center' }} >
-                                                                                                    <b>{sale.Description}</b>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        </tbody>
-                                                                                    </table>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <table id="ResultTable1" className="ResultTbl mb-3 w-100" style={{ fontSize: '15px' }} cellPadding="0" cellSpacing="0">
-                                                                    <tbody>
-                                                                        <tr valign="top" height="32px">
-                                                                            <th width="34%"><u>Test Name</u></th>
-                                                                            <th className="Result1" width="15%"><u>Result</u></th>
-                                                                            <th className="TestUnit1 text-center" width="15%"><u>UNIT</u></th>
-                                                                            <th className="Normalrange1 text-center" width="36%"><u>Reference Range</u></th>
-                                                                        </tr>
-                                                                        {sale.ItemQCList.map(test => {
-
-                                                                            let lRange, uRange, fontWt;
-
-                                                                            if (!i.Gender) return null;
-
-                                                                            if (i.Age > 10) {
-                                                                                if (i.Gender.toUpperCase() === 'MALE') {
-                                                                                    lRange = test.Male_LwrPange;
-                                                                                    uRange = test.Male_UprRange;
-                                                                                } else if (i.Gender.toUpperCase() === 'FEMALE') {
-                                                                                    lRange = test.Female_LwrRange;
-                                                                                    uRange = test.Female_UprRange;
-                                                                                }
-                                                                            } else {
-                                                                                lRange = test.Child_LwrRange;
-                                                                                uRange = test.Child_UprRange;
-                                                                            }
-
-                                                                            if (isNaN(test.Result)) {
-                                                                                fontWt = 'normal';
-                                                                            } else {
-                                                                                let result = test.Result || 0;
-                                                                                if (result >= lRange && result <= uRange) {
-                                                                                    fontWt = 'normal';
-                                                                                } else if (lRange === 0 && uRange === 0) {
-                                                                                    fontWt = 'normal';
-                                                                                } else if (!(test.TestStandard.trim())) {
-                                                                                    fontWt = 'normal';
-                                                                                } else {
-                                                                                    fontWt = 900;
-                                                                                }
-                                                                            }
-
-                                                                            return (
-                                                                                (test.Result.trim() || test.Comments.trim()) ? <tr key={test.AutoId} valign="top">
-                                                                                    <td className={`${test.QCRoot ? 'fw-bold text-decoration-underline' : 'ps-3'}`} valign="top">
-                                                                                        {test.TestDesc}
-                                                                                        {(test.Result.trim() && test.Method.trim()) ? <font className="fs-6 d-block"> Method: {test.Method}</font> : ''}
-                                                                                    </td>
-                                                                                    {/* {test.Result.trim() ? <> */}
-                                                                                        <td valign="top" style={{fontWeight: fontWt}}>
-                                                                                            {test.Result}
-                                                                                            {test.Comments.trim() && <span className="d-block">{test.Comments}</span>}
+                                            <tbody> 
+                                                {i.SalesDetails[0]?.ItemQCList?.length === 0 ? 
+                                                    <>
+                                                        <tr>
+                                                            <td className="pt-3" dangerouslySetInnerHTML={{ __html: i.SalesDetails[0]?.QC_NB }}></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td dangerouslySetInnerHTML={{ __html: i.SalesDetails[0]?.QC_Remarks }}></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td dangerouslySetInnerHTML={{ __html: i.SalesDetails[0]?.NB }}></td>
+                                                        </tr>
+                                                    </> 
+                                                    :
+                                                    <>
+                                                        {i.SalesDetails.map(sale => (
+                                                            <tr key={sale.AutoId}>
+                                                                <td colSpan="4">
+                                                                    <div style={{ width: '100%' }}>
+                                                                        <div style={{ width: '100%', textAlign: 'center', fontWeight: 'bold' }}>
+                                                                            <table align="center" style={{ width: '100%' }}>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td align="center"><u>DEPARTMENT OF {sale.ItemGroup1}</u></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="center" style={{ fontFamily: 'Times New Roman' }}>
+                                                                                            <u>{sale.ItemGroup}</u>
                                                                                         </td>
-                                                                                        <td valign="top" className="TestUnit1 text-center">{test.UnitDesc}</td>
-                                                                                        <td valign="top" className="Normalrange1 text-center" dangerouslySetInnerHTML={{ __html: test.TestStandard }}></td>
-                                                                                    {/* </> : <td valign="top" colSpan={3}>{test.Comments}</td> } */}
-                                                                                </tr> : ''
-                                                                            )
-                                                                        })}
-                                                                    </tbody>
-                                                                </table>
-                                                                <table className="ResultTbl" style={{ width: '100%', fontSize: '13px', padding: '15px 20px' }} align="left">
-                                                                    <tbody>
-                                                                        {sale.InstrmntUsed?.trim() && <tr>
-                                                                            <th className="text-nowrap" width="15%">Instrument Used : </th>
-                                                                            <td width="85%">{sale.InstrmntUsed}</td>
-                                                                        </tr> }  
-                                                                        {sale.Method?.trim() && <tr>
-                                                                            <th className="text-nowrap">Method : </th>
-                                                                            <td className="ps-2">{sale.Method}</td>
-                                                                        </tr>}
-                                                                        {sale.QC_Remarks?.trim() && <tr>
-                                                                            <th className="text-nowrap" valign="top">Special Remarks : </th>
-                                                                            <td className="ps-2" dangerouslySetInnerHTML={{ __html: sale.QC_Remarks }}></td>
-                                                                        </tr>}
-                                                                        {sale.NB?.trim() && <tr>
-                                                                            <th className="text-nowrap" valign="top">NB : </th>
-                                                                            <td className="ps-2" dangerouslySetInnerHTML={{ __html: sale.NB }}></td>
-                                                                        </tr>}
-                                                                        {sale.Remarks?.trim() && <tr>
-                                                                            <th className="text-nowrap" valign="top">Remarks : </th>
-                                                                            <td className="ps-2" dangerouslySetInnerHTML={{ __html: sale.Remarks }}></td>
-                                                                        </tr>}
-                                                                    </tbody>
-                                                                </table>
-                                                                <table className="w-100">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td className="pt-3" align="center" valign="middle">***** End Of Report ***** </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="center" style={{border: '1px solid #060505'}}>
+                                                                                            <table style={{ width: '70%' }} align="center" cellPadding="0" cellSpacing="0">
+                                                                                                <tbody>
+                                                                                                    <tr>
+                                                                                                        <td
+                                                                                                            style={{ fontSize: '14px', fontFamily: 'Times New Roman', textAlign: 'center' }} >
+                                                                                                            <b>{sale.Description}</b>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                        <table id="ResultTable1" className="ResultTbl mb-3 w-100" style={{ fontSize: '15px' }} cellPadding="0" cellSpacing="0">
+                                                                            <tbody>
+                                                                                <tr valign="top" height="32px">
+                                                                                    <th width="34%"><u>Test Name</u></th>
+                                                                                    <th className="Result1" width="15%"><u>Result</u></th>
+                                                                                    <th className="TestUnit1 text-center" width="15%"><u>UNIT</u></th>
+                                                                                    <th className="Normalrange1 text-center" width="36%"><u>Reference Range</u></th>
+                                                                                </tr>
+                                                                                {sale.ItemQCList.map(test => {
+
+                                                                                    let lRange, uRange, fontWt;
+
+                                                                                    if (!i.Gender) return null;
+
+                                                                                    if (i.Age > 10) {
+                                                                                        if (i.Gender.toUpperCase() === 'MALE') {
+                                                                                            lRange = test.Male_LwrPange;
+                                                                                            uRange = test.Male_UprRange;
+                                                                                        } else if (i.Gender.toUpperCase() === 'FEMALE') {
+                                                                                            lRange = test.Female_LwrRange;
+                                                                                            uRange = test.Female_UprRange;
+                                                                                        }
+                                                                                    } else {
+                                                                                        lRange = test.Child_LwrRange;
+                                                                                        uRange = test.Child_UprRange;
+                                                                                    }
+
+                                                                                    if (isNaN(test.Result)) {
+                                                                                        fontWt = 'normal';
+                                                                                    } else {
+                                                                                        let result = test.Result || 0;
+                                                                                        if (result >= lRange && result <= uRange) {
+                                                                                            fontWt = 'normal';
+                                                                                        } else if (lRange === 0 && uRange === 0) {
+                                                                                            fontWt = 'normal';
+                                                                                        } else if (!(test.TestStandard.trim())) {
+                                                                                            fontWt = 'normal';
+                                                                                        } else {
+                                                                                            fontWt = 900;
+                                                                                        }
+                                                                                    }
+
+                                                                                    return (
+                                                                                        (test.Result.trim() || test.Comments.trim()) ? <tr key={test.AutoId} valign="top">
+                                                                                            <td className={`${test.QCRoot ? 'fw-bold text-decoration-underline' : 'ps-3'}`} valign="top">
+                                                                                                {test.TestDesc}
+                                                                                                {(test.Result.trim() && test.Method.trim()) ? <font className="fs-6 d-block"> Method: {test.Method}</font> : ''}
+                                                                                            </td>
+                                                                                                <td valign="top" style={{fontWeight: fontWt}}>
+                                                                                                    {test.Result}
+                                                                                                    {test.Comments.trim() && <span className="d-block">{test.Comments}</span>}
+                                                                                                </td>
+                                                                                                <td valign="top" className="TestUnit1 text-center">{test.UnitDesc}</td>
+                                                                                                <td valign="top" className="Normalrange1 text-center" dangerouslySetInnerHTML={{ __html: test.TestStandard }}></td>
+                                                                                        </tr> : ''
+                                                                                    )
+                                                                                })}
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table className="ResultTbl" style={{ width: '100%', fontSize: '13px', padding: '15px 20px' }} align="left">
+                                                                            <tbody>
+                                                                                {sale.InstrmntUsed?.trim() && <tr>
+                                                                                    <th className="text-nowrap" width="15%">Instrument Used : </th>
+                                                                                    <td width="85%">{sale.InstrmntUsed}</td>
+                                                                                </tr> }  
+                                                                                {sale.Method?.trim() && <tr>
+                                                                                    <th className="text-nowrap">Method : </th>
+                                                                                    <td className="ps-2">{sale.Method}</td>
+                                                                                </tr>}
+                                                                                {sale.QC_Remarks?.trim() && <tr>
+                                                                                    <th className="text-nowrap" valign="top">Special Remarks : </th>
+                                                                                    <td className="ps-2" dangerouslySetInnerHTML={{ __html: sale.QC_Remarks }}></td>
+                                                                                </tr>}
+                                                                                {sale.NB?.trim() && <tr>
+                                                                                    <th className="text-nowrap" valign="top">NB : </th>
+                                                                                    <td className="ps-2" dangerouslySetInnerHTML={{ __html: sale.NB }}></td>
+                                                                                </tr>}
+                                                                                {sale.Remarks?.trim() && <tr>
+                                                                                    <th className="text-nowrap" valign="top">Remarks : </th>
+                                                                                    <td className="ps-2" dangerouslySetInnerHTML={{ __html: sale.Remarks }}></td>
+                                                                                </tr>}
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table className="w-100">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td className="pt-3" align="center" valign="middle">***** End Of Report ***** </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </>
+                                                }
                                             </tbody>
                                             <tfoot>
                                                 <tr>

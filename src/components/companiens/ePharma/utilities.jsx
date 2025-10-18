@@ -799,12 +799,11 @@ export const focusArea = (globalDataAction) => {
 
 export const scrollToContent = (ref, offset=100) => window.scrollTo(0, ref.current.offsetTop - offset);
 
-export const getRequiredFieldsOnly = (list, locationId) => {
+export const getRequiredFieldsOnly = (list) => {
   // let { globalData } = store.getState();
   // let b2bMode = globalData.userRegType.CodeValue === 'Retailer';
   if (!list) return [];
   return list.map(i => {
-    let locId = (locationId ? locationId : (i.LocationId ? i.LocationId : i.LocationName));
     return ({ 
     // PTR: b2bMode ? 'B2B' : 'B2C',
     PTR: i.PTR,

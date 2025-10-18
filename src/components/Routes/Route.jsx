@@ -8,6 +8,7 @@ import { B2BOrders } from "../companiens/ePharma/B2B/Myorder";
 import { useHistory } from "react-router-dom";
 import { lazy } from "react";
 import Home from "../companiens/default/home";
+import BCRoyPrivacyPolicy from "../companiens/amNursingHome/bc_roy_privacy";
 const Queries = lazy(() => import('../companiens/ePharma/rentSale/queries'));
 const BCRoyHome = lazy(() => import('../companiens/amNursingHome/bc_roy_home'));
 const BCRoyAboutPage = lazy(() => import('../companiens/amNursingHome/bcroyhomeabout'));
@@ -417,7 +418,10 @@ const HealthCenterPage = ({ compCode, vType }) => {
 }
 
 const PrivacyPolicyPage = ({ compCode, vType }) => {
-
+    if (vType === 'ErpHospital') {
+        if (compCode === BCROY_ID) return <BCRoyPrivacyPolicy />
+        return <NotFound />
+    }
     if (vType === 'ErpPharma') {
         return <EPharmaPrivacyPolicy/>;
     }

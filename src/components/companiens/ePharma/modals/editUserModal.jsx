@@ -188,7 +188,7 @@ const EditUserModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, lo
     const refreshUserInfo = async (params) => {
         try {
             loaderAction(true);
-            const body = { UserName: params.RegMob1, UserPassword: encodeURIComponent(params.UserPassword), EncCompanyId: compCode };
+            const body = { UserName: params.RegMob1, UserPassword: params.UserPassword, EncCompanyId: compCode };
             // const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?UN=${params.RegMob1}&UP=${params.UserPassword}&CID=${compCode}`);
             const res = await axios.post(`${BASE_URL}/api/UserAuth/CheckCompLogin`, body);
             loaderAction(false);

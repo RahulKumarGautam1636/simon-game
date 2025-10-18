@@ -52,6 +52,9 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 
 	const similarProduct = vType === 'ErpPharma' ? placeZeroValuedAtLast()[0] || {} : {};
 	const showSimilar = !isEmpty(similarProduct) && productData.data.ItemMaster.LocationItemId !== similarProduct.LocationItemId;
+
+	let similarProductBestBefore = mmDDyyyyDate(showSimilar?.EXPDate, '/', '/');																		
+	let similarProductBestBeforeDateString = similarProductBestBefore ? new Date(similarProductBestBefore).toDateString().split(' ').slice(1, 4).join(' ') : '';
 	
 	useEffect(() => {										   
 		window.render_ProductPageSlider();
@@ -442,15 +445,15 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 												
 											</form>																		
 										</div>
-										{/* <div className="product-additional-info pt-25 pt-xs-15">
+										<div className="product-additional-info pt-25 pt-xs-15">
 											<div className='d-flex gap-5 flex-wrap'>
-												<h6 className={`a wishlist-btn`} onClick={() => {cartAction('REMOVE_ITEM', productData.data.ItemMaster.LocationItemId, 'pharmacy'); wishlistAction('ADD_WISH_ITEM', {...productData.data.ItemMaster, count: counter, ...packSize()}, 'pharmacy'); updateLocalStorageItems()}}><i className={`fa${isAddedToWishlist ? 's' : 'r'} fa-heart`}></i>{isAddedToWishlist === 1 ? 'Added' : 'Add'} to wishlist</h6>
+												{/* <h6 className={`a wishlist-btn`} onClick={() => {cartAction('REMOVE_ITEM', productData.data.ItemMaster.LocationItemId, 'pharmacy'); wishlistAction('ADD_WISH_ITEM', {...productData.data.ItemMaster, count: counter, ...packSize()}, 'pharmacy'); updateLocalStorageItems()}}><i className={`fa${isAddedToWishlist ? 's' : 'r'} fa-heart`}></i>{isAddedToWishlist === 1 ? 'Added' : 'Add'} to wishlist</h6> */}
 												{globalData.location.LocationId && !packSize().StockQty ? <h6 className={`a wishlist-btn text-danger`}><i className={`fa fa-window-close`}></i>Out of Stock</h6> : ''}
 											</div>
-										</div> */}
+										</div>
 
-									</div>
-									<AdditionalDetails2 product={productData.data.ItemMaster}/>
+									</div>	
+									{/* <AdditionalDetails2 product={productData.data.ItemMaster}/> */}
 									{/* <div className="my-4 border-1 border-slate-200 rounded-xl overflow-hidden">
 										<h2 className="px-4 py-3 text-black bg-slate-200 mb-0">SOLD BY</h2>
 										<div className="p-4 flex gap-4 items-end flex-wrap">
@@ -526,7 +529,7 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 										<span className="discount-percentage" style={{paddingLeft:'15px', color:'green'}}>{similarProduct.DiscountPer}% OFF</span>
 									</div> : ''}
 									<div className="product-desc mb-0" style={{borderBottom: 'var(--border-clr)'}}>
-										{vType === 'ErpPharma' && <p> Best before:<span> {bestBeforeDateString}</span></p>}
+										{vType === 'ErpPharma' && <p className='opacity-0'> Best before:<span> {similarProductBestBeforeDateString}</span></p>}
 										<p> Generic name: <span> {similarProduct.Technicalname}</span></p>
 										<p> MFG By: <span> {similarProduct.ManufacturBY}</span></p>
 									</div>
@@ -915,7 +918,7 @@ const AdditionalDetails = ({ product }) => {
 	)
 }
 
-const AdditionalDetails2 = ({ product }) => {
+const AdditionalDetails2 = ({ product }) => {				// use this one
 	const [activeTab, setActiveTab] = useState('overview');
 
 	const details = [

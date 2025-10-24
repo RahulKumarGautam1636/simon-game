@@ -345,31 +345,31 @@ const Header = ({ isLoggedIn, modalAction, cartAction, wishlistAction, filterDat
                             </div>
                             <div className="d-flex justify-content-between flex-1" style={{gap: '2.3em', maxWidth: '113rem'}}>
 
-                                <ul class="hm-menu d-none d-md-flex gap-[2.8rem]">
+                                <ul className="hm-menu d-none d-md-flex gap-[2.8rem]">
                                     {(() => {
                                         if (!isTakehome) return <li className='w-28'></li>;
                                         if (vType === 'ErpPharma' || vType === 'ErpManufacturing' || vType === 'agro') {
                                             return (
                                                 <>
-                                                    <li class="hm-wishlist">
+                                                    <li className="hm-wishlist">
                                                         <a href="https://takehome.live/">
-                                                            <i class="fas fa-home"></i>
+                                                            <i className="fas fa-home"></i>
                                                         </a>
                                                         <p>Home</p>
                                                     </li>
-                                                    {compCode === TAKE_HOME_ID || <li class="">
+                                                    {compCode === TAKE_HOME_ID || <li className="">
                                                         <a href='https://pharma.takehome.live/#/' target='_blank' className='text-center pointer'>
                                                             <img className='h-[3em] block mx-auto' style={{transform: 'scale(1.2)'}} src="/assets/img/agro/segmentImages/capsule.png" alt="Pharmacy" />
                                                             <p className='mb-0 mt-1'>Pharmacy</p>
                                                         </a>
                                                     </li>}
-                                                    {compCode === TAKEHOME_AGRO || <li class="">
+                                                    {compCode === TAKEHOME_AGRO || <li className="">
                                                         <a href='https://agro.takehome.live/#/' target='_blank' className='text-center pointer'>
                                                             <img className='h-[3em] block mx-auto' style={{transform: 'scale(1.2)'}} src="/assets/img/agro/segmentImages/grocery.png" alt="Grocery" />
                                                             <p className='mb-0 mt-2 relative !leading-[1] !text-[0.85em]'>Agro<span className="float-link text-nowrap">& Grocery</span></p>
                                                         </a>
                                                     </li>}  
-                                                    {compCode === TAKEHOME_GARMENTS || <li class="">
+                                                    {compCode === TAKEHOME_GARMENTS || <li className="">
                                                         <a href='https://gna.takehome.live/#/' target='_blank' className='text-center pointer'>
                                                             <img className='h-[3em] block mx-auto' style={{transform: 'scale(1.2)'}} src="/assets/img/agro/segmentImages/garments.png" alt="garments" />
                                                             <p className='mb-0 mt-1'>Garments</p>

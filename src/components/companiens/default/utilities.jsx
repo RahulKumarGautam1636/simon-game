@@ -1170,8 +1170,8 @@ export const useRegType = (type) => {
 }
 
 export const validRegType = (UserRegTypeId, warn=true) => {
-  let { vType, globalData } = store.getState();
-  if (vType && vType !== 'ErpPharma') return true;
+  let { globalData } = store.getState();  
+  // if (vType && vType !== 'ErpPharma') return true;
   if (UserRegTypeId === globalData.userRegType.CodeId) {
     return true;
   } else {

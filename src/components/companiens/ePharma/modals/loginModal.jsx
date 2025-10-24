@@ -12,7 +12,6 @@ import Timer, { userLevel, uType } from "../../../utils/utils";
 
 const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loaderAction, userInfoAction, userInfo, vType, modals, compInfo, globalData, globalDataAction}) => {
     const redirectTo = modals?.LOGIN_MODAL?.data?.redirect;
-    console.log(redirectTo);    
     const businessType = globalData.userRegType.CodeValue === 'Retailer' ? 'B2B' : 'B2C';
     const userRegTypeId = globalData.userRegType.CodeId;
     const b2bMode = globalData.userRegType.CodeValue === 'Retailer';
@@ -273,7 +272,7 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
         // const res = await axios.get(`${BASE_URL}/api/UserAuth/Get?UN=${loginData.phone}&UP=${encodeURIComponent(loginData.password)}&CID=${compCode}`);
         const res = await axios.post(`${BASE_URL}/api/UserAuth/CheckCompLogin`, body);
         loaderAction(false);
-        const data = res.data[0];
+        const data = res.data[0];       
 
         // let appBusinessType = globalData.businessType.CodeValue;     
         // if (res.data.BusinessType !== appBusinessType) return alert('You are not Allowed to log in.');       // BLOCK LOGIN IF MISMATCH FOUND  
@@ -285,57 +284,78 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
         } else if (!validRegType(data.UserRegTypeId)) {
             return;
         } else if (data.Remarks === 'NOTINCOMPANY') {
-            setRegData(pre => ({
-                ...pre,
+            const existingUser = {
+                ...regData,
+                Salutation: data.Salutation,
                 Name: data.Name,
-                // EncCompanyId: data.EncCompanyId,
+                EncCompanyId: data.EncCompanyId,
                 PartyCode: '',
-                PartyId: '',
-                UserId: data.UserId,
                 RegMob1: data.RegMob1,
-                Email: data.Email,
+                Gender: data.Gender,
+                GenderDesc: data.GenderDesc,
                 Address: data.Address,
-                // UserPassword: data.UserPassword,
-                // UserType: data.UserType,
-                Address2: data.Address2,
-                City: data.City,
-                State: data.State,
-                StateName: data.StateName,
-                Pin: data.Pin,
-                DOB: new Date(data.DOB).toLocaleDateString('en-TT'),
-                DOBstr: new Date(data.DOB).toLocaleDateString('en-TT'),
                 Age: data.Age,
                 AgeMonth: data.AgeMonth,
                 AgeDay: data.AgeDay,
-                IsDOBCalculated: data.IsDOBCalculated || 'N',
-                GenderDesc: data.GenderDesc,
-                Gender: data.Gender,
-                Country: data.Country,
-                MemberId: 0,
-                Aadhaar: "",
-                Salutation: "",
-                Qualification: "",
-                SpecialistId: '',
-                AnniversaryDate: "",
-                AnniversaryDatestr: "",
-                compName: "",
-                compAddress: "",
-                compState: "",
-                compPin: "",
-                compPhone1: "",
-                compPhone2: "",
-                compMail: "",
-                RegMob2: data.RegMob2,            // for Business type.
-                GstIn: '',  
-                LicenceNo: '',
-                ContactPerson: '',
-                // BusinessType: data.BusinessType,
-                // UserLevelSeq: data.UserLevelSeq
-            }))
-            setOTP(pre => ({ ...pre, verified: true})); 
-            setAllFields(true);
-            setTabActive('register');
-            setLoginError({status: false, message: ''});
+                UserPassword: data.UserPassword,               
+                UserType: data.UserType,                       
+                Qualification: data.Qualification,
+                SpecialistId: data.SpecialistId,
+                UserId: data.UserId,
+                PartyId: data.PartyId,
+                MemberId: data.MemberId,
+            
+                State: data.State,
+                StateName: data.StateName,
+                City: data.City,
+                Pin: data.Pin,
+                Address2: data.Address2,
+            
+                DOB: new Date(data.DOB).toLocaleDateString('en-TT'),
+                DOBstr: new Date(data.DOB).toLocaleDateString('en-TT'),
+                AnniversaryDate: new Date(data.AnniversaryDate).toLocaleDateString('en-TT'),
+                AnniversaryDatestr: new Date(data.AnniversaryDate).toLocaleDateString('en-TT'),
+                Aadhaar: '',                                       
+                IsDOBCalculated: data.IsDOBCalculated,
+
+                UHID: data.UHID,
+            
+                compName: data.compName ? data.compName : '',
+                compAddress: data.compAddress ? data.compAddress : '',
+                compState: data.compState ? data.compState : '',
+                compPin: data.compPin ? data.compPin : '',
+                compPhone1: data.compPhone1 ? data.compPhone1 : '',
+                compPhone2: data.compPhone2 ? data.compPhone2 : '',
+                compMail: data.compMail ? data.compMail : '',
+
+                RegMob2: data.RegMob2,            
+                GstIn: data.GstIn,
+                LicenceNo: data.LicenceNo ? data.LicenceNo : '',
+                ContactPerson: data.ContactPerson,
+                BusinessType: data.BusinessType,
+
+                UserRegTypeId: data.UserRegTypeId,
+                UserLevelSeq: data.UserLevelSeq
+            }
+            
+
+            if (existingUser.RegMob1.length < 10) return alert('phone number is invalid, please try again.');
+            if (existingUser.UserPassword.length < 4) return alert('Minimum length for password is 4.');
+            let status = await makeRegisterationRequest({ ...existingUser });
+            if (status) {
+                let loginStatus = await refreshUserInfo(existingUser);
+                if (loginStatus) {
+                    loginStatusAction(true);
+                    modalAction('LOGIN_MODAL', false);
+                    modalAction('ALERT_MODAL', true, 'login');
+                }
+            } 
+
+            // setRegData(existingUser)
+            // setOTP(pre => ({ ...pre, verified: true})); 
+            // setAllFields(true);
+            // setTabActive('register');
+            // setLoginError({status: false, message: ''});            
         } else if (data.Remarks === 'INACTIVE') {
             toast(<InactiveWarningCard />, { position: "top-center", autoClose: false, closeButton: false, className: 'product-toast' });
             modalAction('LOGIN_MODAL', false);
@@ -353,7 +373,7 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
             }
             localStorage.setItem("userLoginData", encrypt({ phone: loginData.phone, password: data.UserPassword, compCode: compCode }));
         }
-    }
+    }    
 
     const handleRedirect = (user) => {  
         let slugKey = encrypt({ phone: user.phone, password: user.password, compCode: user.compCode })

@@ -272,6 +272,8 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
             MemberId: data.MemberId,
             PartyId: data.PartyId,
             Salutation: data.Salutation,
+            Email: data.Email,
+            Country: data.Country,
     
             DOB: data.DOB,
             DOBstr: data.DOB,
@@ -294,40 +296,17 @@ import Timer, { userLevel, uType } from '../../../utils/utils';
             ContactPerson: data.ContactPerson,
             BusinessType: 'B2C',
 
+            UnderDoctId: data.UnderDoctId,
+            ReferrerId: data.ReferrerId,
+            ProviderId: data.ProviderId,
+            MarketedId: data.MarketedId,
+            
             UserLevelSeq: data.UserLevelSeq,
             UserCompList: data.UserCompList[0],
           };
     
           localStorage.setItem("userLoginData", encrypt({ phone: params.phone, password: data.UserPassword, compCode: params.companyCode }));
-          userInfoAction(userLoginData);
-    
-          const newbookingData = { 
-            ...bookingInfo,
-            Salutation: data.Salutation,
-            Name: data.Name,
-            EncCompanyId: userInfo.selectedCompany.EncCompanyId,
-            PartyCode: userInfo.selectedCompany.CompUserPartyCode,
-            MPartyCode: userInfo.selectedCompany.CompUserMPartyCode,
-            RegMob1: data.RegMob1,
-            Gender: data.Gender ,
-            GenderDesc: data.GenderDesc ,
-            Address: data.Address ,
-            Age: data.Age,
-            AgeMonth: data.AgeMonth,
-            AgeDay: data.AgeDay,
-            State: data.State ,
-            StateName: data.StateName,
-            City: data.City,
-            Pin: data.Pin,
-            Address2: data.Address2,
-            AnniversaryDate: data.AnniversaryDate,
-            Aadhaar: data.Aadhaar,
-            UserId: data.UserId,
-            UHID: data.UHID,
-            MemberId: data.MemberId,
-            Country: data.Country,
-          }
-          
+          userInfoAction(userLoginData);          
           modalAction('LOGIN_MODAL', false, { mode: data.UserLevelSeq });
           loginStatusAction(true);
           stringToast("Welcome, You successfully logged in.", { type: 'success', autoClose: 5000 });

@@ -287,6 +287,9 @@ const Header = ({ isLoggedIn, modalAction, cartAction, wishlistAction, filterDat
                 .app-container > *:not(.app-content) {				
                     display: none;
                 }
+                .global-loader {
+                    display: flex !important;
+                }				
             `}</style> : null}
             <header>       
                 <div className="header-middle pl-xs-0 pr-xs-0" style={{columnGap: '2rem'}}>

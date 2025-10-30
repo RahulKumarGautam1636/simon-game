@@ -31,7 +31,7 @@ export const SC_BAGCHI = process.env.SC_BAGCHI;
 
 export const initSiteData = {isLoading: true, catLoading: true, productLoading: true, itemMasterCollection: [], ItemBrandList: [], LinkCategoryList: [], LinkSubCategoryList: []};
 
-export const currentVersion = '2342';
+export const currentVersion = '23423';
 
 export const testMode = false;
 

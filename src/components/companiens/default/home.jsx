@@ -14,10 +14,10 @@ import { uType } from '../../utils/utils';
 function Home({ compCode, modalAction, isLoggedIn, compInfo }) {
 
   const history = useHistory();
-  const [profileData, setProfileData] = useState({loading: true, data: [], err: {status: false, msg: ''}});
+  const [doctors, setDoctors] = useState({loading: true, data: [], err: {status: false, msg: ''}});
 
   useEffect(() => {
-    getProfileData(compCode);                               
+    getDoctors(compCode);                               
   },[compCode]);  
 
   const renderSliders = (data) => {
@@ -32,10 +32,10 @@ function Home({ compCode, modalAction, isLoggedIn, compInfo }) {
     }
   }
 
-  const getProfileData = async (query) => {
-    const res = await getFrom(`${BASE_URL}/api/Values/Get?CID=${query}&DID=0`, {}, setProfileData);
+  const getDoctors = async (query) => {
+    const res = await getFrom(`${BASE_URL}/api/Values/Get?CID=${query}&DID=0`, {}, setDoctors);
     if (res) {
-        setProfileData(res);          
+        setDoctors(res);          
     }
   }
   
@@ -277,7 +277,7 @@ function Home({ compCode, modalAction, isLoggedIn, compInfo }) {
                 <h2 style={{"borderBottom": "2px solid gray", "textTransform": "uppercase", "display": "inline", "letterSpacing": "3px"}}>Specialities</h2>
             </div>
             <div className="container-fluid overflow-hidden">
-              {renderSliders(profileData)}
+              {renderSliders(doctors)}
             </div>
         </section>
     </div>

@@ -337,25 +337,25 @@ const LoginModal = ({modalAction, isLoggedIn, loginStatusAction, compCode, loade
                 UserRegTypeId: data.UserRegTypeId,
                 UserLevelSeq: data.UserLevelSeq
             }
-            
-
-            if (existingUser.RegMob1.length < 10) return alert('phone number is invalid, please try again.');
-            if (existingUser.UserPassword.length < 4) return alert('Minimum length for password is 4.');
-            let status = await makeRegisterationRequest({ ...existingUser });
-            if (status) {
-                let loginStatus = await refreshUserInfo(existingUser);
-                if (loginStatus) {
-                    loginStatusAction(true);
-                    modalAction('LOGIN_MODAL', false);
-                    modalAction('ALERT_MODAL', true, 'login');
-                }
-            } 
-
-            // setRegData(existingUser)
-            // setOTP(pre => ({ ...pre, verified: true})); 
-            // setAllFields(true);
-            // setTabActive('register');
-            // setLoginError({status: false, message: ''});            
+            if (data.BusinessType === 'B2B') {
+                setRegData(existingUser)
+                setOTP(pre => ({ ...pre, verified: true})); 
+                setAllFields(true);
+                setTabActive('register');
+                setLoginError({status: false, message: ''});            
+            } else {               
+                if (existingUser.RegMob1.length < 10) return alert('phone number is invalid, please try again.');
+                if (existingUser.UserPassword.length < 4) return alert('Minimum length for password is 4.');
+                let status = await makeRegisterationRequest({ ...existingUser });
+                if (status) {
+                    let loginStatus = await refreshUserInfo(existingUser);
+                    if (loginStatus) {
+                        loginStatusAction(true);
+                        modalAction('LOGIN_MODAL', false);
+                        modalAction('ALERT_MODAL', true, 'login');
+                    }
+                } 
+            }
         } else if (data.Remarks === 'INACTIVE') {
             toast(<InactiveWarningCard />, { position: "top-center", autoClose: false, closeButton: false, className: 'product-toast' });
             modalAction('LOGIN_MODAL', false);

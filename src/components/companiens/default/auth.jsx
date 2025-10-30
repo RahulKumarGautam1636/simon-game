@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { decrypt, encrypt, validRegType } from "./utilities";
 import axios from "axios";
 import { loginStatusAction, userInfoAction, compCodeAction, modalAction } from "../../../actions";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL, initReg } from "../../../constants";
 import { InactiveWarningCard, Spinner } from "../ePharma/utilities";
 import { toast } from "react-toastify";
 import { uType } from "../../utils/utils";
@@ -45,7 +45,7 @@ const Authentication = ({ compCode, vType, bookingInfo, modalAction, loginStatus
     }
   }
   function compareCompCodes(currCompCode, user) {              
-    if (currCompCode === user.compCode) {
+    if (currCompCode === user.compCode || queryString.scheme === 'common') {
       saveAndLoginUser(user);
       return;
     }
@@ -59,6 +59,46 @@ const Authentication = ({ compCode, vType, bookingInfo, modalAction, loginStatus
       makeLoginRequest({ phone: savedData.phone, password: savedData.password, companyCode: savedData.compCode });
     } else {
       handleNewUser();    
+    }
+  }
+
+  const makeRegisterationRequest = async (params) => {
+    try {
+        setLoading(true);
+        const res = await axios.post(`${BASE_URL}/api/UserReg/Post`, params);
+        setLoading(false);
+        if (res.data[1].length > 3) { 
+            return true;
+        } else {
+            alert('Something Went wrong, Please try again later.');
+            return false;
+        }      
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+  } 
+
+  const refreshUserInfo = async (params) => {
+    try {
+        setLoading(true);
+        const body = { UserName: params.RegMob1, UserPassword: params.UserPassword, EncCompanyId: compCode };
+        const res = await axios.post(`${BASE_URL}/api/UserAuth/CheckCompLogin`, body);
+        const data = res.data[0];
+        setLoading(false);
+        if (data.Remarks === 'INACTIVE') {
+            toast(<InactiveWarningCard />, { position: "top-center", autoClose: false, closeButton: false, className: 'product-toast' });
+            modalAction('LOGIN_MODAL', false);
+            return false;
+        } else if (data.UserId) {
+            userInfoAction(data);
+            return true;
+        } else {
+            alert('We could not log you in, Please log in again manually.');
+            return false;
+        }
+    } catch (err) {
+        alert(err)
     }
   }
 
@@ -82,8 +122,76 @@ const Authentication = ({ compCode, vType, bookingInfo, modalAction, loginStatus
     } else if (!validRegType(data.UserRegTypeId)) {
       return;
     } else if (data.Remarks === 'NOTINCOMPANY') {
-      console.log('Not Registered in this company.')
-      handleNewUser();
+      if (data.BusinessType === 'B2B') {
+        console.log('Not Registered in this company.')
+        handleNewUser();
+      } else {
+        const existingUser = {
+          ...initReg,
+          Salutation: data.Salutation,
+          Name: data.Name,
+          EncCompanyId: data.EncCompanyId,
+          PartyCode: '',
+          RegMob1: data.RegMob1,
+          Gender: data.Gender,
+          GenderDesc: data.GenderDesc,
+          Address: data.Address,
+          Age: data.Age,
+          AgeMonth: data.AgeMonth,
+          AgeDay: data.AgeDay,
+          UserPassword: data.UserPassword,               
+          UserType: data.UserType,                       
+          Qualification: data.Qualification,
+          SpecialistId: data.SpecialistId,
+          UserId: data.UserId,
+          PartyId: data.PartyId,
+          MemberId: data.MemberId,
+      
+          State: data.State,
+          StateName: data.StateName,
+          City: data.City,
+          Pin: data.Pin,
+          Address2: data.Address2,
+      
+          DOB: new Date(data.DOB).toLocaleDateString('en-TT'),
+          DOBstr: new Date(data.DOB).toLocaleDateString('en-TT'),
+          AnniversaryDate: new Date(data.AnniversaryDate).toLocaleDateString('en-TT'),
+          AnniversaryDatestr: new Date(data.AnniversaryDate).toLocaleDateString('en-TT'),
+          Aadhaar: '',                                       
+          IsDOBCalculated: data.IsDOBCalculated,
+
+          UHID: data.UHID,
+      
+          compName: data.compName ? data.compName : '',
+          compAddress: data.compAddress ? data.compAddress : '',
+          compState: data.compState ? data.compState : '',
+          compPin: data.compPin ? data.compPin : '',
+          compPhone1: data.compPhone1 ? data.compPhone1 : '',
+          compPhone2: data.compPhone2 ? data.compPhone2 : '',
+          compMail: data.compMail ? data.compMail : '',
+
+          RegMob2: data.RegMob2,            
+          GstIn: data.GstIn,
+          LicenceNo: data.LicenceNo ? data.LicenceNo : '',
+          ContactPerson: data.ContactPerson,
+          BusinessType: data.BusinessType,
+
+          UserRegTypeId: data.UserRegTypeId,
+          UserLevelSeq: data.UserLevelSeq
+        }
+
+        if (existingUser.RegMob1.length < 10) return alert('phone number is invalid, please try again.');
+        if (existingUser.UserPassword.length < 4) return alert('Minimum length for password is 4.');
+        let status = await makeRegisterationRequest({ ...existingUser });
+        if (status) {
+            let loginStatus = await refreshUserInfo(existingUser);
+            if (loginStatus) {
+                loginStatusAction(true);
+                modalAction('LOGIN_MODAL', false);
+                modalAction('ALERT_MODAL', true, 'login');
+            }
+        } 
+      }
     } else if (data.Remarks === 'INACTIVE') {
       toast(<InactiveWarningCard />, { position: "top-center", autoClose: false, closeButton: false, className: 'product-toast' });
     } else if (data.UserId) {
@@ -159,7 +267,7 @@ const Authentication = ({ compCode, vType, bookingInfo, modalAction, loginStatus
 
   if (loading) {
     return (
-      <div className="absolute inset-0 z-[90000] bg-[#4b4b4b66]">
+      <div className="absolute inset-0 z-[90000] bg-[#4b4b4b66] global-loader">
         <Spinner min_height='25rem' fSize='2.5rem' />
       </div>
     )

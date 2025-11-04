@@ -94,7 +94,7 @@ const UserInfoModal = ({ modalAction, userInfo }) => {
                                     <li className="mb-2" key={i.MemberId}>
                                         <div className="card-1 position-relative">
                                             <div>
-                                                <img src="/assets/img/ePharma/user_unknown.png" alt="headphone" style={{height: '3em', width: '3em', background: '#157eab', borderRadius: 4}} />
+                                                <img src="/assets/img/ePharma/user_unknown.png" alt="" style={{height: '3em', width: '3em', background: '#157eab', borderRadius: 4}} />
                                                 <div>
                                                     <a href="#/productPage/650214">
                                                         <h5>{i.MemberName}</h5>

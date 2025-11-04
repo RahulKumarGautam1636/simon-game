@@ -88,7 +88,7 @@ const HeaderRoute = ({ compCode, vType }) => {
     } else if (vType === 'ErpPharma' || vType === 'rent' || vType === 'agro' || vType === 'ErpManufacturing') {
         return <EPharmaHeader vType={vType} />;
     } else if (vType === 'RESTAURANT' || vType === 'HOTEL' || vType === 'RESORT') {
-        return <EPharmaHeader vType={vType} />
+        return null; // <EPharmaHeader vType={vType} />
     }
 }
 const HomePage = ({ compCode, match, vType, globalData, userInfo }) => {
@@ -140,7 +140,7 @@ const FooterPage = ({ compCode, vType }) => {
     } else if (vType === 'ErpPharma' || vType === 'rent' || vType === 'agro' || vType === 'ErpManufacturing') {
         return <EPharmaFooter vType={vType} />;
     } else if (vType === 'RESTAURANT' || vType === 'HOTEL' || vType === 'RESORT') {
-        return <EPharmaFooter vType={vType} />;
+        return null // <EPharmaFooter vType={vType} />;
     }
 }
 const BottomNavBar = ({ compCode, vType }) => {

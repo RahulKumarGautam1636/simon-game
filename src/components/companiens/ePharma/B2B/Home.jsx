@@ -364,7 +364,14 @@ export const ProductCard3 = ({ data, globalData, vType, cartAction, isLoggedIn, 
         <div className={`card-1 rounded-0 flex-column flex-md-row align-items-stretch align-items-md-center ${className}`} style={{borderBottom: '1px solid #d1d1d1', maxWidth: '65rem', ...styles}}>
             {detailed || <div>
                 <div className='position-relative'>
-                    <img src={data.ItemImageURL ? data.ItemImageURL : getFallbackImg()} alt="Product" style={{height: '6em', width: '6em'}}/>
+                    <img
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;                                   // prevents looping
+                        currentTarget.src = getFallbackImg() // 'http://demo.gbooksindia.in/assets/img/fallback/no-image.png'; 
+                    }}
+                    src={data.ItemImageURL ? data.ItemImageURL : getFallbackImg()}
+                    // src={data.ItemImageURL ? data.ItemImageURL : 'http://demo.gbooksindia.in/assets/img/fallback/no-image.png'} 
+                    alt="Product" style={{height: '6em', width: '6em'}}/>
                     {compare && <i onClick={() => modalAction('COMPARE_PRODUCT_MODAL', true, {itemId: data.ItemId})} className={`${globalData.location.LocationId && isLoggedIn ? '' : 'd-none'} bx bx-transfer-alt position-absolute top-0 end-0 text-white rounded-circle pointer`} style={{fontSize: '1em', padding: '0.1em', background: '#2196F3'}}></i>}
                 </div>
                 <div onClick={() => setPinCodeDropdown(!pinCodeDropdown)} className='pointer'>
@@ -379,7 +386,14 @@ export const ProductCard3 = ({ data, globalData, vType, cartAction, isLoggedIn, 
                 <div className='d-flex flex-column gap-0 gap-md-1 w-100' ref={pinCodeRef} style={pinCodeDropdown ? popupViewStyles : {}}>
                     {pinCodeDropdown && 
                         <div className='d-flex gap-4 mb-2'>  
-                            <img src={data.ItemImageURL ? data.ItemImageURL : getFallbackImg()} alt="Product" style={{height: '4.5em', width: '4.5em'}}/>
+                            <img 
+                            src={data.ItemImageURL ? data.ItemImageURL : getFallbackImg()}
+                            // src={data.ItemImageURL ? data.ItemImageURL : 'http://demo.gbooksindia.in/assets/img/fallback/no-image.png'}
+                            onError={({ currentTarget }) => {
+                                currentTarget.onerror = null;                                   // prevents looping
+                                currentTarget.src = getFallbackImg() // 'http://demo.gbooksindia.in/assets/img/fallback/no-image.png'; 
+                            }}
+                            alt="Product" style={{height: '4.5em', width: '4.5em'}}/>
                             <div>
                                 <h5>{data.Description}</h5>
                                 {packSizeList?.length ? <p className='packSize' style={{marginBottom: '0.8em'}}>{packSizeList}</p> : ''}
@@ -430,7 +444,7 @@ export const OrderCard3 = ({ data, className, styles }) => {
 
     return (
          <div className={`card-1 order-card-1 justify-content-start gap-4 ${className}`} styles={{...styles}}>
-            <img src={data.ItemImageURL || getFallbackImg()} style={{height: '5.6em', width: '5.6em'}} alt="headphone" />
+            <img src={data.ItemImageURL || getFallbackImg()} style={{height: '5.6em', width: '5.6em'}} alt="" />
             <Link to={`#`}>
                 <h5 className='mb-3'>{data.Description}</h5>
                 <p className="packSize"><span className="" role="button">{data.PackSizeId ? data.PackSizeDesc : 'No pack size'}</span></p>

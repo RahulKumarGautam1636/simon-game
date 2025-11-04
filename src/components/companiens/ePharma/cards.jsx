@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { addToCart, addToWishlist2, buyNow2, computeWithPackSize, escape, focusArea, getFallbackImg, ImageLoader, noticeToast, productToast, updateLocalStorageItems } from './utilities';
 import { ePharmaId, TAKE_HOME_ID, XYZ_ID } from '../../../constants';
 
+import { Minus, Plus } from 'lucide-react';
+
 
 function ProfileCard({ data }) {
 
@@ -348,6 +350,20 @@ const AddToCart = ({ parent, useAuth, locationId, qty, addCart, buyNow, inCart, 
                 {isRestaurant || <button className={`controlled-btn ${isValid ? '' : 'opacity-50 pe-none'}`} onClick={buyNow} type="button" style={{borderBottomRightRadius: '0.45em'}}>Buy Now</button>}
             </>
         )
+    } else if (parent === 'card_6') {
+        return (
+            <div className="flex-shrink-0">
+                {isAdded ? (
+                    <div className="flex items-center gap-1 bg-white !rounded-lg p-0.5 border-2 border-orange-300">
+                        <button onClick={() => {if (inCart.count !== 1) cartAction('ADD_ITEM', {...inCart, count: inCart.count - 1}, 'pharmacy')}} className="w-6 h-6 rounded bg-red-50 hover:bg-red-100 flex items-center justify-center text-red-600" ><Minus className="w-3 h-3" /></button>
+                        <span className="font-bold text-xs px-1">{inCart.count}</span>
+                        <button onClick={() => cartAction('ADD_ITEM', {...inCart, count: inCart.count + 1}, 'pharmacy')} className="w-6 h-6 rounded bg-green-50 hover:bg-green-100 flex items-center justify-center text-green-600"><Plus className="w-3 h-3" /></button>
+                    </div>
+                ) : (
+                    <button onClick={addCart} type="button" className="px-3 py-1.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs font-bold !rounded-lg shadow-md hover:shadow-lg">Add</button>
+                )}
+            </div>
+        )
     } else {
         return <button type='button' className={`${classes} ${isValid ? '' : 'opacity-50 pe-none'}`} style={{...styles}} onClick={addCart} >{isAdded ? 'Remove' : 'Add To Cart'}</button>
     }
@@ -618,7 +634,7 @@ const mapStateToReviewCard = (state) => {
   
 export const ConnectedReviewCard = connect(mapStateToReviewCard, {})(ReviewCard);
 
-const SearchListCard = ({ cart, data, handleActive=() => {}, cartAction, wishlistAction, globalData, compCode, className='', vType, modalAction }) => {
+const SearchListCard = ({ cart, data, handleActive=() => {}, cartAction, wishlistAction, globalData, compCode, className='', vType, modalAction, type }) => {
     const isRestaurant = (vType === 'RESTAURANT' || vType === 'HOTEL' || vType === 'RESORT');
     const existInCart = Object.values(cart.pharmacy).find(i => i.LocationItemId === data.LocationItemId);
     const isAdded = existInCart?.LocationItemId;
@@ -649,10 +665,43 @@ const SearchListCard = ({ cart, data, handleActive=() => {}, cartAction, wishlis
         addToCart(globalDataAction, globalData, isAdded, data, cartAction, packSize, wishlistAction);
     }
 
+    if (isRestaurant) {
+        return (
+            <div className="bg-white hover:bg-orange-50 border border-gray-200 hover:border-orange-300 !rounded-lg p-2.5 transition-all shadow-sm">
+                <div className="flex items-center gap-2.5">
+                    <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-200 !rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-300">
+                        <span className="text-xl">🍽️</span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-1.5 mb-1">
+                            <h4 className="font-bold text-xs text-gray-800 line-clamp-1">{data.Description}</h4>
+                            <span className="flex-shrink-0 px-1.5 py-0.5 bg-orange-100 text-orange-700 text-[9px] font-bold rounded">{data.CategoryName}</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1.5 mb-1">
+                            <span className="text-sm font-bold text-orange-600">₹{packSize().SRate}</span>
+                            <span className="text-[10px] text-gray-400 line-through">₹{packSize().ItemMRP}</span>
+                            <span className="px-1 py-0.5 bg-green-100 text-green-700 text-[8px] font-bold rounded">Save ₹10</span>
+                        </div>
+
+                        <p className="text-[10px] text-gray-500">
+                            <span className="inline-flex items-center gap-0.5">
+                            <span className="w-1 h-1 bg-green-500 !rounded-full"></span>
+                                Available
+                            </span>
+                        </p>
+                    </div>
+                    <AddToCartBtn parent='card_6' useAuth={false} locationId={globalData.location.LocationId} qty={packSize().StockQty} addCart={handleAdd} inCart={existInCart} isAdded={isAdded} />
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className={`card-1 ${className}`}>
             <div>
-                <img src={data.ItemImageURL ? data.ItemImageURL : getFallbackImg()} alt="headphone"/>
+                <img src={data.ItemImageURL ? data.ItemImageURL : getFallbackImg()} alt=""/>
                 <div>
                     <Link to={`/productPage/${data.ItemId}`} onClick={() => {handleActive(false)}} className={isRestaurant && 'pe-none'}>
                         <h5>{data.Description}</h5>
@@ -725,7 +774,7 @@ const MyOrdersCard = ({ data, className, styles }) => {
         // </div>
         <div className={`card-1 return-card-1 cart-card-mobile ${className}`} styles={{...styles}}>
             <div>
-                <img src={data.ItemImageURL || getFallbackImg()} style={{height: '5.6em', width: '5.6em'}} alt="headphone" />
+                <img src={data.ItemImageURL || getFallbackImg()} style={{height: '5.6em', width: '5.6em'}} alt="" />
                 <div>
                     <Link to={`/productPage/${data.ItemId}`} onClick={() => { }}>
                         <h5 className='mb-3'>{data.Description}</h5>
@@ -752,7 +801,7 @@ export const ReturnProductCard_1 = ({ data, className, styles }) => {         //
     return (
         <div className={`card-1 return-card-1 ${className}`} styles={{...styles}}>
             <div>
-                <img src={data.ItemImageURL || getFallbackImg()} style={{height: '5.6em', width: '5.6em'}} alt="headphone" />
+                <img src={data.ItemImageURL || getFallbackImg()} style={{height: '5.6em', width: '5.6em'}} alt="" />
                 <div>
                     <Link to={`/productPage/${data.ItemId}`} onClick={() => { }}>
                         <h5 className='mb-3'>{data.Description}</h5>

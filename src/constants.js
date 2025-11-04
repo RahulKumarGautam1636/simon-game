@@ -39,7 +39,7 @@ export const rent = false;
 
 export const agro = false;
 
-export const takehomeMain = true;
+export const takehomeMain = false;
 
 export const memberLabel = 'Member';
 

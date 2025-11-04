@@ -115,7 +115,7 @@ const InitHeader = ({ vType, vTypeAction, compCode, userInfo, loaderAction, user
 
     useEffect(() => {
         let controller = new AbortController();
-        if (vType === 'ErpPharma' || vType === 'agro' || vType === 'ErpManufacturing' || vType === 'ErpHospital') {
+        if (vType === 'ErpPharma' || vType === 'agro' || vType === 'ErpManufacturing' || vType === 'ErpHospital' || vType === 'HOTEL' || vType === 'RESORT' || vType === 'RESTAURANT') {
             const getCategories = async (signal) => {         
                 siteDataAction({ catLoading: true, productLoading: true });
                 const res = await axios.get(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${compCode}&LOCID=${locationId}`, { signal: signal });

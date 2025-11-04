@@ -11,6 +11,7 @@ function LocationModal({ compCode, userInfo, modalAction, modals, globalDataActi
     // const [listActive, setListActive] = useState(true);
     const [locationList, setLocationList] = useState({loading: true, data: {LocationMasterList: []}, err: {status: false, msg: ''}});
     const area = modals.LOCATION_MODAL.data;
+    const businessTypeId = globalData.businessType?.CodeId;
     // const handleAddressFormSubmit = (e) => {
     //     e.preventDefault();
     //     if (!orderData.LocationId) return alert('Please select a Location to proceed with the order.');
@@ -43,7 +44,7 @@ function LocationModal({ compCode, userInfo, modalAction, modals, globalDataActi
     // }, [location.Pin])
 
     useEffect(() => {
-        const getServiceLocations = async () => {
+        const getServiceLocations = async () => {                                                         // &BusinessTypeId=${businessTypeId}
             const res = await getFrom(`${BASE_URL}/api/Location/Get?CID=${compCode}&Area=${area}&SearchStr=`, {}, setLocationList);            // using useCallback to avoid esling warning about useEffect dependencies.
             if (res) {              
                 setLocationList(res);   

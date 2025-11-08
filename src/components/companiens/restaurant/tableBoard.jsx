@@ -1,16 +1,25 @@
 import { useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { globalDataAction, modalAction } from "../../../actions";
 import { getFrom } from "../ePharma/utilities";
 import { BASE_URL } from "../../../constants";
+import qs from 'query-string';
 
-const TableBoard = ({ match, compCode, userInfo, modalAction, globalDataAction, globalData }) => {
+const TableBoard = ({ match, userInfo, modalAction, globalDataAction, globalData }) => {
+
+    const queryString = qs.parse(window.location.search, { ignoreQueryPrefix: true, decode: false });
+    const bedId = queryString.BedId || '';
+    let tableAutoSelect = globalData.restaurant.table?.autoSelect;
 
     const [data, setData] = useState({loading: true, data: { AccPartyMasterList: [], AccSubgroupObj: {}, PartyMasterObj: {} }, err: {status: false, msg: ''}});
     const history = useHistory();
+
+    useEffect(() => {
+        if (tableAutoSelect) modalAction('TABLE_SELECTION_MODAL', false);
+    }, [tableAutoSelect])
 
     useEffect(() => {
         getData(userInfo.selectedCompany.EncCompanyId, globalData.location.LocationId)
@@ -23,7 +32,7 @@ const TableBoard = ({ match, compCode, userInfo, modalAction, globalDataAction, 
             setData({loading: false, data: { AccPartyMasterList: res.data, AccSubgroupObj: {}, PartyMasterObj: {} }, err: {status: false, msg: ''}});                       
           }
         }
-    }   
+    }      
 
     useEffect(() => {
         const onBackClick = (event) => {
@@ -33,7 +42,7 @@ const TableBoard = ({ match, compCode, userInfo, modalAction, globalDataAction, 
         return () => window.removeEventListener("popstate", onBackClick);                               
     }, [])
     
-    const handleSelect = (item) => {
+    const handleSelect = (item, autoSelectable=false) => {
         let requiredFields = {
             BedDesc: item.BedDesc,
             BedGroupDesc: item.BedGroupDesc,
@@ -45,9 +54,35 @@ const TableBoard = ({ match, compCode, userInfo, modalAction, globalDataAction, 
             ProvBalAmt: item.ProvBalAmt,
             ProvVoucherAmount: item.ProvVoucherAmount
         }
-        globalDataAction({ restaurant: { table: requiredFields }});
+        globalDataAction({ restaurant: { table: { ...requiredFields, autoSelect: autoSelectable } }});
         modalAction('TABLE_SELECTION_MODAL', false);
         history.push('/checkout');
+    }
+
+    useEffect(() => {
+        if (!data.data.AccPartyMasterList.length || !bedId) return;
+        const table = data.data.AccPartyMasterList.find(i => i.BedId == bedId);
+        if (!table) {
+            modalAction('TABLE_SELECTION_MODAL', false);
+            globalDataAction({ restaurant: { table: { autoSelect: false } }});
+            resetUrl()
+            alert('Invalid table selection.')
+        } else {
+            if (table.ProvInvBillid) {
+                modalAction('TABLE_SELECTION_MODAL', false);
+                globalDataAction({ restaurant: { table: { autoSelect: false } }});
+                resetUrl()
+                alert('This Table has already active orders.')
+                return;
+            }
+            handleSelect(table, true);
+        }
+    }, [data.data.AccPartyMasterList, bedId])
+
+    function resetUrl() {
+        const hash = window.location.hash.split('#')[1] || '';
+        const newUrl = `${window.location.origin}/?CID=${queryString.CID}#${hash}`;
+        window.history.replaceState({}, '', newUrl);
     }
 
     const renderBedGroup = (groupId, groupName, data) => {

@@ -163,7 +163,7 @@ const globalData = {
   location: getUserLocation(),
   scrollPos: { home: '', filterPage: '' },
   prescription: { required: true, patient: { docName: '', docAddress: '' } },
-  restaurant: { table: {  } },
+  restaurant: { table: { BedId: queryString.BedId || '', autoSelect: false } },
   businessType: { Description: '', CodeValue: '', CodeId: '' },
   userRegType:
                 { CodeId: 43198, Description: 'Customer', CodeValue: 'Customer', for: 'B2C / Patient' }

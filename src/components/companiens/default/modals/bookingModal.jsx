@@ -174,7 +174,7 @@ const BookingModal = ({ compCode, bookingInfo, modalAction, bookingInfoAction, i
     } 
   }
 
-  const noSlot = compCode === BCROY_ID;         // allow booking with no slot selection.
+  const noSlot = false // compCode === BCROY_ID;         // allow booking with no slot selection.
 
   const selectSlot = (AutoId, SDateStr, SInTimeStr, EncCompanyId) => {
     // setBookingData(preValue => {

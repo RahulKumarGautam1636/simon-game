@@ -1,4 +1,4 @@
-import { BreadCrumb, getFrom } from '../utilities';
+import { BreadCrumb, getFrom, groupMembers } from '../utilities';
 import { connect } from 'react-redux';
 import { modalAction, userInfoAction } from '../../../../actions';
 import { MemberCard } from '../cards'
@@ -34,6 +34,12 @@ const ProviderProfile = ({ userInfo, compCode, modalAction, userInfoAction }) =>
 		links: [{name: 'Home', link: '/'}, {name: 'Profile', link: `/profile/${userInfo.PartyCode}`}],
 		activeLink: `/profile/${userInfo.PartyCode}`
 	}
+
+    const primaryUser = userInfo.MembersList.AccPartyMemberMasterList.find(i => i.MemberId === userInfo.MemberId);
+    const allMembers = userInfo.MembersList.AccPartyMemberMasterList.filter(i => i.MemberId !== userInfo.MemberId);
+
+    const groupedMembers = groupMembers(allMembers) || {};
+    const members = Object.values(groupedMembers);    
 
     return (
         <>
@@ -231,15 +237,32 @@ const ProviderProfile = ({ userInfo, compCode, modalAction, userInfoAction }) =>
                                                             </table>		
                                                         </div>}
                                                     </div>	 */}
-                                                    <div className="card-body">
-                                                        {/* <div className="dashboard-card__btn-box justify-content-between w-100 align-items-center" style={{fontSize: '1.7em'}}> 
-                                                            <h4 className="card-title mb-0">Added Members</h4>                                                      
-                                                            <button onClick={() => modalAction('MEMBER_MODAL', true)} className='dashboard-card__btn-box-item reverse-hover d-flex align-items-center icon-btn' style={{'--clr': '#48fffc3b', '--bg': '#149A8D', '--bClr': '#149a8d57', gap: '0.3em', fontSize: '0.8em', padding: '0.5em 0.6em 0.3em'}}><i className='bx bx-plus-circle'></i> Add New {memberLabel}</button>
-                                                        </div> */}
-                                                        {userInfo.MembersList.AccPartyMemberMasterList?.map(item => (
-                                                            <MemberCard key={item.MemberId} userType={userInfo.UserType} data={item} modalAction={modalAction} mode='provider_dashboard' userInfoAction={userInfoAction} selected={userInfo.selectedMember?.MemberId} />
-                                                        ))}
-                                                    </div>
+                                                        <div className='bg-gray-200 py-2 px-3'>
+                                                            <p className='text-gray-800 mb-0'>
+                                                                Primary User
+                                                            </p>
+                                                        </div>
+                                                        <div className="card-body">
+                                                            <MemberCard key={primaryUser.MemberId} userType={userInfo.UserType} data={primaryUser} modalAction={modalAction} mode='provider_dashboard' userInfoAction={userInfoAction} selected={userInfo.selectedMember?.MemberId} />
+                                                        </div>
+                                                        {members.flatMap(i => {
+                                                            {/* if (i.UnderDoctDesc === '' && i.ProviderDesc === '' && i.ReferrerDesc === '' && i.MarketedDesc === '') return undefined; */}
+                                                            console.log(i, userInfo.MemberId)
+                                                            return (
+                                                                <>
+                                                                    <div className='bg-gray-200 py-2 px-3'>
+                                                                        <p className='text-gray-800 mb-0'>
+                                                                            {userInfo.MemberId == i.MemberId ? 'Primary User' : `CE: ${i.UnderDoctDesc}, PE: ${i.ProviderDesc}, RE: ${i.ReferrerDesc}, ME: ${i.MarketedDesc}`}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className="card-body">
+                                                                        {i.items.map(item => (
+                                                                            <MemberCard key={item.MemberId} userType={userInfo.UserType} data={item} modalAction={modalAction} mode='provider_dashboard' userInfoAction={userInfoAction} selected={userInfo.selectedMember?.MemberId} />
+                                                                        ))}
+                                                                    </div>
+                                                                </>
+                                                            )
+                                                        })}
                                                 </div>	
                                             </div>
                                         </div>

@@ -361,7 +361,10 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
               <Link className='nav-link' to="/specialists" style={{fontSize: '0.9em', padding: '0.6em 0.7em'}}>
                   OPD SERVICES
                   <hr style={{"margin": "0", "marginTop": "2px", "background": "#0000004f"}} />
-                  <span className="d-block mt-1" style={{"fontWeight": "500", "fontSize": "0.84em"}}>{compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}</span>
+                  <span className="d-block mt-1" style={{"fontWeight": "500", "fontSize": "0.84em"}}>
+                    {/* {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"} */}
+                    Book Appointment
+                  </span>
               </Link>
           </li>}
           {/* {MODULES[compCode]?.includes('PHARMACY') || <li className={`px-0 py-1 tab-btn big-menu ${activeLink === '/pharmacy' ? 'active': ''}`} style={{display: 'inline-flex'}}>

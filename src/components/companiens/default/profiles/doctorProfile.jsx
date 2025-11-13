@@ -243,7 +243,8 @@ const DectorProfile = ({ match, compCode, loaderAction, modalAction, userInfo, b
 									</div>
 									<div className={`clinic-booking ${compCode === BCROY_ID && 'opacity-50 pe-none'}`}>
 										<Link className="apt-btn" to="#" onClick={() => handleBooking(data)}>
-											{compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}
+											{/* {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"} */}
+											Book Appointment
 										</Link>
 									</div>
 								</div>

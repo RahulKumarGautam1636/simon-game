@@ -8,10 +8,10 @@ const queryString = qs.parse(window.location.search, { ignoreQueryPrefix: true, 
 let LID = queryString.LID ? queryString.LID : 0;
 let compCode = queryString.CID ? queryString.CID : 
 process.env.
-// REACT_APP_DEFAULT_COMPCODE
+REACT_APP_DEFAULT_COMPCODE
 // BCROY_ID 
 // REACT_APP_TAKEHOME_AGRO 
-REACT_APP_TAKE_HOME_COMPCODE 
+// REACT_APP_TAKE_HOME_COMPCODE 
 // REACT_APP_BSN_COMPCODE 
 // REACT_APP_SC_BAGCHI 
 // REACT_APP_TAKEHOME_GARMENTS 

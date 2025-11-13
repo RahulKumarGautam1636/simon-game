@@ -127,7 +127,7 @@ const HospitalHomepage = () => {
               <div className="flex flex-col sm:flex-row !gap-4">
                 <Link to={'/specialists'} className="bg-white !text-blue-600 !px-8 !py-4 rounded-lg !font-semibold !hover:bg-blue-50 transition transform hover:scale-105 flex items-center justify-center group">
                   <Calendar className="w-5 h-5 !mr-2" />
-                  Doctor's Schedule
+                  Book Appointment
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition" />
                 </Link>
                 <button className="!border-2 !border-white text-white !px-8 !py-4 rounded-lg !font-semibold !hover:bg-white !hover:text-blue-600 transition">
@@ -336,7 +336,7 @@ const HospitalHomepage = () => {
           <div className="text-center !mt-8">
             <Link to={'/specialists'} className="bg-blue-600 text-white !px-8 !py-4 rounded-lg !font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 inline-flex items-center">
               <Calendar className="w-5 h-5 !mr-2" />
-              Doctor's Schedule
+              Book Appointment
             </Link>
           </div>
         </div>
@@ -353,7 +353,7 @@ const HospitalHomepage = () => {
           <div className="flex flex-col sm:flex-row !gap-4 justify-center">
             <Link to={'/specialists'} className="bg-white !text-blue-600 !px-8 !py-4 rounded-lg !font-semibold !hover:bg-blue-50 transition transform hover:scale-105 inline-flex items-center justify-center">
               <Calendar className="w-5 h-5 !mr-2" />
-              Doctor's Schedule 
+              Book Appointment 
             </Link>
             <button className="!border-2 !border-white text-white !px-8 !py-4 rounded-lg !font-semibold !hover:bg-white !hover:text-blue-600 transition inline-flex items-center justify-center">
               <Phone className="w-5 h-5 !mr-2" />

@@ -717,7 +717,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                             <span className="text-white font-bold text-lg">🍴</span>
                         </div>
                         <div className="hidden sm:block">
-                            <h1 className="font-bold text-sm text-gray-800">FoodHub</h1>
+                            <h1 className="font-bold text-sm text-gray-800">{compInfo.COMPNAME}</h1>
                         </div>
                         </div>
 
@@ -1072,20 +1072,20 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                 </main>
 
                 {/* Compact Footer */}
-                <footer className="bg-gray-900 text-white mt-6">
+                <footer className="bg-gray-900 text-white pt-5">
                     <div className="container mx-auto px-3 lg:px-4 py-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div className="text-center md:text-left">
-                        <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                        <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
                             <div className="w-8 h-8 bg-orange-500 !rounded-lg flex items-center justify-center">
                             <span className="text-white text-base">🍴</span>
                             </div>
                             <div>
-                            <h3 className="font-bold text-sm">FoodHub</h3>
-                            <p className="text-orange-400 text-xs">Restaurant</p>
+                                <h3 className="font-bold text-sm text-white mb-0">{compInfo.COMPNAME}</h3>
+                                <p className="text-orange-400 text-xs mb-0 text-start">Restaurant</p>
                             </div>
                         </div>
-                        <p className="text-gray-400 text-xs">Quality food since 2020</p>
+                            <p className="text-gray-400 text-xs">Quality food since 2020</p>
                         </div>
 
                         <div className="text-center md:text-left">
@@ -1093,11 +1093,11 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                         <div className="space-y-1 text-gray-300 text-xs">
                             <p className="flex items-center justify-center md:justify-start gap-1.5">
                             <Phone className="w-3 h-3" />
-                            +91 98765 43210
+                                {compInfo.RegMob1}
                             </p>
                             <p className="flex items-center justify-center md:justify-start gap-1.5">
                             <Mail className="w-3 h-3" />
-                            contact@foodhub.com
+                                {compInfo.Email}
                             </p>
                         </div>
                         </div>
@@ -1112,7 +1112,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                     </div>
 
                     <div className="border-t border-gray-700 mt-4 pt-3 text-center">
-                        <p className="text-gray-400 text-xs">© 2025 FoodHub</p>
+                        <p className="text-gray-400 text-xs">© 2025 {compInfo.COMPNAME}</p>
                     </div>
                     </div>
 

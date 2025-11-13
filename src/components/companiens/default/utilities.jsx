@@ -1012,8 +1012,13 @@ export const HoverDropdown = ({ modalAction, member, userInfoAction }) => {
       <Link to='#' className='dashboard-card__btn-box-item' style={{'--clr': '#26AE24', '--bg': '#3cf7a952', '--bClr': '#26ae2454'}}>BOOK SERVICES</Link>
       <ul className="dropdown-menu">
         <li><Link className="dropdown-item" onClick={() => modalAction('MEMBER_PROFILE_MODAL', true, {tab: 'appointments', memberId: member.MemberId})} to="#"><i className='bx bx-user-circle' style={{'--clr': '#0494f9'}}></i> View Bookings</Link></li>
-        <li><Link className="dropdown-item" onClick={toggleMember} to="/specialists"><i className='bx bx-calendar-check' style={{'--clr': '#0494f9'}}></i> {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}</Link></li>
-        <li><Link className="dropdown-item" onClick={toggleMember} to="/labTests"><i className='bx bx-test-tube' style={{'--clr': '#ab54fd'}}></i> Book Lab Tests</Link></li>
+        <li>
+          <Link className="dropdown-item" onClick={toggleMember} to="/specialists"><i className='bx bx-calendar-check' style={{'--clr': '#0494f9'}}></i> 
+            {/* &nbsp;{compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"} */}
+            &nbsp;Book Appointment
+          </Link>
+        </li>
+        {MODULES[compCode]?.includes('LAB_TEST') || <li><Link className="dropdown-item" onClick={toggleMember} to="/labTests"><i className='bx bx-test-tube' style={{'--clr': '#ab54fd'}}></i> Book Lab Tests</Link></li>}
       </ul>
     </div>
   )
@@ -1170,8 +1175,8 @@ export const useRegType = (type) => {
 }
 
 export const validRegType = (UserRegTypeId, warn=true) => {
-  let { globalData } = store.getState();  
-  // if (vType && vType !== 'ErpPharma') return true;
+  let { globalData, vType } = store.getState();  
+  if (vType && vType !== 'ErpPharma') return true;
   if (UserRegTypeId === globalData.userRegType.CodeId) {
     return true;
   } else {
@@ -1357,3 +1362,25 @@ export const getTimeStr = (date) => {
 }
 
 export const isOlderDate = (a, b) => new Date(a).getTime() < new Date(b).getTime();
+
+export const groupMembers = (obj) => obj.reduce((acc, curr) => {
+  const key = [
+    curr.UnderDoctDesc.trim().toLowerCase(),
+    curr.ProviderDesc.trim().toLowerCase(),
+    curr.ReferrerDesc.trim().toLowerCase(),
+    curr.MarketedDesc.trim().toLowerCase()
+  ].join('|');                                                      // make a unique key
+
+  if (!acc[key]) {
+    acc[key] = {
+      UnderDoctDesc: curr.UnderDoctDesc,
+      ProviderDesc: curr.ProviderDesc,
+      ReferrerDesc: curr.ReferrerDesc,
+      MarketedDesc: curr.MarketedDesc,
+      items: []                                                     // store all duplicates here
+    };
+  }
+
+  acc[key].items.push(curr);
+  return acc;
+}, {});

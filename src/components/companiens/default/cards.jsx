@@ -560,7 +560,8 @@ function SpecialistPreviewCard({ data, reviews, bookingInfoAction, modalAction, 
         {/* onClick={() => {userInfoAction({Doctor: data, UnderDoctId: data.PartyCode, AppointDate: '', AppTime: '', TimeSlotId: null}); modalAction('SCHEDULE_MODAL', true)}} */}
         <Link className="view-pro-btn my-0" to={`/doctors/${data.PartyCode}/${data.SpecialistId !== '' ? `?specialistId=${data.SpecialistId}` : ''}`}>View Doctor</Link>
         <Link className={`apt-btn my-0`} to="#" onClick={(e) => handleBooking(e)}>
-          {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"}
+          {/* {compCode === BCROY_ID ? "Doctor's Schedule" : "Book Appointment"} */}
+          Book Appointment
         </Link>
       </div>
       {compCode === defaultId ? <>

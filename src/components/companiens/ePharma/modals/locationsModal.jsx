@@ -44,8 +44,8 @@ function LocationModal({ compCode, userInfo, modalAction, modals, globalDataActi
     // }, [location.Pin])
 
     useEffect(() => {
-        const getServiceLocations = async () => {                                                         // &BusinessTypeId=${businessTypeId}
-            const res = await getFrom(`${BASE_URL}/api/Location/Get?CID=${compCode}&Area=${area}&SearchStr=`, {}, setLocationList);            // using useCallback to avoid esling warning about useEffect dependencies.
+        const getServiceLocations = async () => {                                                         
+            const res = await getFrom(`${BASE_URL}/api/Location/Get?CID=${compCode}&Area=${area}&SearchStr=&BusinessTypeId=${businessTypeId}`, {}, setLocationList);            // using useCallback to avoid esling warning about useEffect dependencies.
             if (res) {              
                 setLocationList(res);   
             }

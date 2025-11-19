@@ -807,7 +807,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                         {/* Compact User Button */}
                         <div className="hidden md:flex items-center">
                             {isLoggedIn ? 
-                            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs !rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold shadow-md">
+                            <button onClick={() => modalAction('USER_INFO_MODAL', true)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs !rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold shadow-md">
                                 <User className="w-3 h-3" />
                                 <span>{userInfo.UserFullName}</span>
                             </button> :
@@ -882,7 +882,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                     {showMobileMenu && (
                         <div className="md:hidden pb-2">
                             {isLoggedIn ?
-                            <button className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs !rounded-lg bg-orange-500 text-white font-bold">
+                            <button onClick={() => modalAction('USER_INFO_MODAL', true)} className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs !rounded-lg bg-orange-500 text-white font-bold">
                                 <User className="w-3 h-3" />
                                 <span>{userInfo.UserFullName}</span>
                             </button> : 

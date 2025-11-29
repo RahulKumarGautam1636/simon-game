@@ -55,8 +55,9 @@ const Home = ({ cart, cartAction, globalData, compCode }) => {
         cancelTokenSourceRef.current = axios.CancelToken.source();
         
         if(!text.trim()){
-            setOrders([]);
-            setLoading(false);
+            // setOrders([]);
+            // setLoading(false);
+            debouncedSearch("tab");
             return;
         }
         setLoading(true);
@@ -97,7 +98,18 @@ const Home = ({ cart, cartAction, globalData, compCode }) => {
                                 <option value="3">Three</option>
                             </select> */}
                             <div className='position-relative'>
-                                <input className='form-control inputHome' placeholder='SEARCH FOR PRODUCTS...' onChange={(e) => { setEventKey("0"); debouncedSearch(e.target.value) }} />
+                                <input className='form-control inputHome' placeholder='SEARCH FOR PRODUCTS...' onChange={(e) => { 
+                                    // if (e.target.value) {
+                                        setEventKey("0"); 
+                                        debouncedSearch(e.target.value)
+                                    // } 
+                                    // else {
+                                    //     if (cancelTokenSourceRef.current) {
+                                    //         cancelTokenSourceRef.current.cancel();
+                                    //     }
+                                    //     searchFunc('tab');
+                                    // }
+                                }} />
                                 <i className="fas fa-search absolute top-1/2 left-[1.3em] text-[1.4em] text-gray-400" style={{transform: 'translate(-50%, -44%)'}}></i>
                             </div>
                             <div className='d-md-flex d-lg-flex justify-content-between d-none'>
@@ -381,7 +393,7 @@ export const ProductCard3 = ({ data, globalData, vType, cartAction, isLoggedIn, 
                     {globalData.location.LocationId && !packSize().StockQty ? <p className='stock-label mt-0'><i className='bx bxs-message-x text-danger'></i> Out of Stock</p> : ''}
                 </div>
             </div>}
-            {globalData.location.LocationId && isLoggedIn ? 
+            {globalData.location.LocationId ? 
             <div className={detailed ? 'w-100' : `overlay ms-md-auto ${pinCodeDropdown ? 'detach' : '' }`}>
                 <div className='d-flex flex-column gap-0 gap-md-1 w-100' ref={pinCodeRef} style={pinCodeDropdown ? popupViewStyles : {}}>
                     {pinCodeDropdown && 

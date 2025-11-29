@@ -3164,7 +3164,7 @@ text-align: center;
     height: 233px;
 }
 *::-webkit-scrollbar {
-	width: 5px;
+	width: 7px;
 	background: #e0e0ff;
 }
 body::-webkit-scrollbar {
@@ -6842,9 +6842,9 @@ h2.water-mark {
     font-size: 1.3em;
     vertical-align: middle;
 }
-.autoComplete-list::-webkit-scrollbar {
+/* .autoComplete-list::-webkit-scrollbar {
     width: 0;
-}
+} */
 .autoComplete-list ul li:not(:last-child) {
 	margin-bottom: 0.6em;
 }

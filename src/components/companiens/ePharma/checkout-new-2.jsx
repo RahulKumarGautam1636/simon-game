@@ -701,7 +701,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
         setSearchTerm(pre => ({...pre, [e.target.name]: e.target.value}));
         // setListActive(true); 
     }
-
+    console.log(cartArray);
     // NEW WORK ENDS---------------------------------------------------------------------------------------
 
     if (isRestaurant) {

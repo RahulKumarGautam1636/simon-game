@@ -33,7 +33,7 @@ export const initSiteData = {isLoading: true, catLoading: true, productLoading: 
 
 export const currentVersion = '342342';
 
-export const testMode = true;
+export const testMode = false;
 
 export const rent = false; 
 

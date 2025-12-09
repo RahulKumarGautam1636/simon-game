@@ -20,8 +20,8 @@ process.env.
 // REACT_APP_BCF_COMPCODE 
 // REACT_APP_AM_NURSING_HOME_COMPCODE  
 // REACT_APP_CITIZEN_COMPCODE  
-// REACT_APP_RAJE_RESTAURANT_COMPCODE
-REACT_APP_XYZ_COMPCODE  
+REACT_APP_RAJE_RESTAURANT_COMPCODE
+// REACT_APP_XYZ_COMPCODE  
 // REACT_APP_BNH_COMPCODE 
 // REACT_APP_MEDICO_HEALTH_COMPCODE  
 // REACT_APP_E_PHARMA_COMPCODE     
@@ -167,8 +167,8 @@ const globalData = {
   restaurant: { table: { BedId: queryString.BedId || '', autoSelect: false } },
   businessType: { Description: '', CodeValue: '', CodeId: '' },
   userRegType:
-                // { CodeId: 43198, Description: 'Customer', CodeValue: 'Customer', for: 'B2C / Patient' }
-                { CodeId: 43194, Description: 'Retailer', CodeValue: 'Retailer', for: 'B2B / Retailer' }
+                { CodeId: 43198, Description: 'Customer', CodeValue: 'Customer', for: 'B2C / Patient' }
+                // { CodeId: 43194, Description: 'Retailer', CodeValue: 'Retailer', for: 'B2B / Retailer' }
                 // { CodeId: 43195, Description: 'Strategic Partner', CodeValue: 'SP', for: 'Doctor' }
                 // { CodeId: 43196, Description: 'Master Partner', CodeValue: 'MP', for: 'Referrer' }
                 // { CodeId: 43197, Description: 'Associate Partner', CodeValue: 'AP', for: 'Provider' }

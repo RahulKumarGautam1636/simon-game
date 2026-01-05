@@ -86,7 +86,7 @@ function Specialists({ compCode, userInfo, loaderAction, userInfoAction, isMobil
     setCompanyTabList({loading: false, data: sortedCompanies, err: {status: false, msg: ''}});
   },[userInfo.location.latitude, userInfo.location.longitude])
 
-  const handleSearchInput = (e) => {
+  const handleSearchInput = (e) => { 
     setSearchKey(pre => ({...pre, [e.target.name]: e.target.value}));
     setListActive(true); 
   }

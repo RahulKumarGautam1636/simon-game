@@ -40,6 +40,8 @@ const ProductPage = ({ loaderAction, match, breadCrumbAction, compCode, cartActi
 		if (item.ItemPackSizeList && item.ItemPackSizeList.length) {
 			const prices = computeWithPackSize(item, item.ItemPackSizeList[0], vType);
 			return prices;
+		} else {
+			return item;
 		}
 	})
 

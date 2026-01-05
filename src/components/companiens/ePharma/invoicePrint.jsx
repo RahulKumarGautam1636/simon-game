@@ -27,7 +27,7 @@ const InvoicePrint = ({ match, compCode, breadCrumbAction }) => {
 
     const getData = async (query) => {
         if (query) {
-          const res = await getFrom(`${BASE_URL}/api/Appointment/GetBill?BilId=${query}&CID=${compCode}`, {}, setData);
+          const res = await getFrom(`${BASE_URL}/api/Appointment/GetBill?BilId=${query}&CID=${compCode}&type=OPD`, {}, setData);
           if (res) {
             setTimeout(() => {
                 setData(res);            

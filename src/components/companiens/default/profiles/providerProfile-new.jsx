@@ -37,7 +37,7 @@ const ProviderProfile = ({ userInfo, compCode, modalAction, userInfoAction }) =>
 
     const primaryUser = userInfo.MembersList.AccPartyMemberMasterList.find(i => i.MemberId === userInfo.MemberId);
     const allMembers = userInfo.MembersList.AccPartyMemberMasterList.filter(i => i.MemberId !== userInfo.MemberId);
-
+    
     const groupedMembers = groupMembers(allMembers) || {};
     const members = Object.values(groupedMembers);    
 
@@ -237,14 +237,16 @@ const ProviderProfile = ({ userInfo, compCode, modalAction, userInfoAction }) =>
                                                             </table>		
                                                         </div>}
                                                     </div>	 */}
-                                                        <div className='bg-gray-200 py-2 px-3'>
-                                                            <p className='text-gray-800 mb-0'>
-                                                                Primary User
-                                                            </p>
-                                                        </div>
-                                                        <div className="card-body">
-                                                            <MemberCard key={primaryUser.MemberId} userType={userInfo.UserType} data={primaryUser} modalAction={modalAction} mode='provider_dashboard' userInfoAction={userInfoAction} selected={userInfo.selectedMember?.MemberId} />
-                                                        </div>
+                                                        {primaryUser?.MemberId && <>
+                                                            <div className='bg-gray-200 py-2 px-3'>
+                                                                <p className='text-gray-800 mb-0'>
+                                                                    Primary User
+                                                                </p>
+                                                            </div>
+                                                            <div className="card-body">
+                                                                <MemberCard key={primaryUser?.MemberId} userType={userInfo?.UserType} data={primaryUser} modalAction={modalAction} mode='provider_dashboard' userInfoAction={userInfoAction} selected={userInfo.selectedMember?.MemberId} />
+                                                            </div>
+                                                        </>}
                                                         {members.flatMap(i => {
                                                             {/* if (i.UnderDoctDesc === '' && i.ProviderDesc === '' && i.ReferrerDesc === '' && i.MarketedDesc === '') return undefined; */}
                                                             console.log(i, userInfo.MemberId)

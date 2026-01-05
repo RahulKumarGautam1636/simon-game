@@ -289,7 +289,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
                         MemberTypeId : 0,
                         UserType: userInfo.UserType,
                         UID: '',
-                        UserId: 0,
+                        UserId: prescription.patient.memberId ? prescription.patient.userId : userInfo.UserId,
                         
                         DOB: prescription.patient.age ? createDate(0, 0, prescription.patient.age) : new Date(userInfo.DOB).toLocaleDateString('en-TT'),
                         DOBstr: prescription.patient.age ? createDate(0, 0, prescription.patient.age) : new Date(userInfo.DOB).toLocaleDateString('en-TT'),
@@ -346,7 +346,7 @@ const Checkout = ({ vType, breadCrumbAction, cart, isLoggedIn, userInfo, compCod
             }
         }
         init();
-    },[isLoggedIn, userInfo, cartSubtotal, compCode, orderList, locationId, prescription.src, restaurantTable?.ProvInvBillid, restaurantTable?.BedId])
+    },[isLoggedIn, userInfo, cartSubtotal, compCode, orderList, locationId, prescription, restaurantTable?.ProvInvBillid, restaurantTable?.BedId])
     
     const placeOrder = async () => {
         if (!isLoggedIn) return alert('please login to place an order.');

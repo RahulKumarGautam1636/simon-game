@@ -701,7 +701,7 @@ useEffect(() => {
                                 padding: 0.8em 0.5em ! important;
                               }
                             `}</style>
-                            {isDoctor && <div className="row">
+                            {isDoctor && <div className="row mt-4">
                               <div className="col-md-12">
                                 <div className="card card-table mb-0 border-0 px-1">
                                   <div className="card-body p-3">
@@ -714,7 +714,7 @@ useEffect(() => {
                                       </select>
                                       <div className="form-group form-focus focused d-flex gap-3 mb-0 align-items-center">
                                         <i className='bx bxs-chevrons-left text-blue-600' onClick={() => handleDate('prev')} style={{fontSize: '1.4em'}}></i>
-                                        {/* <JQDatePicker id={'from'} isRequired={true} setState={setDate} curValue={date.from} name={'from'} customClass={'form-control'} required style={{width: 100}} /> */}
+                                        {/* <JQDatePicker id={'from'} isRequired={true} create it in react setState={setDate} curValue={date.from} name={'from'} customClass={'form-control'} required style={{width: 100}} /> */}
                                         <JQDatePicker id={'fromDate'} isRequired={true} handler={setFromDate} curValue={fromDate} name={'from'} customClass={'form-control'} required style={{width: 100}} />
                                         <span>To</span>
                                         {/* <JQDatePicker id={'to'} isRequired={true} setState={setDate} curValue={date.to} name={'to'} customClass={'form-control'} required style={{width: 100}} /> */}

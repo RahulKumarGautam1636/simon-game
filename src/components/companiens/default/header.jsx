@@ -238,12 +238,12 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                         {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: 'REFERRER'})} className="dropdown-item">
                           <span className="material-symbols-outlined notranslate h3 mb-0 me-2">stethoscope_arrow</span> As Referrer
                         </span> */}
-                        {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.COLLECTOR.level})} className="dropdown-item">
+                        {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.COLLECTOR})} className="dropdown-item">
                           <span className="material-symbols-outlined notranslate h3 mb-0 me-2">approval_delegation</span> As Collector
-                        </span>
-                        <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.POLYCLINIC.level})} className="dropdown-item">
-                          <i className='bx bx-clinic h3 mb-0 me-2'></i> As Polyclinic
                         </span> */}
+                        <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.POLYCLINIC})} className="dropdown-item">
+                          <i className='bx bx-clinic h3 mb-0 me-2'></i> As Polyclinic
+                        </span>
                         {compCode === defaultId && <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.MARKETBY})} className="dropdown-item">
                           <span className="material-symbols-outlined notranslate h3 mb-0 me-2">handshake</span> As Marketing Executive
                         </span>}
@@ -475,12 +475,12 @@ const Header = ({ siteData, modalAction, isLoggedIn, loginStatusAction, userInfo
                         {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: 'REFERRER'})} className="dropdown-item">
                           <span className="material-symbols-outlined notranslate h3 mb-0 me-3">stethoscope_arrow</span> As Referror
                         </span> */}
-                        {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.COLLECTOR.level})} className="dropdown-item">
+                        {/* <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.COLLECTOR})} className="dropdown-item">
                           <span className="material-symbols-outlined notranslate h3 mb-0 me-3">approval_delegation</span> As Collector
-                        </span>
-                        <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.POLYCLINIC.level})} className="dropdown-item">
+                        </span> */}
+                        <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.POLYCLINIC})} className="dropdown-item">
                           <i className='bx bx-clinic h3 mb-0 me-3'></i> As Polyclinic
-                        </span> */}  
+                        </span>  
                         {compCode === defaultId && <span onClick={() => modalAction('LOGIN_MODAL', true, {mode: uType.MARKETBY})} className="dropdown-item">
                           <span className="material-symbols-outlined notranslate h3 mb-0 me-3">personal_injury</span> As Marketing Executive
                         </span>}

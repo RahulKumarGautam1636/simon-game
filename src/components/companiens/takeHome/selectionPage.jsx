@@ -28,7 +28,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
 
   useEffect(() => {
     const getPharmaCategories = async () => {
-      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKE_HOME_ID}&LOCID=1293`, {}, setPharmaCategory);
+      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKE_HOME_ID}&LOCID=1293&CategoryId=0&ParentId=0`, {}, setPharmaCategory);
       if (res) {
         const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
         setPharmaCategory({ loading: false, data: { ...res.data, LinkCategoryList: categories }, err: { status: false, msg: '' } }); 
@@ -37,7 +37,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
       }
     }
     const getAgroCategories = async () => {
-      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_AGRO}&LOCID=1559`, {}, setAgroCategory);
+      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_AGRO}&LOCID=1559&CategoryId=0&ParentId=0`, {}, setAgroCategory);
       if (res) {
         const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
         setAgroCategory({ loading: false, data: { ...res.data, LinkCategoryList: categories }, err: { status: false, msg: '' } }); 
@@ -46,7 +46,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
       }
     }
     const getGarmentsCategories = async () => {
-      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_GARMENTS}&LOCID=1598`, {}, setGarmentsCategory);
+      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_GARMENTS}&LOCID=1598&CategoryId=0&ParentId=0`, {}, setGarmentsCategory);
       if (res) {
       const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
         setGarmentsCategory({ loading: false, data: { ...res.data, LinkCategoryList: categories }, err: { status: false, msg: '' } }); 
@@ -55,7 +55,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
       }
     }
     const getElectronicsCategories = async () => {
-      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_ELECTRONICS}&LOCID=1634`, {}, setGarmentsCategory);
+      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_ELECTRONICS}&LOCID=1634&CategoryId=0&ParentId=0`, {}, setGarmentsCategory);
       if (res) {
       const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
         setElectronicsCategory({ loading: false, data: { ...res.data, LinkCategoryList: categories }, err: { status: false, msg: '' } }); 
@@ -64,7 +64,7 @@ const TakeHome = ({ modalAction, compCodeAction }) => {
       }
     }
     const getSurgicalCategories = async () => {
-      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_SURGICAL}&LOCID=1634`, {}, setSurgicalCategory);
+      const res = await getFrom(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${TAKEHOME_SURGICAL}&LOCID=1634&CategoryId=0&ParentId=0`, {}, setSurgicalCategory);
       if (res) {
       const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
         setSurgicalCategory({ loading: false, data: { ...res.data, LinkCategoryList: categories }, err: { status: false, msg: '' } }); 

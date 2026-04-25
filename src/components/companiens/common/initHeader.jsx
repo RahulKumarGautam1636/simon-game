@@ -118,7 +118,7 @@ const InitHeader = ({ vType, vTypeAction, compCode, userInfo, loaderAction, user
         if (vType === 'ErpPharma' || vType === 'agro' || vType === 'ErpManufacturing' || vType === 'ErpHospital' || vType === 'HOTEL' || vType === 'RESORT' || vType === 'RESTAURANT') {
             const getCategories = async (signal) => {         
                 siteDataAction({ catLoading: true, productLoading: true });
-                const res = await axios.get(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${compCode}&LOCID=${locationId}`, { signal: signal });
+                const res = await axios.get(`${BASE_URL}/api/Pharma/GetCatSubCat?CID=${compCode}&LOCID=${locationId}&CategoryId=0&ParentId=0`, { signal: signal });
                 if (res.status === 200) {
                     const categories = getCategoryRequiredFieldsOnly(res.data.LinkCategoryList);
                     // if (vType === 'agro') {
